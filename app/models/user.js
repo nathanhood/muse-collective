@@ -11,6 +11,13 @@ class User {
       email: String,
       password: String
     };
+    this.facebook = {
+      id: String,
+      token: String,
+      email: String,
+      firstName: String,
+      lastName: String
+    };
   }
 
   save(fn){

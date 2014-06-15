@@ -17,23 +17,6 @@ var cookieParser   = require('cookie-parser');
 var passport       = require('passport');
 var session        = require('express-session');
 var flash          = require('connect-flash');
-// var config = require('./config/oauth.js');
-// var FacebookStrategy = require('passport-facebook').Strategy;
-
-
-
-// // config
-// passport.use(new FacebookStrategy({
-//  clientID: config.facebook.clientID,
-//  clientSecret: config.facebook.clientSecret,
-//  callbackURL: config.facebook.callbackURL
-// },
-//   function(accessToken, refreshToken, profile, done) {
-//     process.nextTick(function () {
-//       return done(null, profile);
-//     });
-//   }
-// ));
 
 
 /* --- configuration    */

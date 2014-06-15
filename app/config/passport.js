@@ -40,13 +40,13 @@ module.exports = function(passport){
   },
   // facebook will send back the token and profile
     function(token, refreshToken, profile, done){
-      console.log('===========PROFILE===========');
-      console.log(profile);
+
       // asynchronous
       process.nextTick(function(){
         // find the user in the database based on their facebook id
         User.findByFacebookId(profile.id, function(err, user){
-
+          console.log('==============USER==============');
+          console.log(user);
           // if there is an error (connecting to database), stop everything and return error
           if(err){
             return done(err);
@@ -58,7 +58,8 @@ module.exports = function(passport){
             var newUser = new User();
             newUser.facebook.id = profile.id; // set the users facebook id
             newUser.facebook.token = token; // token that facebook provides user
-            newUser.facebook.name = profile.name.givenName + ' ' + profile.name.familyName;
+            newUser.facebook.firstName = profile.name.givenName;
+            newUser.facebook.lastName = profile.name.familyName;
             newUser.facebook.email = profile.emails[0].value; // facebook may return multiple emails
 
             newUser.save(function(err){
