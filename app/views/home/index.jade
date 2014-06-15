@@ -1,0 +1,23 @@
+extends ../shared/template
+
+block content
+  h1= title
+
+  if(message)
+    .alert(style='color: red')
+      p= message
+
+  if(!user)
+    form(action='/login', method='post')
+      input(type='text', name='email', placeholder='Email', autofocus=true)
+      br
+      input(type='password', name='password', placeholder='Password')
+      br
+      button(type='submit') Login
+
+      hr
+      p
+        | Need an account?
+        a(href='/register') Register
+      br
+      a(href='/auth/facebook') Login with Facebook
