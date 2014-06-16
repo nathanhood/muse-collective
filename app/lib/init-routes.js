@@ -26,6 +26,7 @@ function load(app, fn){
 
   app.get('/', dbg, home.index);
 
+
   app.get('/register', dbg, users.registration);
   app.post('/register', dbg, passport.authenticate('local-register', {
     successRedirect : '/profile', // redirect to the secure profile section
@@ -45,12 +46,54 @@ function load(app, fn){
     successRedirect: '/profile',
     failureRedirect: '/'
   }));
+  app.get('/auth/twitter', passport.authenticate('twitter'));
+	app.get('/auth/twitter/callback',
+		passport.authenticate('twitter', {
+			successRedirect : '/profile',
+			failureRedirect : '/'
+	}));
 
+
+  // =============================================================================
+  // AUTHORIZE (ALREADY LOGGED IN / CONNECTING OTHER SOCIAL ACCOUNT) =============
+  // =============================================================================
+
+	// locally --------------------------------
+	app.get('/connect/local', function(req, res) {
+		res.render('users/connect-local', { message: req.flash('registerMessage') });
+	});
+	app.post('/connect/local', passport.authenticate('local-register', {
+		successRedirect : '/profile', // redirect to the secure profile section
+		failureRedirect : '/connect/local', // redirect back to the register page if there is an error
+		failureFlash : true // allow flash messages
+	}));
+
+	// facebook -------------------------------
+	// send to facebook to do the authentication
+	app.get('/connect/facebook', passport.authorize('facebook', { scope : 'email' }));
+	// handle the callback after facebook has authorized the user
+	app.get('/connect/facebook/callback',
+		passport.authorize('facebook', {
+			successRedirect : '/profile',
+			failureRedirect : '/'
+		}));
+
+	// twitter --------------------------------
+	// send to twitter to do the authentication
+	app.get('/connect/twitter', passport.authorize('twitter', { scope : 'email' }));
+	// handle the callback after twitter has authorized the user
+	app.get('/connect/twitter/callback',
+		passport.authorize('twitter', {
+			successRedirect : '/profile',
+			failureRedirect : '/'
+		}));
 
 
   app.all('*', users.bounce);
   app.get('/profile', dbg, users.profile);
   app.post('/logout', dbg, users.logout);
+  app.get('/users/password', dbg, users.password);
+  app.post('/users/password', dbg, users.updatePassword);
 
   console.log('Routes Loaded');
   fn();

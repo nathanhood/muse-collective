@@ -33,10 +33,11 @@
     "async":           "*",
     "request":         "*",
     "d3":              "*",
-
+    
     "passport":        "*",
     "passport-local":  "*",
     "passport-facebook": "*",
+    "passport-twitter": "*",
     "cookie-parser":   "*",
     "express-session": "*"
   },

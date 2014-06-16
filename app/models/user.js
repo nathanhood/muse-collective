@@ -15,8 +15,13 @@ class User {
       id: String,
       token: String,
       email: String,
-      firstName: String,
-      lastName: String
+      displayName: String
+    };
+    this.twitter = {
+      id:       String,
+      token:    String,
+      displayName: String,
+      username:   String
     };
   }
 
@@ -25,13 +30,29 @@ class User {
   }
 
   // generating a hash
-  generateHash(password) {
+  generateHash(password){
       return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
   }
 
   // checking if password is valid
-  validPassword(password) {
+  validPassword(password){
       return bcrypt.compareSync(password, this.local.password);
+  }
+
+  changePassword(obj, fn){
+    var isMatch = bcrypt.compareSync(obj.oldPassword, this.local.password);
+    if(isMatch){
+      this.local.password = this.generateHash(obj.newPassword);
+      fn(null);
+    }else{
+      fn('err');
+    }
+  }
+
+  static findByTwitterId(id, fn){
+    userCollection.findOne({'twitter.id':id}, (err, user)=>{
+      fn(err, user);
+    });
   }
 
   static findByFacebookId(id, fn){

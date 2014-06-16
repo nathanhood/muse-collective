@@ -3,6 +3,7 @@
 /* load all strategies we need */
 var LocalStrategy = require('passport-local').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
+var TwitterStrategy  = require('passport-twitter').Strategy;
 
 /* load the user model */
 var traceur = require('traceur');
@@ -29,6 +30,75 @@ module.exports = function(passport){
   });
 
 
+  /* Twitter */
+
+  passport.use(new TwitterStrategy({
+
+    consumerKey : configAuth.twitterAuth.consumerKey,
+    consumerSecret : configAuth.twitterAuth.consumerSecret,
+    callbackURL : configAuth.twitterAuth.callbackURL,
+    passReqToCallback : true // allows us to pass in the req from our route (lets us check if a user is logged in or not)
+  },
+    // twitter will send back the token and profile
+    function(req, token, refreshToken, profile, done) {
+
+      if (!req.user) {
+        // make the code asynchronous
+        // User.findOne won't fire until we have all our data back from Twitter
+      	process.nextTick(function() {
+          User.findByTwitterId(profile.id, function(err, user) {
+            // if there is an error (connecting to database), stop everything and return error
+            if(err){
+              return done(err);
+            }
+
+    			  // if the user is found then log them in
+            if(user){
+              return done(null, user); // user found, return that user
+            } else {
+              var newUser = new User();
+
+    				  // set all of the user data that we need
+              newUser.twitter.id = profile.id;
+              newUser.twitter.token = token;
+              newUser.twitter.username = profile.username;
+              newUser.twitter.displayName = profile.displayName;
+
+    				  // save our user into the database
+              newUser.save(function(err) {
+                if(err){
+                  throw err;
+                }
+                return done(null, newUser);
+              });
+            }
+          });
+        });
+      } else {
+        process.nextTick(function() {
+          // user already exists and is logged in, we have to link accounts
+          var user = req.user; // pull the user out of the session
+
+          // update the current users facebook credentials
+          user.twitter.id = profile.id;
+          user.twitter.token = token;
+          user.twitter.username = profile.username;
+          user.twitter.displayName = profile.displayName;
+
+          // save the user
+          user.save(function(err) {
+            if(err){
+              throw err;
+            }
+            return done(null, user);
+          });
+        });
+      }
+    }
+  ));
+
+
+
   /* FACEBOOK */
 
   passport.use(new FacebookStrategy({
@@ -36,41 +106,61 @@ module.exports = function(passport){
 		// pull in our app id and secret from our auth.js file
     clientID : configAuth.facebookAuth.clientID,
     clientSecret : configAuth.facebookAuth.clientSecret,
-    callbackURL : configAuth.facebookAuth.callbackURL
+    callbackURL : configAuth.facebookAuth.callbackURL,
+    passReqToCallback : true // allows us to pass in the req from our route (lets us check if a user is logged in or not)
   },
-  // facebook will send back the token and profile
-    function(token, refreshToken, profile, done){
+    // facebook will send back the token and profile
+    function(req, token, refreshToken, profile, done) {
 
-      // asynchronous
-      process.nextTick(function(){
-        // find the user in the database based on their facebook id
-        User.findByFacebookId(profile.id, function(err, user){
-          console.log('==============USER==============');
-          console.log(user);
-          // if there is an error (connecting to database), stop everything and return error
-          if(err){
-            return done(err);
-          }
+      // check if the user is already logged in
+      if (!req.user) {
+        // asynchronous
+        process.nextTick(function(){
+          // find the user in the database based on their facebook id
+          User.findByFacebookId(profile.id, function(err, user){
+            // if there is an error (connecting to database), stop everything and return error
+            if(err){
+              return done(err);
+            }
 
-          if(user){
-            return done(null, user);
-          } else {
-            var newUser = new User();
-            newUser.facebook.id = profile.id; // set the users facebook id
-            newUser.facebook.token = token; // token that facebook provides user
-            newUser.facebook.firstName = profile.name.givenName;
-            newUser.facebook.lastName = profile.name.familyName;
-            newUser.facebook.email = profile.emails[0].value; // facebook may return multiple emails
+            if(user){
+              return done(null, user);
+            } else {
+              var newUser = new User();
+              newUser.facebook.id = profile.id; // set the users facebook id
+              newUser.facebook.token = token; // token that facebook provides user
+              newUser.facebook.displayName = profile.name.givenName + ' ' + profile.name.familyName;
+              newUser.facebook.email = profile.emails[0].value; // facebook may return multiple emails
 
-            newUser.save(function(err){
-              if(err){
-                throw err;
-              }
-              return done(null, newUser);
-            });
-          }
+              newUser.save(function(err){
+                if(err){
+                  throw err;
+                }
+                return done(null, newUser);
+              });
+            }
+          });
         });
-      });
+      } else {
+        process.nextTick(function(){
+          // user already exists and is logged in, we have to link accounts
+  	      var user = req.user; // pull the user out of the session
+
+  				// update the current users facebook credentials
+          user.facebook.id = profile.id;
+          user.facebook.token = token;
+          user.facebook.displayName = profile.name.givenName + ' ' + profile.name.familyName;
+          user.facebook.email = profile.emails[0].value;
+
+  				// save the user
+          user.save(function(err) {
+            if(err){
+              throw err;
+            }
+            return done(null, user);
+          });
+        });
+      }
     }
   ));
 
@@ -89,32 +179,60 @@ module.exports = function(passport){
   function(req, email, password, done){
 
     req.flash('registerMessage', '');
-    //asynchronous
-    //User.findOne won't fire unless data is sent back
-    process.nextTick(function(){
-      User.findByEmail(email, function(err, user){
 
-        if(err){
-          return done(err);
-        }
+    if (!req.user) {
+      //asynchronous
+      //User.findOne won't fire unless data is sent back
+      process.nextTick(function(){
+        User.findByEmail(email, function(err, user){
 
-        if(user){
-          return done(null, false, req.flash('registerMessage', 'That email is already taken.'));
-        } else {
-          var newUser = new User();
+          if(err){
+            return done(err);
+          }
 
-          newUser.local.email = email;
-          newUser.local.password = newUser.generateHash(password);
+          if(user){
+            return done(null, false, req.flash('registerMessage', 'That email is already taken.'));
+          } else {
+            var newUser = new User();
 
-          newUser.save(function(err){
-            if(err){
-              throw err;
-            }
-            return done(null, newUser);
-          });
-        }
+            newUser.local.email = email;
+            newUser.local.password = newUser.generateHash(password);
+
+            newUser.save(function(err){
+              if(err){
+                throw err;
+              }
+              return done(null, newUser);
+            });
+          }
+        });
       });
-    });
+    } else {
+      process.nextTick(function(){
+        User.findByEmail(email, function(err, user){
+
+          if(err){
+            return done(err);
+          }
+
+          if(user){
+            return done(null, false, req.flash('registerMessage', 'That email is already taken.'));
+          } else {
+            var existingUser = req.user; // pull the user out of the session
+
+            existingUser.local.email = email;
+            existingUser.local.password = existingUser.generateHash(password);
+
+            existingUser.save(function(err){
+              if(err){
+                throw err;
+              }
+              return done(null, existingUser);
+            });
+          }
+        });
+      });
+    }
   }));
 
 

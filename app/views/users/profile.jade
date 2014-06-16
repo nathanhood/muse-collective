@@ -1,4 +1,69 @@
 extends ../shared/template
 
 block content
-  h1= user.local.email
+  .container
+    .page-header.text-center
+      h1
+        span.fa.fa-anchor
+        | Profile Page
+      form(method='post', action='/logout')
+        button.btn.btn-default.btn-sm#logout Logout
+    .row
+      // LOCAL INFORMATION
+      .col-sm-4
+        .well
+          h3
+            span.fa.fa-user
+            | Local
+          if(user.local.email)
+            p
+              strong Email
+              | : #{user.local.email}
+            p
+              strong Password
+              | : &#9679 &#9679 &#9679 &#9679 &nbsp
+              a.btn.btn-default.btn-sm(href='/users/password') Change Password
+            p
+              a.btn.btn-default(href='/unlink/local') Unlink
+          else
+            a.btn.btn-default(href='/connect/local') Connect Local
+      //FACEBOOK INFORMATION
+      .col-sm-4
+        .well
+          h3.text-info
+            span.fa.fa-facebook
+            | &nbsp Facebook
+          if(user.facebook.token)
+            p
+              strong ID
+              | : #{user.facebook.id}
+            p
+              strong Name
+              | : #{user.facebook.displayName}
+            p
+              strong Email
+              | : #{user.facebook.email}
+            p
+              a.btn.btn-primary(href='/unlink/facebook') Unlink
+          else
+            a.btn.btn-primary(href='/connect/facebook') Connect Facebook
+      //TWITTER INFORMATION
+      .col-sm-4
+        .well
+          h3.text-info
+            span.fa.fa-twitter
+            | &nbsp Twitter
+          if(user.twitter.token)
+            p
+              strong ID
+              | : #{user.twitter.id}
+            p
+              strong Name
+              | : #{user.twitter.displayName}
+            p
+              strong Email
+              | : #{user.twitter.username}
+            p
+              a.btn.btn-info(href='/unlink/twitter') Unlink
+          else
+            a.btn.btn-info(href='/connect/twitter') Connect Twitter
