@@ -76,7 +76,7 @@ function load(app, fn){
 		passport.authorize('facebook', {
 			successRedirect : '/profile',
 			failureRedirect : '/'
-		}));
+	}));
 
 	// twitter --------------------------------
 	// send to twitter to do the authentication
@@ -86,7 +86,41 @@ function load(app, fn){
 		passport.authorize('twitter', {
 			successRedirect : '/profile',
 			failureRedirect : '/'
-		}));
+	}));
+
+  // =============================================================================
+  // UNLINK ACCOUNTS =============================================================
+  // =============================================================================
+  // user account will stay active in case they want to reconnect in the future
+
+  // local -----------------------------------
+  app.get('/unlink/local', function(req, res) {
+      var user            = req.user;
+      user.local.email    = undefined;
+      user.local.password = undefined;
+      user.save(function(err) {
+          res.redirect('/profile');
+      });
+  });
+
+  // facebook -------------------------------
+  app.get('/unlink/facebook', function(req, res) {
+      var user            = req.user;
+      user.facebook.token = undefined;
+      user.save(function(err) {
+          res.redirect('/profile');
+      });
+  });
+
+  // twitter --------------------------------
+  app.get('/unlink/twitter', function(req, res) {
+      var user           = req.user;
+      user.twitter.token = undefined;
+      user.save(function(err) {
+         res.redirect('/profile');
+      });
+  });
+
 
 
   app.all('*', users.bounce);
