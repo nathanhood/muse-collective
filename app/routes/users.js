@@ -1,7 +1,5 @@
 'use strict';
 
-// var passport = require('passport');
-// require('../config/passport')(passport);
 var traceur = require('traceur');
 var User = traceur.require(__dirname + '/../../app/models/user.js');
 

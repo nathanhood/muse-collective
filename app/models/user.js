@@ -18,11 +18,15 @@ class User {
       displayName: String
     };
     this.twitter = {
-      id:       String,
-      token:    String,
+      id: String,
+      token: String,
       displayName: String,
-      username:   String
+      username: String
     };
+    this.location = null;
+    this.collaborators = [];
+    this.projects = [];
+    this.meetups = [];
   }
 
   save(fn){

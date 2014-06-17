@@ -1,0 +1,5 @@
+[
+{"id":"1ak584", "title":"Example Title", "content":"This is an example note...", "x":"230px", "y":"72.1px", "classes":["draggable", "sticky-note", "yellow"], "zIndex":"3"},
+{"id":"1ak673", "title":"Example Title 2", "content":"This is another example note...", "x":"100px", "y":"210px", "classes":["draggable", "sticky-note", "blue"], "zIndex":"1"},
+{"id":"1ak6782", "title":"Example Title 3", "content":"This is yet another example note...", "x":"532px", "y":"400px", "classes":["draggable", "sticky-note", "green"], "zIndex":"6"}
+]
