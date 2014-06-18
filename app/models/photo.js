@@ -2,6 +2,18 @@
 
 
 class Photo {
+  constructor(obj){
+    this.id = this.createId();
+    this.fileName = obj.fileName;
+    this.filePath = obj.filePath;
+    this.origFileName = obj.origFileName;
+    this.x = obj.x;
+    this.y = obj.y;
+    this.width = obj.width;
+    this.height = obj.height;
+    this.classes = obj.classes;
+    this.zIndex = obj.zIndex;
+  }
 
   createId(){
     var text='';
@@ -9,21 +21,7 @@ class Photo {
     for( var i=0; i < 6; i++ ){
         text += possible.charAt(Math.floor(Math.random() * possible.length));
       }
-    this.id = text;
-  }
-
-  static create(obj, fn){
-    var photo = new Photo();
-    photo.createId();
-    photo.name = obj.name;
-    photo.filePath = obj.filePath;
-    photo.x = obj.x;
-    photo.y = obj.y;
-    photo.width = obj.width;
-    photo.height = obj.height;
-    photo.classes = obj.classes;
-    photo.zIndex = obj.zIndex;
-    fn(photo);
+    return text;
   }
 
 }

@@ -5,7 +5,12 @@ var traceur = require('traceur');
 var Base = traceur.require(__dirname + '/base.js');
 var Note = traceur.require(__dirname + '/note.js');
 var Word = traceur.require(__dirname + '/word.js');
+var Photo = traceur.require(__dirname + '/photo.js');
 var Mongo = require('mongodb');
+var fs = require('fs');
+var path = require('path');
+var crypto = require('crypto');
+
 
 class Project {
   static create(obj, fn){
@@ -16,7 +21,7 @@ class Project {
     project.title = obj.title;
     project.type = obj.type;
     project.notes = [];
-    project.images = [];
+    project.photos = [];
     project.audio = [];
     project.words = [];
     project.notepads = [];
@@ -70,6 +75,51 @@ class Project {
         ()=>fn(this));
     }else{
       fn(this);
+    }
+  }
+
+  addPhoto(obj, fn){
+    if(obj.photos.length > 0){
+      var newPhotos = [];
+
+      obj.photos.forEach(p=>{
+        var photo = new Photo(p);
+        this.photos.push(photo);
+        newPhotos.push(photo);
+      });
+      
+      projectCollection.update({_id:this._id},
+        { $addToSet: { photos: { $each: newPhotos } } },
+        ()=>fn(this));
+    }else{
+      fn(this);
+    }
+  }
+
+
+  processPhoto(photo, fn){
+    if(photo.size){
+      var name = crypto.randomBytes(12).toString('hex') + path.extname(photo.originalFilename).toLowerCase();
+      var file = `/img/${this.userId}/${this._id}/${name}`;
+
+      var newPhoto = {};
+      newPhoto.fileName = name;
+      newPhoto.filePath = file;
+      newPhoto.origFileName = photo.originalFilename;
+
+      var userDir = `${__dirname}/../static/img/${this.userId}`;
+      var projDir = `${userDir}/${this._id}`;
+      var fullDir = `${projDir}/${name}`;
+
+      if(!fs.existsSync(userDir)){fs.mkdirSync(userDir);}
+      if(!fs.existsSync(projDir)){fs.mkdirSync(projDir);}
+
+      fs.renameSync(photo.path, fullDir);
+      fn(newPhoto);
+      // this.projDir = path.normalize(projDir);
+      // this.photos.push(photo);
+    }else{
+      fn(null);
     }
   }
 

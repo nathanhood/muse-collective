@@ -1,4 +1,4 @@
-/* global describe, before, beforeEach, it*/
+/* global describe, before, beforeEach, it, after*/
 /* jshint expr:true */
 
 'use strict';
@@ -10,6 +10,8 @@ var traceur = require('traceur');
 var db = traceur.require(__dirname + '/../../helpers/db.js');
 var factory = traceur.require(__dirname + '/../../helpers/factory.js');
 var Mongo = require('mongodb');
+var cp = require('child_process');
+var fs = require('fs');
 
 var User;
 var Project;
@@ -26,15 +28,14 @@ describe('projects', function(){
     });
   });
 
+
   beforeEach(function(done){
     global.nss.db.collection('projects').drop(function(){
-      // global.nss.db.collection('notes').drop(function(){
-        factory('project', function(projects){
-          // factory('note', function(notes){
-            done();
-          // });
-        });
-      // });
+      factory('project', function(projects){
+        // factory('note', function(notes){
+          done();
+        // });
+      });
     });
   });
 
@@ -47,7 +48,7 @@ describe('projects', function(){
         expect(project.title).to.equal('story 1');
         expect(project.type).to.equal('short story');
         expect(project.notes).to.have.length(0);
-        expect(project.images).to.have.length(0);
+        expect(project.photos).to.have.length(0);
         expect(project.audio).to.have.length(0);
         expect(project.words).to.have.length(0);
         expect(project.notepads).to.have.length(0);
@@ -100,10 +101,8 @@ describe('projects', function(){
         });
       });
     });
-  });
 
-  describe('#addNotes', function(){
-    it('should add 0 objects to notes array without errors', function(done){
+    it('should NOT add objects to notes array - without errors', function(done){
       Project.findById('53a0f350140b1f584c054ed6', function(err, project){
         var body = {'notes':[]};
 
@@ -134,10 +133,8 @@ describe('projects', function(){
         });
       });
     });
-  });
 
-  describe('#addWords', function(){
-    it('should add 0 objects to words array without errors', function(done){
+    it('should NOT add objects to words array - without errors', function(done){
       Project.findById('53a0f350140b1f584c054ed6', function(err, project){
         var body = {'words':[]};
 
@@ -150,6 +147,102 @@ describe('projects', function(){
     });
   });
 
-  
+  describe('#processPhoto', function(){
+    before(function(done){
+      global.nss.db.collection('projects').drop(function(){
+        cp.execFile(__dirname + '/../../fixtures/before.sh', {cwd:__dirname + '/../../fixtures'}, function(err, stdout, stderr){
+          done();
+        });
+      });
+    });
+
+
+    after(function(done){
+      cp.execFile(__dirname + '/../../fixtures/after.sh', {cwd:__dirname + '/../../fixtures'}, function(err, stdout, stderr){
+        done();
+      });
+    });
+
+
+    it('should process new photo and move into directory /img/userId/projId/${fileName} - absolute photo path', function(done){
+      Project.findById('53a0f350140b1f584c054ed6', function(err, project){
+        // var fields = {name:['test1']};
+        var files = {photo:[{originalFilename:'test1-DELETE.jpg', path:__dirname + '/../../fixtures/copy/test1-DELETE.jpg', size:10}]};
+        // fields.photo = files.photo;
+
+        project.processPhoto(files.photo[0], function(newPhoto){
+          var imgExists = fs.existsSync(__dirname + '/../../../app/static/img/53a0c3c135451bfc446534e8/53a0f350140b1f584c054ed6/'+newPhoto.fileName+'');
+          expect(imgExists).to.be.true;
+          done();
+        });
+      });
+    });
+
+    it('should NOT process photo - NO PHOTO', function(done){
+      Project.findById('53a0f350140b1f584c054ed6', function(err, project){
+        // var fields = {name:['tile']};
+        var files = {photo:[{size:0}]};
+        // fields.photo = files.photo;
+
+        project.processPhoto(files.photo[0], function(photo){
+          expect(photo).to.be.null;
+          done();
+        });
+      });
+    });
+  });
+
+  describe('#addPhoto', function(){
+    before(function(done){
+      global.nss.db.collection('projects').drop(function(){
+        cp.execFile(__dirname + '/../../fixtures/before.sh', {cwd:__dirname + '/../../fixtures'}, function(err, stdout, stderr){
+          done();
+        });
+      });
+    });
+
+
+    after(function(done){
+      cp.execFile(__dirname + '/../../fixtures/after.sh', {cwd:__dirname + '/../../fixtures'}, function(err, stdout, stderr){
+        done();
+      });
+    });
+
+
+    it('should add new photo object to photos array in project', function(done){
+      Project.findById('53a0f350140b1f584c054ed6', function(err, project){
+        var files = {photo:[{originalFilename:'test1-DELETE.jpg', path:__dirname + '/../../fixtures/copy/test1-DELETE.jpg', size:10}]};
+
+        project.processPhoto(files.photo[0], function(newPhoto){
+          var body = {'photos':[{'fileName':newPhoto.fileName, 'filePath':newPhoto.filePath, 'origFileName':newPhoto.origFileName,
+                      'x':'247px', 'y':'15px', 'width':'200px', 'height':'400px', 'classes':['image-container', 'draggable', 'resizable'], 'zIndex': '2'}]};
+
+          project.addPhoto(body, function(p){
+            expect(p.photos).to.have.length(1);
+            expect(p.photos[0].x).to.equal('247px');
+            expect(p.photos[0].y).to.equal('15px');
+            expect(p.photos[0].fileName).to.equal(newPhoto.fileName);
+            expect(p.photos[0].classes[0]).to.deep.equal('image-container');
+            expect(p.photos[0].zIndex).to.equal('2');
+            expect(p._id).to.be.instanceof(Mongo.ObjectID);
+            done();
+          });
+        });
+      });
+    });
+
+    it('should NOT add new photo object to photos array in project - NO PHOTO', function(done){
+      Project.findById('53a0f350140b1f584c054ed6', function(err, project){
+          var body = {'photos':[]};
+
+        project.addPhoto(body, function(p){
+          expect(p.photos).to.have.length(0);
+          expect(p._id).to.be.instanceof(Mongo.ObjectID);
+          done();
+        });
+      });
+    });
+  });
+
 
 });
