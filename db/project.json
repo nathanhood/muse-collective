@@ -1,0 +1,5 @@
+[
+{"_id": "53a0f350140b1f584c054ed6", "userId": "53a0c3c135451bfc446534e8", "title": "song idea 1", "type": "song", "privacy": "private", "status": "brainstorm"},
+{"userId": "53a0c3c135451bfc44653497", "title": "poem doem", "type": "poem", "privacy": "public", "status": "critic"},
+{"userId": "53a0c3c135451bfc446534e8", "title": "song idea 4", "type": "song4", "privacy": "public", "status": "brainstorm"}
+]

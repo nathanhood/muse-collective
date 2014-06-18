@@ -2,6 +2,16 @@
 
 
 class Note {
+  constructor(obj){
+    this.id = this.createId();
+    this.title = obj.title;
+    this.content = obj.content;
+    this.x = obj.x;
+    this.y = obj.y;
+    this.classes = [];
+    obj.classes.forEach(c=>{this.classes.push(c);});
+    this.zIndex = obj.zIndex;
+  }
 
   createId(){
     var text='';
@@ -9,20 +19,9 @@ class Note {
     for( var i=0; i < 6; i++ ){
         text += possible.charAt(Math.floor(Math.random() * possible.length));
       }
-    this.id = text;
+    return text;
   }
 
-  static create(obj, fn){
-    var note = new Note();
-    note.createId();
-    note.title = obj.title;
-    note.content = obj.content;
-    note.x = obj.x;
-    note.y = obj.y;
-    note.classes = obj.classes;
-    note.zIndex = obj.zIndex;
-    fn(note);
-  }
 }
 
 module.exports = Note;

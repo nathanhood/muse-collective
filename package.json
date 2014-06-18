@@ -33,7 +33,8 @@
     "async":           "*",
     "request":         "*",
     "d3":              "*",
-    
+    "crypto":          "*",
+
     "passport":        "*",
     "passport-local":  "*",
     "passport-facebook": "*",
