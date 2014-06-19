@@ -1,17 +1,20 @@
 'use strict';
 
 var boardCollection = global.nss.db.collection('boards');
+
 var traceur = require('traceur');
 var Base = traceur.require(__dirname + '/base.js');
 var Note = traceur.require(__dirname + '/note.js');
 var Word = traceur.require(__dirname + '/word.js');
 var Photo = traceur.require(__dirname + '/photo.js');
-var Audio = traceur.require(__dirname + '/audio.js');
+var AudioFile = traceur.require(__dirname + '/audioFile.js');
 var Notepad = traceur.require(__dirname + '/notepad.js');
+
 var Mongo = require('mongodb');
 var fs = require('fs');
 var path = require('path');
 var crypto = require('crypto');
+var rimraf = require('rimraf');
 
 
 class Board {
@@ -32,7 +35,7 @@ class Board {
   }
 
   static findById(id, fn){
-    Base.findById(id, boadCollection, Board, fn);
+    Base.findById(id, boardCollection, Board, fn);
   }
 
   static findAllByUserId(userId, fn){
@@ -44,6 +47,23 @@ class Board {
     boardCollection.save(this, ()=>fn());
   }
 
+  destroy(fn){
+    var audioPath = path.normalize(`${__dirname}/../static/audio/${this.userId}/${this.projId}/${this._id}`);
+    var imagePath = path.normalize(`${__dirname}/../static/img/${this.userId}/${this.projId}/${this._id}`);
+    rimraf(audioPath, (err)=>{
+      rimraf(imagePath, (err)=>{
+        boardCollection.remove({_id:this._id}, (err, writeResult)=>{
+          fn(writeResult);
+        });
+      });
+    });
+  }
+
+  updateTitle(obj, fn){
+    this.title = obj.title;
+    fn(this);
+  }
+
   addNotes(obj, fn){
     if(obj.notes.length > 0){
       var newNotes = [];
@@ -52,7 +72,7 @@ class Board {
         this.notes.push(note);
         newNotes.push(note);
       });
-      baordCollection.update({_id:this._id},
+      boardCollection.update({_id:this._id},
         { $addToSet: { notes: { $each: newNotes } } },
         ()=>fn(this));
     }else{
@@ -115,7 +135,7 @@ class Board {
       var newAudio = [];
 
       obj.audio.forEach(a=>{
-        var aud = new Audio(a);
+        var aud = new AudioFile(a);
         this.audio.push(aud);
         newAudio.push(aud);
       });
@@ -132,7 +152,7 @@ class Board {
   processPhoto(photo, fn){
     if(photo.size){
       var name = crypto.randomBytes(12).toString('hex') + path.extname(photo.originalFilename).toLowerCase();
-      var file = `/img/${this.userId}/${this._id}/${name}`;
+      var file = `/img/${this.userId}/${this.projId}/${this._id}/${name}`;
 
       var newPhoto = {};
       newPhoto.fileName = name;
@@ -140,11 +160,13 @@ class Board {
       newPhoto.origFileName = photo.originalFilename;
 
       var userDir = `${__dirname}/../static/img/${this.userId}`;
-      var projDir = `${userDir}/${this._id}`;
-      var fullDir = `${projDir}/${name}`;
+      var projDir = `${userDir}/${this.projId}`;
+      var boardDir = `${projDir}/${this._id}`;
+      var fullDir = `${boardDir}/${name}`;
 
       if(!fs.existsSync(userDir)){fs.mkdirSync(userDir);}
       if(!fs.existsSync(projDir)){fs.mkdirSync(projDir);}
+      if(!fs.existsSync(boardDir)){fs.mkdirSync(boardDir);}
 
       fs.renameSync(photo.path, fullDir);
       fn(newPhoto);
@@ -158,7 +180,7 @@ class Board {
   processAudio(audio, fn){
     if(audio.size){
       var name = crypto.randomBytes(12).toString('hex') + path.extname(audio.originalFilename).toLowerCase();
-      var file = `/audio/${this.userId}/${this._id}/${name}`;
+      var file = `/audio/${this.userId}/${this.projId}/${this._id}/${name}`;
 
       var newAudio = {};
       newAudio.fileName = name;
@@ -166,11 +188,13 @@ class Board {
       newAudio.origFileName = audio.originalFilename;
 
       var userDir = `${__dirname}/../static/audio/${this.userId}`;
-      var projDir = `${userDir}/${this._id}`;
-      var fullDir = `${projDir}/${name}`;
+      var projDir = `${userDir}/${this.projId}`;
+      var boardDir = `${projDir}/${this._id}`;
+      var fullDir = `${boardDir}/${name}`;
 
       if(!fs.existsSync(userDir)){fs.mkdirSync(userDir);}
       if(!fs.existsSync(projDir)){fs.mkdirSync(projDir);}
+      if(!fs.existsSync(boardDir)){fs.mkdirSync(boardDir);}
 
       fs.renameSync(audio.path, fullDir);
       fn(newAudio);

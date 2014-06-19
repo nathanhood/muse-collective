@@ -24,7 +24,7 @@ class User {
       username: String
     };
     this.location = null;
-    this.collaborators = [];
+    this.friends = [];
     this.projects = [];
     this.meetups = [];
     this.accountType = null;
