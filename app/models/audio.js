@@ -3,27 +3,24 @@
 
 class Audio {
 
+  constructor(obj){
+    this.id = this.createId();
+    this.fileName = obj.fileName;
+    this.filePath = obj.filePath;
+    this.origFileName = obj.origFileName;
+    this.x = obj.x;
+    this.y = obj.y;
+    this.classes = obj.classes;
+    this.zIndex = obj.zIndex;
+  }
+
   createId(){
     var text='';
     var possible = '0123456789abcdefghijklmnopqrstuvwxyz0123456789';
     for( var i=0; i < 6; i++ ){
         text += possible.charAt(Math.floor(Math.random() * possible.length));
       }
-    this.id = text;
-  }
-
-  static create(obj, fn){
-    var audio = new Audio();
-    audio.createId();
-    audio.name = obj.name;
-    audio.filePath = obj.filePath;
-    audio.x = obj.x;
-    audio.y = obj.y;
-    audio.width = obj.width;
-    audio.height = obj.height;
-    audio.classes = obj.classes;
-    audio.zIndex = obj.zIndex;
-    fn(audio);
+    return text;
   }
 }
 

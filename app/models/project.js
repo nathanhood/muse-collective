@@ -6,6 +6,8 @@ var Base = traceur.require(__dirname + '/base.js');
 var Note = traceur.require(__dirname + '/note.js');
 var Word = traceur.require(__dirname + '/word.js');
 var Photo = traceur.require(__dirname + '/photo.js');
+var Audio = traceur.require(__dirname + '/audio.js');
+var Notepad = traceur.require(__dirname + '/notepad.js');
 var Mongo = require('mongodb');
 var fs = require('fs');
 var path = require('path');
@@ -78,6 +80,22 @@ class Project {
     }
   }
 
+  addNotepads(obj, fn){
+    if(obj.notepads.length > 0){
+      var newNotepads = [];
+      obj.notepads.forEach(n=>{
+        var notepad = new Notepad(n);
+        this.notepads.push(notepad);
+        newNotepads.push(notepad);
+      });
+      projectCollection.update({_id:this._id},
+        { $addToSet: { notepads: { $each: newNotepads } } },
+        ()=>fn(this));
+    }else{
+      fn(this);
+    }
+  }
+
   addPhoto(obj, fn){
     if(obj.photos.length > 0){
       var newPhotos = [];
@@ -87,9 +105,27 @@ class Project {
         this.photos.push(photo);
         newPhotos.push(photo);
       });
-      
+
       projectCollection.update({_id:this._id},
         { $addToSet: { photos: { $each: newPhotos } } },
+        ()=>fn(this));
+    }else{
+      fn(this);
+    }
+  }
+
+  addAudio(obj, fn){
+    if(obj.audio.length > 0){
+      var newAudio = [];
+
+      obj.audio.forEach(a=>{
+        var aud = new Audio(a);
+        this.audio.push(aud);
+        newAudio.push(aud);
+      });
+
+      projectCollection.update({_id:this._id},
+        { $addToSet: { audio: { $each: newAudio } } },
         ()=>fn(this));
     }else{
       fn(this);
@@ -122,6 +158,32 @@ class Project {
       fn(null);
     }
   }
+
+  processAudio(audio, fn){
+    if(audio.size){
+      var name = crypto.randomBytes(12).toString('hex') + path.extname(audio.originalFilename).toLowerCase();
+      var file = `/audio/${this.userId}/${this._id}/${name}`;
+
+      var newAudio = {};
+      newAudio.fileName = name;
+      newAudio.filePath = file;
+      newAudio.origFileName = audio.originalFilename;
+
+      var userDir = `${__dirname}/../static/audio/${this.userId}`;
+      var projDir = `${userDir}/${this._id}`;
+      var fullDir = `${projDir}/${name}`;
+
+      if(!fs.existsSync(userDir)){fs.mkdirSync(userDir);}
+      if(!fs.existsSync(projDir)){fs.mkdirSync(projDir);}
+
+      fs.renameSync(audio.path, fullDir);
+      fn(newAudio);
+
+    }else{
+      fn(null);
+    }
+  }
+
 
 }
 

@@ -2,6 +2,16 @@
 
 
 class Notepad {
+  constructor(obj){
+    this.id = this.createId();
+    this.content = obj.content;
+    this.x = obj.x;
+    this.y = obj.y;
+    this.width = obj.width;
+    this.height = obj.height;
+    this.classes = obj.classes;
+    this.zIndex = obj.zIndex;
+  }
 
   createId(){
     var text='';
@@ -9,20 +19,7 @@ class Notepad {
     for( var i=0; i < 6; i++ ){
         text += possible.charAt(Math.floor(Math.random() * possible.length));
       }
-    this.id = text;
-  }
-
-  static create(obj, fn){
-    var notepad = new Notepad();
-    notepad.createId();
-    notepad.content = obj.content;
-    notepad.x = obj.x;
-    notepad.y = obj.y;
-    notepad.width = obj.width;
-    notepad.height = obj.height;
-    notepad.classes = obj.classes;
-    notepad.zIndex = obj.zIndex;
-    fn(notepad);
+    return text;
   }
 }
 

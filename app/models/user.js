@@ -27,6 +27,12 @@ class User {
     this.collaborators = [];
     this.projects = [];
     this.meetups = [];
+    this.accountType = null;
+    this.influences = [];
+    this.genres = [];
+    this.bio = null;
+    this.images = null;
+
   }
 
   save(fn){

@@ -115,6 +115,40 @@ describe('projects', function(){
     });
   });
 
+
+  describe('#addNotepads', function(){
+    it('should add notepad objects to notepads array', function(done){
+      Project.findById('53a0f350140b1f584c054ed6', function(err, project){
+        var body = {'notepads':[{'content':'This is an example notepad. There should be a lot more text than this...', 'x':'230px', 'y':'72.1px', 'classes':['resizable', 'draggable', 'notepad'], 'zIndex':'0'},
+        {'content':'This is another example note...', 'x':'100px', 'y':'210px', 'classes':['draggable', 'sticky-note', 'blue'], 'zIndex':'1'}]};
+
+        project.addNotepads(body, function(p){
+          expect(p.notepads).to.have.length(2);
+          expect(p.notepads[0].x).to.equal('230px');
+          expect(p.notepads[0].y).to.equal('72.1px');
+          expect(p.notepads[0].content).to.equal('This is an example notepad. There should be a lot more text than this...');
+          expect(p.notepads[0].classes[0]).to.deep.equal('resizable');
+          expect(p.notepads[0].zIndex).to.equal('0');
+          expect(p._id).to.be.instanceof(Mongo.ObjectID);
+          done();
+        });
+      });
+    });
+
+    it('should NOT add objects to notepads array - NO NOTEPAD', function(done){
+      Project.findById('53a0f350140b1f584c054ed6', function(err, project){
+        var body = {'notepads':[]};
+
+        project.addNotepads(body, function(p){
+          expect(p.notepads).to.have.length(0);
+          expect(p._id).to.be.instanceof(Mongo.ObjectID);
+          done();
+        });
+      });
+    });
+  });
+
+
   describe('#addWords', function(){
     it('should add word objects to words array', function(done){
       Project.findById('53a0f350140b1f584c054ed6', function(err, project){
@@ -146,6 +180,8 @@ describe('projects', function(){
       });
     });
   });
+
+
 
   describe('#processPhoto', function(){
     before(function(done){
@@ -191,6 +227,8 @@ describe('projects', function(){
       });
     });
   });
+
+
 
   describe('#addPhoto', function(){
     before(function(done){
@@ -243,6 +281,108 @@ describe('projects', function(){
       });
     });
   });
+
+
+
+  describe('#processAudio', function(){
+    before(function(done){
+      global.nss.db.collection('projects').drop(function(){
+        cp.execFile(__dirname + '/../../fixtures/audio-before.sh', {cwd:__dirname + '/../../fixtures'}, function(err, stdout, stderr){
+          done();
+        });
+      });
+    });
+
+
+    after(function(done){
+      cp.execFile(__dirname + '/../../fixtures/audio-after.sh', {cwd:__dirname + '/../../fixtures'}, function(err, stdout, stderr){
+        done();
+      });
+    });
+
+
+    it('should process new audio file and move into directory /audio/userId/projId/${fileName} - absolute photo path', function(done){
+      Project.findById('53a0f350140b1f584c054ed6', function(err, project){
+        // var fields = {name:['test1']};
+        var files = {audio:[{originalFilename:'test1-DELETE.mp3', path:__dirname + '/../../fixtures/audio-copy/test1-DELETE.mp3', size:10}]};
+        // fields.photo = files.photo;
+
+        project.processAudio(files.audio[0], function(newAudio){
+          var imgExists = fs.existsSync(__dirname + '/../../../app/static/audio/53a0c3c135451bfc446534e8/53a0f350140b1f584c054ed6/'+newAudio.fileName+'');
+          expect(imgExists).to.be.true;
+          done();
+        });
+      });
+    });
+
+    it('should NOT process photo - NO PHOTO', function(done){
+      Project.findById('53a0f350140b1f584c054ed6', function(err, project){
+        // var fields = {name:['tile']};
+        var files = {audio:[{size:0}]};
+        // fields.photo = files.photo;
+
+        project.processAudio(files.audio[0], function(audio){
+          expect(audio).to.be.null;
+          done();
+        });
+      });
+    });
+  });
+
+
+
+  describe('#addAudio', function(){
+    before(function(done){
+      global.nss.db.collection('projects').drop(function(){
+        cp.execFile(__dirname + '/../../fixtures/audio-before.sh', {cwd:__dirname + '/../../fixtures'}, function(err, stdout, stderr){
+          done();
+        });
+      });
+    });
+
+
+    after(function(done){
+      cp.execFile(__dirname + '/../../fixtures/audio-after.sh', {cwd:__dirname + '/../../fixtures'}, function(err, stdout, stderr){
+        done();
+      });
+    });
+
+
+    it('should add new audio object to audio array in project', function(done){
+      Project.findById('53a0f350140b1f584c054ed6', function(err, project){
+        var files = {audio:[{originalFilename:'test1-DELETE.mp3', path:__dirname + '/../../fixtures/audio-copy/test1-DELETE.mp3', size:10}]};
+
+        project.processAudio(files.audio[0], function(newAudio){
+          var body = {'audio':[{'fileName':newAudio.fileName, 'filePath':newAudio.filePath, 'origFileName':newAudio.origFileName,
+                      'x':'247px', 'y':'15px', 'classes':['image-container', 'draggable', 'resizable'], 'zIndex': '2'}]};
+
+          project.addAudio(body, function(p){
+            expect(p.audio).to.have.length(1);
+            expect(p.audio[0].x).to.equal('247px');
+            expect(p.audio[0].y).to.equal('15px');
+            expect(p.audio[0].fileName).to.equal(newAudio.fileName);
+            expect(p.audio[0].classes[0]).to.deep.equal('image-container');
+            expect(p.audio[0].zIndex).to.equal('2');
+            expect(p._id).to.be.instanceof(Mongo.ObjectID);
+            done();
+          });
+        });
+      });
+    });
+
+    it('should NOT add new audio object to audio array in project - NO AUDIO', function(done){
+      Project.findById('53a0f350140b1f584c054ed6', function(err, project){
+          var body = {'audio':[]};
+
+        project.addAudio(body, function(p){
+          expect(p.audio).to.have.length(0);
+          expect(p._id).to.be.instanceof(Mongo.ObjectID);
+          done();
+        });
+      });
+    });
+  });
+
 
 
 });
