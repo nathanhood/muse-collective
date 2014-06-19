@@ -1,6 +1,6 @@
 'use strict';
 
-var projectCollection = global.nss.db.collection('projects');
+var boardCollection = global.nss.db.collection('boards');
 var traceur = require('traceur');
 var Base = traceur.require(__dirname + '/base.js');
 var Note = traceur.require(__dirname + '/note.js');
@@ -14,40 +14,34 @@ var path = require('path');
 var crypto = require('crypto');
 
 
-class Project {
+class Board {
   static create(obj, fn){
-    var project = new Project();
-    project._id = Mongo.ObjectID(obj._id);
-    project.userId = Mongo.ObjectID(obj.userId);
-    project.dateCreated = new Date();
-    project.title = obj.title;
-    project.type = obj.type;
-    // project.notes = [];
-    // project.photos = [];
-    // project.audio = [];
-    // project.words = [];
-    // project.notepads = [];
-    draftText = null;
-    draftAudio = null;
-    project.collaborators = [];
-    project.critics = [];
-    project.publicPrivate = obj.privacy;
-    project.status = obj.status;
+    var board = new Board();
+    board._id = Mongo.ObjectID(obj._id);
+    board.userId = Mongo.ObjectID(obj.userId);
+    board.projId = Mongo.ObjectID(obj.projId);
+    board.dateCreated = new Date();
+    board.title = obj.title;
+    board.notes = [];
+    board.photos = [];
+    board.audio = [];
+    board.words = [];
+    board.notepads = [];
 
-    project.save(()=>fn(project));
+    board.save(()=>fn(board));
   }
 
   static findById(id, fn){
-    Base.findById(id, projectCollection, Project, fn);
+    Base.findById(id, boadCollection, Board, fn);
   }
 
   static findAllByUserId(userId, fn){
-    Base.findAllByUserId(userId, projectCollection, Project, fn);
+    Base.findAllByUserId(userId, boardCollection, Board, fn);
   }
 
 
   save(fn){
-    projectCollection.save(this, ()=>fn());
+    boardCollection.save(this, ()=>fn());
   }
 
   addNotes(obj, fn){
@@ -58,7 +52,7 @@ class Project {
         this.notes.push(note);
         newNotes.push(note);
       });
-      projectCollection.update({_id:this._id},
+      baordCollection.update({_id:this._id},
         { $addToSet: { notes: { $each: newNotes } } },
         ()=>fn(this));
     }else{
@@ -74,7 +68,7 @@ class Project {
         this.words.push(word);
         newWords.push(word);
       });
-      projectCollection.update({_id:this._id},
+      boardCollection.update({_id:this._id},
         { $addToSet: { words: { $each: newWords } } },
         ()=>fn(this));
     }else{
@@ -90,7 +84,7 @@ class Project {
         this.notepads.push(notepad);
         newNotepads.push(notepad);
       });
-      projectCollection.update({_id:this._id},
+      boardCollection.update({_id:this._id},
         { $addToSet: { notepads: { $each: newNotepads } } },
         ()=>fn(this));
     }else{
@@ -108,7 +102,7 @@ class Project {
         newPhotos.push(photo);
       });
 
-      projectCollection.update({_id:this._id},
+      boardCollection.update({_id:this._id},
         { $addToSet: { photos: { $each: newPhotos } } },
         ()=>fn(this));
     }else{
@@ -126,7 +120,7 @@ class Project {
         newAudio.push(aud);
       });
 
-      projectCollection.update({_id:this._id},
+      boardCollection.update({_id:this._id},
         { $addToSet: { audio: { $each: newAudio } } },
         ()=>fn(this));
     }else{
@@ -189,4 +183,4 @@ class Project {
 
 }
 
-module.exports = Project;
+module.exports = Board;
