@@ -4,6 +4,7 @@ var userCollection = global.nss.db.collection('users');
 var traceur = require('traceur');
 var Base = traceur.require(__dirname + '/base.js');
 var bcrypt = require('bcrypt');
+var Mongo = require('mongodb');
 
 class User {
   constructor(){
@@ -35,10 +36,6 @@ class User {
 
   }
 
-  save(fn){
-    userCollection.save(this, ()=>fn());
-  }
-
   // generating a hash
   generateHash(password){
       return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
@@ -57,6 +54,54 @@ class User {
     }else{
       fn('err');
     }
+  }
+
+  save(fn){
+    userCollection.save(this, ()=>fn());
+  }
+
+  updateLocation(obj, fn){
+    this.location = obj.location;
+    fn(this);
+  }
+
+  addFriend(id, fn){
+    if(typeof id === 'string'){
+      if(id.length !== 24){fn(null, null); return;}
+      id = Mongo.ObjectID(id);
+    }
+
+    if(!(id instanceof Mongo.ObjectID)){fn(null, null); return;}
+    this.friends.push(id);
+    fn(this);
+  }
+
+  addProject(id, fn){
+    if(typeof id === 'string'){
+      if(id.length !== 24){fn(null, null); return;}
+      id = Mongo.ObjectID(id);
+    }
+
+    if(!(id instanceof Mongo.ObjectID)){fn(null, null); return;}
+    this.projects.push(id);
+    fn(this);
+  }
+
+  addInfluence(obj, fn){
+    var influence = obj.influence.trim();
+    this.influences.push(influence);
+    fn(this);
+  }
+
+  addGenre(obj, fn){
+    var genre = obj.genre;
+    this.genres.push(genre);
+    fn(this);
+  }
+
+  updateBio(obj, fn){
+    this.bio = obj.bio;
+    fn(this);
   }
 
   static findByTwitterId(id, fn){
