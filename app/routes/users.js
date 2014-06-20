@@ -4,6 +4,14 @@ var traceur = require('traceur');
 var User = traceur.require(__dirname + '/../../app/models/user.js');
 
 
+exports.home = (req, res)=>{
+  res.render('users/home', {title:'Home'});
+};
+
+exports.publicProfile = (req, res)=>{
+  res.render('users/publicProfile', {title:'Public Profile'});
+};
+
 exports.registration = (req, res)=>{
   if(!req.user){
     res.render('users/register', {title: 'Registration', message: req.flash('registerMessage')});

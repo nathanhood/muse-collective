@@ -18,6 +18,8 @@ function load(app, fn){
   /* Bringing in middleware to pass into route file */
   var home = traceur.require(__dirname + '/../routes/home.js');
   var users = traceur.require(__dirname + '/../routes/users.js');
+  var projects = traceur.require(__dirname + '/../routes/projects.js');
+  var boards = traceur.require(__dirname + '/../routes/boards.js');
 
   /* Passport Configuration */
   var passport = require('passport');
@@ -128,6 +130,21 @@ function load(app, fn){
   app.post('/logout', dbg, users.logout);
   app.get('/users/password', dbg, users.password);
   app.post('/users/password', dbg, users.updatePassword);
+  // app.post('/profile', dbg, users.updateProfile);
+  app.get('/home', dbg, users.home);
+  app.get('/users/:id', dbg, users.publicProfile);
+
+  app.get('/projects/:projId', dbg, projects.index);
+  app.post('/projects/create', dbg, projects.create);
+  app.get('/projects/:projId/draft', dbg, projects.edit);
+  app.post('/projects/:projId/draft', dbg, projects.update);
+  app.post('/projects/:projId/destroy', dbg, projects.destroy);
+
+
+  app.get('/boards/:boardId', dbg, boards.show);
+  app.post('/boards/create', dbg, boards.create);
+  app.post('/boards/:boardId', dbg, boards.update);
+  app.post('/boards/:boardId/destroy', dbg, boards.destroy);
 
   console.log('Routes Loaded');
   fn();
