@@ -54,7 +54,18 @@ function ajax(url, verb, data={}, success=r=>console.log(r), dataType='html'){//
     $('#board').on('click', '.audio-delete', removeAudio);
 
     /* Dynamically Generating Words */
-    
+    /* Random Poetry */
+    $('#random-poetry').click(getRandomNouns);
+    $('#random-poetry').click(getRandomVerbs);
+    $('#random-poetry').click(getRandomAdjectives);
+    $('#random-poetry').click(getRandomAdverbs);
+    $('#random-poetry').click(getRandomAuxiliaries);
+    $('#random-poetry').click(getRandomPrepositions);
+    $('#random-poetry').click(getRandomPronouns);
+    $('#random-poetry').click(getArticles);
+    $('#random-poetry').click(hideMenu);
+    $('#board').on('click', '.word-delete', removeWord);
+    $('#random-poetry').click(toggleContainer);
   }
 
   function menuZIndex(){
@@ -66,6 +77,126 @@ function ajax(url, verb, data={}, success=r=>console.log(r), dataType='html'){//
     $('#bt-menu').addClass('bt-menu-open');
     event.stopPropagation();
   }
+
+  /* ================= DRAFT =============== */
+  
+
+
+
+  /* ================= RANDOM POETRY ============= */
+
+  /* Random Poetry API calls - wordnik */
+
+  function toggleContainer(){
+    $('#random-words').slideToggle('slow');
+  }
+
+  function removeWord(){
+    $(this).parent('.word').remove();
+  }
+
+  function hideMenu(){
+    $('#bt-menu').removeClass('bt-menu-open');
+    $('#bt-menu').addClass('bt-menu-close');
+  }
+
+  function getArticles(){
+    for(var i = 0; i < 2; i++){
+      let div = $('<div class="word article draggable">').text('the');
+      div = $(div).append('<div class="word-delete">');
+      $('#prepositions-container').append(div);
+    }
+    for(var j = 0; j < 2; j++){
+      let div = $('<div class="word article draggable">').text('an');
+      div = $(div).append('<div class="word-delete">');
+      $('#auxiliaries-container').append(div);
+    }
+    for(var y = 0; y < 2; y++){
+      let div = $('<div class="word article draggable">').text('a');
+      div = $(div).append('<div class="word-delete">');
+      $('#adverbs-container').append(div);
+    }
+
+  }
+
+  function getRandomNouns(){
+    var url = `http://api.wordnik.com:80/v4/words.json/randomWords?hasDictionaryDef=false&includePartOfSpeech=noun&minCorpusCount=1000&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=1&maxLength=14&limit=5&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5`;
+    $.getJSON(url, function(data){
+      data.forEach(obj=>{
+        var div = $('<div class="word noun draggable">').text(obj.word);
+        div = $(div).append('<div class="word-delete">');
+        $('#nouns-container').append(div);
+      });
+    });
+  }
+
+  function getRandomVerbs(){
+    var url = `http://api.wordnik.com:80/v4/words.json/randomWords?hasDictionaryDef=false&includePartOfSpeech=verb&minCorpusCount=1000&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=1&maxLength=16&limit=5&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5`;
+    $.getJSON(url, function(data){
+      data.forEach(obj=>{
+        var div = $('<div class="word verb draggable">').text(obj.word);
+        div = $(div).append('<div class="word-delete">');
+        $('#verbs-container').append(div);
+      });
+    });
+  }
+
+  function getRandomAdjectives(){
+    var url = `http://api.wordnik.com:80/v4/words.json/randomWords?hasDictionaryDef=false&includePartOfSpeech=adjective&minCorpusCount=1000&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=1&maxLength=16&limit=5&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5`;
+    $.getJSON(url, function(data){
+      data.forEach(obj=>{
+        var div = $('<div class="word adjective draggable">').text(obj.word);
+        div = $(div).append('<div class="word-delete">');
+        $('#adjectives-container').append(div);
+      });
+    });
+  }
+
+  function getRandomAdverbs(){
+    var url = `http://api.wordnik.com:80/v4/words.json/randomWords?hasDictionaryDef=false&includePartOfSpeech=adverb&minCorpusCount=1000&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=1&maxLength=16&limit=2&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5`;
+    $.getJSON(url, function(data){
+      data.forEach(obj=>{
+        var div = $('<div class="word adverb draggable">').text(obj.word);
+        div = $(div).append('<div class="word-delete">');
+        $('#adverbs-container').append(div);
+      });
+    });
+  }
+
+  function getRandomPronouns(){
+    var url = `http://api.wordnik.com:80/v4/words.json/randomWords?hasDictionaryDef=false&includePartOfSpeech=pronoun&minCorpusCount=10000&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=1&maxLength=16&limit=4&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5`;
+    $.getJSON(url, function(data){
+      data.forEach(obj=>{
+        var div = $('<div class="word pronoun draggable">').text(obj.word);
+        div = $(div).append('<div class="word-delete">');
+        $('#pronouns-container').append(div);
+      });
+    });
+  }
+
+  function getRandomAuxiliaries(){
+    var url = `http://api.wordnik.com:80/v4/words.json/randomWords?hasDictionaryDef=false&includePartOfSpeech=auxiliary-verb&minCorpusCount=1000&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=1&maxLength=16&limit=2&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5`;
+    $.getJSON(url, function(data){
+      data.forEach(obj=>{
+        var div = $('<div class="word auxiliary draggable">').text(obj.word);
+        div = $(div).append('<div class="word-delete">');
+        $('#auxiliaries-container').append(div);
+      });
+    });
+  }
+
+  function getRandomPrepositions(){
+    var url = `http://api.wordnik.com:80/v4/words.json/randomWords?hasDictionaryDef=false&includePartOfSpeech=preposition&minCorpusCount=1000&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=1&maxLength=16&limit=2&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5`;
+    $.getJSON(url, function(data){
+      data.forEach(obj=>{
+        var div = $('<div class="word preposition draggable">').text(obj.word);
+        div = $(div).append('<div class="word-delete">');
+        $('#prepositions-container').append(div);
+      });
+    });
+  }
+
+
 
 /* ================== AUDIO ================= */
 
@@ -259,57 +390,6 @@ function ajax(url, verb, data={}, success=r=>console.log(r), dataType='html'){//
   }
 
 
-  /* Random Poetry API calls - wordnik */
-
-  function getRandomNouns(){
-    var url = `http://api.wordnik.com:80/v4/words.json/randomWords?hasDictionaryDef=false&includePartOfSpeech=noun&minCorpusCount=0&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=1&maxLength=16&limit=5&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5`;
-    $.getJSON(url, function(data){
-      data.forEach(obj=>{
-        var div = $('<div class="noun draggable">').text(obj.word);
-        $('#random-words').append(div);
-      });
-    });
-  }
-
-  function getRandomVerbs(){
-    var url = `http://api.wordnik.com:80/v4/words.json/randomWords?hasDictionaryDef=false&includePartOfSpeech=verb&minCorpusCount=0&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=1&maxLength=16&limit=5&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5`;
-    $.getJSON(url, function(data){
-      console.log('===========Verbs=========');
-      console.log(data);
-    });
-  }
-
-  function getRandomAdjectives(){
-    var url = `http://api.wordnik.com:80/v4/words.json/randomWords?hasDictionaryDef=false&includePartOfSpeech=adjective&minCorpusCount=0&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=1&maxLength=16&limit=5&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5`;
-    $.getJSON(url, function(data){
-      console.log('===========Adjectives=========');
-      console.log(data);
-    });
-  }
-
-  function getRandomAdverbs(){
-    var url = `http://api.wordnik.com:80/v4/words.json/randomWords?hasDictionaryDef=false&includePartOfSpeech=adverb&minCorpusCount=0&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=1&maxLength=16&limit=2&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5`;
-    $.getJSON(url, function(data){
-      console.log('===========Adverbs=========');
-      console.log(data);
-    });
-  }
-
-  function getRandomAuxiliaries(){
-    var url = `http://api.wordnik.com:80/v4/words.json/randomWords?hasDictionaryDef=false&includePartOfSpeech=auxiliary-verb&minCorpusCount=0&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=1&maxLength=16&limit=2&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5`;
-    $.getJSON(url, function(data){
-      console.log('===========Auxiliaries=========');
-      console.log(data);
-    });
-  }
-
-  function getRandomPrepositions(){
-    var url = `http://api.wordnik.com:80/v4/words.json/randomWords?hasDictionaryDef=false&includePartOfSpeech=preposition&minCorpusCount=0&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=1&maxLength=16&limit=2&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5`;
-    $.getJSON(url, function(data){
-      console.log('===========Prepositions=========');
-      console.log(data);
-    });
-  }
 
   /* RhymeBrain Below */
 

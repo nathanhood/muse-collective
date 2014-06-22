@@ -2,7 +2,16 @@ extends ../shared/template
 
 block content
   #board(data-id=boardId)
-
+    .draft-container.draggable
+      textarea
+    #random-words
+      #nouns-container
+      #verbs-container
+      #adjectives-container
+      #adverbs-container
+      #auxiliaries-container
+      #prepositions-container
+      #pronouns-container
   nav#bt-menu.bt-menu
     a.bt-menu-trigger(href='#')
       span Menu
@@ -14,7 +23,7 @@ block content
       li
         a.bt-icon.icon-lock#audio(href='#') Lock
       li
-        a.bt-icon.icon-speaker#words(href='#') Sound
+        a.bt-icon.icon-speaker#random-poetry(href='#') Sound
       li
         a.bt-icon.icon-star#draft(href='#') Favorite
 
