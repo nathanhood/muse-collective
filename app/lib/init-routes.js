@@ -128,13 +128,14 @@ function load(app, fn){
   app.all('*', users.bounce);
   app.get('/profile', dbg, users.profile);
   app.post('/logout', dbg, users.logout);
+  app.get('/dashboard', dbg, users.dashboard);
   app.get('/users/password', dbg, users.password);
   app.post('/users/password', dbg, users.updatePassword);
   // app.post('/profile', dbg, users.updateProfile);
-  app.get('/home', dbg, users.home);
   app.get('/users/:id', dbg, users.publicProfile);
 
-  app.get('/projects/:projId', dbg, projects.index);
+  app.get('/projects', dbg, projects.index);
+  app.get('/projects/:projId', dbg, projects.show);
   app.post('/projects/create', dbg, projects.create);
   app.get('/projects/:projId/draft', dbg, projects.edit);
   app.post('/projects/:projId/draft', dbg, projects.update);

@@ -1,0 +1,23 @@
+extends ../shared/template
+
+block content
+  #board
+  nav#bt-menu.bt-menu
+    a.bt-menu-trigger(href='#')
+      span Menu
+    ul
+      li
+        a.bt-icon.icon-zoom#notes(href='#') Zoom
+      li
+        a.bt-icon.icon-refresh#images(href='#') Refresh
+      li
+        a.bt-icon.icon-lock#audio(href='#') Lock
+      li
+        a.bt-icon.icon-speaker#words(href='#') Sound
+      li
+        a.bt-icon.icon-star#draft(href='#') Favorite
+
+block scripts
+  script(src='/js/es6/compiled/board-show.js')
+  script(src='/animated-menu/js/borderMenu.js')
+  script(src='/animated-menu/js/classie.js')

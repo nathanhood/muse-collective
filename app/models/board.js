@@ -15,10 +15,14 @@ var fs = require('fs');
 var path = require('path');
 var crypto = require('crypto');
 var rimraf = require('rimraf');
+var _ = require('lodash');
 
 
 class Board {
   static create(obj, fn){
+    obj.projId = obj._id;
+    obj = _.omit(obj, '_id').valueOf();
+
     var board = new Board();
     board._id = Mongo.ObjectID(obj._id);
     board.userId = Mongo.ObjectID(obj.userId);

@@ -1,0 +1,461 @@
+/* ======================================================================
+
+FONTS=
+KERN=
+
+========================================================================= */
+
+// ( http://www.awayback.com/revised-font-stack/ )
+// SANS-SERIF=
+@optima: Optima, Segoe, "Segoe UI", Candara, Calibri, Arial, sans-serif;
+@kern-optima: -0.015em;
+
+@futura: Futura, "Trebuchet MS", Arial, sans-serif;
+@kern-futura: -0.035em;
+
+@gill-sans: "Gill Sans", "Gill Sans MT", Calibri, sans-serif;
+@kern-gill-sans: 0;
+
+@trebuchet: "Trebuchet MS", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Tahoma, sans-serif;
+@kern-trebuchet: -0.025em;
+
+@helvetica: "Helvetica Neue", Helvetica, Arial, sans-serif;
+@kern-helvetica: -0.015em;
+
+@verdana: Verdana, Geneva, sans-serif;
+@kern-verdana: -0.045em;
+
+@lucida-grande:"Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif;
+@kern-lucida-grande: -0.045em;
+
+@geneva: Geneva, Tahoma, Verdana, sans-serif;
+
+@segoe: Segoe, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+@kern-segoe: 0.015em;
+
+@candara: Candara, Calibri, Segoe, "Segoe UI", Optima, Arial, sans-serif;
+@kern-candara: -0.025em;
+
+@calibri: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
+@kern-calibri: -0.025em;
+
+@franklin: "Franklin Gothic Medium", Arial, sans-serif;
+@kern-franklin: -0.025em;
+
+@tahoma: Tahoma, Geneva, Verdana, sans-serif;
+@kern-tahoma: 0;
+
+//SERIF=
+@garamond: Garamond, Baskerville, "Baskerville Old Face", "Hoefler Text", "Times New Roman", serif;
+@kern-garamond: -0.015em;
+
+@lucida-bright: "Lucida Bright", Georgia, serif;
+@kern-lucida_bright: -0.015em;
+
+@palatino: Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif;
+@kern-palatino: -0.015em;
+
+@caslon: "Big Caslon", "Book Antiqua", "Palatino Linotype", Georgia, serif;
+@kern-caslon: 0.025em;
+
+@didot: Didot, "Didot LT STD", "Hoefler Text", Garamond, "Times New Roman", serif;
+@kern-didot: -0.035em;
+
+@baskerville: Baskerville, "Baskerville old face", "Hoefler Text", Garamond, "Times New Roman", serif;
+@kern-baskerville: -0.025em;
+
+@hoefler: "Hoefler Text", "Baskerville old face", Garamond, "Times New Roman", serif;
+@kern-hoefler: -0.025em;
+
+@bodoni: "Bodoni MT", Didot, "Didot LT STD", "Hoefler Text", Garamond, "Times New Roman", serif;
+@kern-bodoni: -0.025em;
+
+@goudy: "Goudy Old Style", Garamond, "Big Caslon", "Times New Roman", serif;
+@kern-goudy: 0.025em;
+
+@constantia: Constantia, Palatino, "Palatino Linotype", "Palatino LT STD", Georgia, serif;
+@kern-constantia: -0.025em;
+
+@cambria: Cambria, Georgia, serif;
+@kern-cambria: 0;
+
+@antiqua: "Book Antiqua", Palatino, "Palatino Linotype", "Palatino LT STD", Georgia, serif;
+@kern-antiqua: -0.015em;
+
+
+//selected google fonts: ( https://github.com/ubuwaits/beautiful-web-type ) + some others
+// note: need to @import fonts over Google Fonts CDN or use @font-family for fonts stored locally.
+@abril-fatface: "Abril Fatface", cursive;
+@cardo: "Cardo", serif;
+@gentium-book-basic: "Gentium Book Basic", serif;
+@gravitas-one: "Gravitas One", cursive;
+@merriweather: "Merriweather", serif;
+@old-standard-tt: "Old Standard TT", serif;
+@open-sans: "Open Sans", sans-serif;
+@oswald:"Oswald", sans-serif;
+@playfair-display: "Playfair Display", serif;
+@pt-mono: "PT Mono", serif;
+@pt-sans: "PT Sans", sans-serif;
+@pt-sans-narrow: "PT Sans Narrow", sans-serif;
+@pt-serif: "PT Serif", serif;
+@racing-sans-one: "Racing Sans One", cursive;
+@reenie-beanie: "Reenie Beanie", cursive;
+@vollkorn: "Vollkorn", serif;
+
+
+html, body {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  // background-image: url('/img/backgrounds/squairy_light.png');
+  background-color: #edeff0;
+}
+
+// body a:hover {
+//   color: orange;
+// }
+
+
+/* =================================== */
+/* Navbar customization */
+
+.navbar {
+  // background: linear-gradient(to top right, #2b2b2b, #848383);
+  background-color: #333;
+  height: 90px;
+}
+
+.navbar > .container-fluid > .navbar-header > ul > li > a#edit-profile {
+  margin-left: 20px;
+  margin-top: 22px;
+  font-size: 1.4em;
+}
+
+.navbar > .container-fluid > .navbar-header > ul > li > a#edit-profile:hover {
+  border-radius: 5px;
+}
+
+.navbar > .container-fluid > .navbar-header > .navbar-toggle {
+  margin-top: 25px;
+}
+
+.navbar > .container-fluid > ul.nav {
+  margin-top: 15px;
+  margin-right: 45px;
+}
+
+.navbar > .container-fluid > .navbar-header > ul > li > img {
+  max-height: 60px;
+  max-width: 60px;
+  border-radius: 50%;
+  margin-top: 15px;
+  margin-left: 15px;
+}
+
+.navbar > .container-fluid > .navbar-header > ul > li > #message-alert {
+  margin-top: 12px;
+  margin-left: 15px;
+  color: #1dc16f;
+}
+
+.navbar > .container-fluid > .navbar-header > ul > li > #message-alert:hover {
+  border-radius: 5px;
+}
+
+.navbar > .container-fluid > ul > .dropdown > .dropdown-toggle {
+  font-size: 1.3em;
+  margin-top: 5px;
+}
+
+.navbar > .container-fluid > ul > .dropdown > .dropdown-toggle:hover {
+  border-radius: 5px;
+}
+
+.fa-flag {
+  font-color: black;
+}
+
+/* ====================================== */
+
+
+/* Project Form Customization */
+
+#project-title-input {
+  width: 90%;
+}
+
+#project-title-input:focus {
+  outline: none;
+  border: black !important;
+  box-shadow: 0 0 5px #1dc16f !important;
+}
+
+#create-project select:focus {
+  outline: none;
+  border: black !important;
+  box-shadow: 0 0 5px #1dc16f !important;
+}
+
+#submit-create-project {
+  margin-top: 20px;
+}
+
+#create-project h4 {
+  margin-top: 20px;
+}
+
+#create-project select {
+  padding-top: 7px;
+  padding-bottom: 7px;
+  width: 80%;
+}
+
+#create-project-heading {
+  font-family: 'Optima';
+}
+
+#create-project button {
+  margin-left: 75%;
+}
+
+/* Custom Buttons */
+
+.action-button {
+  background-color: #323232;
+  color: white;
+  font-family: 'Open Sans';
+  border: 1px solid black;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+
+/* ======================== Show/Edit Board Page ================== */
+
+#board {
+  height: 100%;
+  width: 100%;
+  border: 2px solid black;
+  position: relative;
+}
+
+#note-container {
+  // background-color: #edeff0;
+  height: 210px;
+  width: 100%;
+  display: none;
+}
+
+#note-container .inner-container {
+  width: 700px;
+  height: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#note-container .yellow {
+  height: 190px;
+  width: 190px;
+  background-color: #ffcd5a;
+  display: inline-block;
+  margin: 10px 15px 10px 15px;
+  position: relative;
+}
+
+
+#note-container .blue {
+  height: 190px;
+  width: 190px;
+  background-color: #1e9dff;
+  display: inline-block;
+  margin: 10px 15px 10px 15px;
+  position: relative;
+}
+
+#note-container .green {
+  height: 190px;
+  width: 190px;
+  background-color: #15b227;
+  display: inline-block;
+  margin: 10px 15px 10px 15px;
+  position: relative;
+}
+
+
+/* --------------- START OF IMPORTED SETTINGS ---------- */
+
+
+*:focus {
+  outline: none;
+}
+
+.board-image {
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+  // -moz-box-shadow:    2px 2px 3px 3px #bab9b9;
+  // -webkit-box-shadow: 2px 2px 3px 3px #bab9b9;
+  // box-shadow:         2px 2px 3px 3px #bab9b9;
+  -webkit-box-shadow: 0 10px 6px -6px rgba(0,0,0,0.5);
+  -moz-box-shadow: 0 10px 6px -6px rgba(0,0,0,0.5);
+  box-shadow: 0 10px 6px -6px rgba(0,0,0,0.5);
+}
+
+.image-container {
+  display: inline-block;
+  position: absolute;
+}
+
+// .sticky-note-inner > h2, .sticky-note-inner > textarea, .sticky-note-inner > p {
+//   position: absolute;
+// }
+
+.sticky-note-title {
+  font-size: 24px;
+  margin-bottom: 103px;
+  font-weight: normal;
+}
+
+.sticky-note-title-edit {
+  margin: 20px 0;
+  padding: 0;
+  font-size: 24px;
+  width: 150px;
+  height: 105px;
+  border: none;
+  resize: none;
+}
+
+.sticky-note-delete {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  left: 160px;
+  top: 15px;
+  background-image: url('/img/x2.gif');
+  background-size: contain;
+}
+
+.hidden {
+  display: none;
+}
+
+
+
+/* sticky note styling */
+
+
+.sticky-note {
+  display: inline-block;
+  margin: 20px;
+  position: absolute;
+  width: 190px;
+  height: 190px !important;
+  color: black;
+
+  /* CSS3 Transform */
+  -webkit-transform: rotate(3deg);
+  -moz-transform: rotate(3deg);
+  -ms-transform: rotate(3deg);
+  -o-transform: rotate(3deg);
+  transform: rotate(3deg);
+}
+
+.sticky-note-inner {
+  position: relative;
+  min-height: 150px;
+  min-width: 150px;
+  padding: 20px 20px 20px;
+
+  /* CSS3 Border Radius */
+  -webkit-border-radius: 0 0 0 200px/0 0 0 10px;
+  -moz-border-radius: 0 0 0 200px/0 0 0 10px;
+  -ms-border-radius: 0 0 0 200px/0 0 0 10px;
+  -o-border-radius: 0 0 0 200px/0 0 0 10px;
+  border-radius: 0 0 0 200px/0 0 0 10px;
+
+  /* CSS3 Box Shadow */
+  -webkit-box-shadow: 0 1px 4px rgba(0,0,0,0.3),0 0 40px rgba(0,0,0,0.1) inset;
+  -moz-box-shadow: 0 1px 4px rgba(0,0,0,0.3),0 0 40px rgba(0,0,0,0.1) inset;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.3),0 0 40px rgba(0,0,0,0.1) inset;
+}
+
+.sticky-note-inner:after {
+  bottom: 16px;
+  content: "";
+  height: 55%;
+  left: 10px;
+  width: 50%;
+  z-index: -2;
+
+  /* CSS3 Box Shadow */
+  -webkit-box-shadow: -5px 18px 18px rgba(0,0,0,0.5);
+  -moz-box-shadow: -5px 18px 18px rgba(0,0,0,0.5);
+  box-shadow: -5px 18px 18px rgba(0,0,0,0.5);
+
+  /* CSS3 Transform */
+  -webkit-transform: skew(-8deg) rotate(-6deg);
+  -moz-transform: skew(-8deg) rotate(-6deg);
+  -ms-transform: skew(-8deg) rotate(-6deg);
+  -o-transform: skew(-8deg) rotate(-6deg);
+  transform: skew(-8deg) rotate(-6deg);
+}
+
+.yellow .sticky-note-inner {
+  background-color: #ffcd5a;
+
+  /* CSS3 Linear Gradient */
+  background-image: -webkit-gradient(linear,50% 0%,50% 100%,color-stop(0%,#ffb71e),color-stop(22%,#ffcd5a),color-stop(100%,#ffcd5a));
+  background-image: -webkit-linear-gradient(top,#ffb71e 0%,#ffcd5a 22%,#ffcd5a 100%);
+  background-image: -moz-linear-gradient(top,#ffb71e 0%,#ffcd5a 22%,#ffcd5a 100%);
+  background-image: -o-linear-gradient(top,#ffb71e 0%,#ffcd5a 22%,#ffcd5a 100%);
+  background-image: linear-gradient(top,#ffb71e 0%,#ffcd5a 22%,#ffcd5a 100%);
+}
+
+.blue .sticky-note-inner {
+  background-color: #1e9dff;
+
+  /* CSS3 Linear Gradient */
+  background-image: -webkit-gradient(linear,50% 0%,50% 100%,color-stop(0%,#1e9dff),color-stop(22%,#5bb8ff),color-stop(100%,#5bb8ff));
+  background-image: -webkit-linear-gradient(top,#1e9dff 0%,#5bb8ff 22%,#5bb8ff 100%);
+  background-image: -moz-linear-gradient(top,#1e9dff 0%,#5bb8ff 22%,#5bb8ff 100%);
+  background-image: -o-linear-gradient(top,#1e9dff 0%,#5bb8ff 22%,#5bb8ff 100%);
+  background-image: linear-gradient(top,#1e9dff 0%,#5bb8ff 22%,#5bb8ff 100%);
+}
+
+.green .sticky-note-inner {
+  background-color: #15b227;
+
+  /* CSS3 Linear Gradient */
+  background-image: -webkit-gradient(linear,50% 0%,50% 100%,color-stop(0%,#15b227),color-stop(22%,#40b24d),color-stop(100%,#40b24d));
+  background-image: -webkit-linear-gradient(top,#15b227 0%,#40b24d 22%,#40b24d 100%);
+  background-image: -moz-linear-gradient(top,#15b227 0%,#40b24d 22%,#40b24d 100%);
+  background-image: -o-linear-gradient(top,#15b227 0%,#40b24d 22%,#40b24d 100%);
+  background-image: linear-gradient(top,#15b227 0%,#40b24d 22%,#40b24d 100%);
+}
+
+
+/* Random Word Poetry */
+
+#random-words {
+  float: right;
+  position: relative;
+  width: 220px;
+  height: 100%;
+  border: 1px solid black;
+  display: inline-block;
+}
+
+.word {
+  width: 190px;
+  height: 72px;
+  background-image: url('/img/torn-paper.png');
+  background-size: contain;
+  text-align: center;
+  font-family: monospace;
+  font-size: 1.3em;
+  line-height: 64px;
+  position: relative;
+}

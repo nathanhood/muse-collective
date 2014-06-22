@@ -1,0 +1,76 @@
+extends ../shared/template
+
+block content
+  nav.navbar.navbar-default(role='navigation')
+    .container-fluid
+      // Brand and toggle get grouped for better mobile display
+      .navbar-header
+        button.navbar-toggle(type='button', data-toggle='collapse', data-target='#bs-example-navbar-collapse-1')
+          span.sr-only Toggle navigation
+          span.icon-bar
+          span.icon-bar
+          span.icon-bar
+        ul.nav.navbar-nav
+          li
+            a#edit-profile(href='/profile') Profile&nbsp
+              i.fa.fa-pencil-square-o
+          li
+            img(src='/img/profile_placeholder.png')
+          li
+            a#message-alert(href='#')
+              i.fa.fa-comments.fa-3x
+      //- form.navbar-form.navbar-left(role='search')
+      //-   .form-group
+      //-     input.form-control(type='text', placeholder='Search')
+      //-   button.btn.btn-default(type='submit') Submit
+      ul.nav.navbar-nav.navbar-right
+        li.dropdown
+          a.dropdown-toggle(href='#', data-toggle='dropdown')
+            | Search
+            b.caret
+          ul.dropdown-menu
+            li
+              a(href='#') Find Collaborators
+            li
+              a(href='#') Find Critics
+            li
+              a(href='#') Find Meetups
+
+
+  .container
+    .col-md-5.create-project
+      .well
+        h2#create-project-heading Create Project
+        form#create-project(action='/projects/create', method='POST')
+          .form-group
+            h4 Project Title
+            input#project-title-input.form-control(type='text', name='title', placeholder='Untitled')
+            h4 Project Type
+            select.form-control(name='type') Select Type
+              option Song
+              option Poem
+              option Short Story
+              option Other
+            h4 Do you want outside opinion?
+            select.form-control(name='privacy') Select One
+              option(value='private') Private
+              option(value='public') Public
+            h4 Where would you like to begin?
+            select.form-control(name='status') Select One
+              option(value='brainstorming') Start Brainstorming (creativity board)
+              option(value='drafting') Start Drafting
+            button#submit-create-project.action-button Create
+    .col-md-4.recent-projects
+      .well
+        h2#recent-projects-heading Recent Projects
+        a#view-all-projects(href='/projects') View All
+          //each statement. need to set a max number
+    //may want to make this a menu dropdown
+    .col-md-3.collaborators
+      .well
+        h3 Collaborators
+        a(href='#')
+          button.action-button Send Message
+
+block scripts
+  script(src='/js/es6/compiled/dashboard.js')

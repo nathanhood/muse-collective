@@ -11,7 +11,6 @@ class Base{
     }
 
     if(!(id instanceof Mongo.ObjectID)){fn(null, null); return;}
-
     collection.findOne({_id:id}, (err, obj)=>{
       if(obj){
         obj = _.create(model.prototype, obj);
