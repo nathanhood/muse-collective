@@ -1,7 +1,8 @@
 extends ../shared/template
 
 block content
-  #board
+  #board(data-id=boardId)
+
   nav#bt-menu.bt-menu
     a.bt-menu-trigger(href='#')
       span Menu
@@ -19,5 +20,12 @@ block content
 
 block scripts
   script(src='/js/es6/compiled/board-show.js')
+  script(src='/js/es6/compiled/upload.js')
   script(src='/animated-menu/js/borderMenu.js')
   script(src='/animated-menu/js/classie.js')
+  script(src='http://malsup.github.com/jquery.form.js')
+
+
+form(method='post', action='/users/photos', enctype='multipart/form-data')
+        input.form-control(type='file', multiple='true', name='photos')
+        button.update-photos Add Photos

@@ -1,3 +1,5 @@
+/* jshint unused:false */
+
 'use strict';
 
 var boardCollection = global.nss.db.collection('boards');
@@ -44,6 +46,13 @@ class Board {
 
   static findAllByUserId(userId, fn){
     Base.findAllByUserId(userId, boardCollection, Board, fn);
+  }
+
+  static removeFileFromDirectory(filePath, fn){
+    var path = `${__dirname}/../static/${filePath}`;
+    rimraf(path, (err)=>{
+      fn(err);
+    });
   }
 
 

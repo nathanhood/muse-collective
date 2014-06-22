@@ -35,6 +35,7 @@
     "d3":              "*",
     "crypto":          "*",
     "rimraf":          "*",
+    "multiparty":      "*",
 
     "passport":        "*",
     "passport-local":  "*",

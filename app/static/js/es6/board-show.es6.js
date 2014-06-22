@@ -2,6 +2,10 @@
 
 'use strict';
 
+function ajax(url, verb, data={}, success=r=>console.log(r), dataType='html'){//defaulting to html
+  $.ajax({url:url, type:verb, dataType:dataType, data:data, success:success});
+}
+
 (function(){
 
   $(document).ready(init);
@@ -28,25 +32,99 @@
     $('#find-random-poetry').click(getRandomAdverbs);
     $('#find-random-poetry').click(getRandomAuxiliaries);
     $('#find-random-poetry').click(getRandomPrepositions);
-    /* Dynamically Generating Content */
+    /* Dynamically Generating Notes */
     $('.bt-menu-trigger').click(menuZIndex);
     $('#notes').click(appendNoteContainer);
     $('#bt-menu').on('click', '.yellow', addYellowNote);
     $('#bt-menu').on('click', '.blue', addBlueNote);
     $('#bt-menu').on('click', '.green', addGreenNote);
-    $('#bt-menu').on('click', '.sticky-note-delete', removeNote);
+    $('#board').on('click', '.sticky-note-delete', removeNote);
     $('#bt-menu').on('click', '.bt-overlay', removeNoteContainer);
+
+    /* Dynamically Generating Images */
+    $('#images').click(appendImageContainer);
+    $('#bt-menu').on('click', '#choose-upload-image', chooseFile);
+    $('#board').on('click', '.image-delete', removeImage);
+    $('#bt-menu').on('click', '.bt-overlay', removeImageContainer);
+
+    /* Dynamically Generating Audio */
+    $('#audio').click(appendAudioContainer);
+    $('#bt-menu').on('click', '#choose-upload-audio', chooseFile);
+    $('#bt-menu').on('click', '.bt-overlay', removeAudioContainer);
+    $('#board').on('click', '.audio-delete', removeAudio);
+
+    /* Dynamically Generating Words */
+    
   }
 
   function menuZIndex(){
     $('.bt-menu').css('z-index', counter);
   }
 
+  function chooseFile(event){
+    $('#bt-menu').removeClass('bt-menu-close');
+    $('#bt-menu').addClass('bt-menu-open');
+    event.stopPropagation();
+  }
+
+/* ================== AUDIO ================= */
+
+  function appendAudioContainer(){
+    var boardId = $('#board').attr('data-id');
+    ajax(`/boards/${boardId}/audioContainer`, 'POST', null, html=>{
+      $('.bt-overlay').append(html);
+      $('#audio-container').slideToggle('slow');
+    });
+  }
+
+  function removeAudioContainer(){
+    $('#audio-container').remove();
+  }
+
+  function removeAudio(){
+    var filePath = $(this).next('audio').attr('src');
+    console.log(filePath);
+    ajax(`/boards/removeDirFile`, 'POST', 'filePath='+filePath, ()=>{
+      $(this).parents('.audio-container').remove();
+    });
+  }
+
+
+/* =============== IMAGES ==================== */
+
+  function removeImage(){
+    var filePath = $(this).next('img').attr('src');
+    console.log(filePath);
+    ajax(`/boards/removeDirFile`, 'POST', 'filePath='+filePath, ()=>{
+      $(this).parents('.image-container').remove();
+    });
+  }
+
+  // <form>
+  // <h3>Add Image URL</h3>
+  // <input class='form-control', type='text'>
+  // <button class='action-button', id='url-image', style='margin-top: 10px;'>Add Online Image</button>
+  // </form>
+
+  function appendImageContainer(){
+    var boardId = $('#board').attr('data-id');
+    ajax(`/boards/${boardId}/imageContainer`, 'POST', null, html=>{
+      $('.bt-overlay').append(html);
+      $('#image-container').slideToggle('slow');
+    });
+  }
+
+  function removeImageContainer(){
+    $('#image-container').remove();
+  }
+
+
+
 
   /* ============== STICKY NOTES =============== */
 
   function removeNote(){
-    $(this).remove();
+    $(this).parents('.sticky-note').remove();
   }
 
   function removeNoteContainer(){
@@ -58,7 +136,7 @@
     var note = `<div class='sticky-note green draggable', style='top: 70px; left: 160px;'>
                 <div class='sticky-note-inner'>
                 <div class='sticky-note-delete'></div>
-                <h2 class='sticky-note-title'>Title</h2>
+                <h2 class='sticky-note-title'>Click Here</h2>
                 <textarea class='hidden sticky-note-title-edit', resize=none, maxlength='40'></textarea>
                 </div>
                 </div>`;
@@ -72,7 +150,7 @@
     var note = `<div class='sticky-note blue draggable', style='top: 70px; left: 160px;'>
                 <div class='sticky-note-inner'>
                 <div class='sticky-note-delete'></div>
-                <h2 class='sticky-note-title'>Title</h2>
+                <h2 class='sticky-note-title'>Click Here</h2>
                 <textarea class='hidden sticky-note-title-edit', resize=none, maxlength='40'></textarea>
                 </div>
                 </div>`;
@@ -106,7 +184,6 @@
     $('.bt-overlay').append(container);
     $('#note-container').slideToggle('slow');
   }
-
 
 
 

@@ -1,0 +1,5 @@
+#audio-container
+  .inner-container
+    form#upload-audio(action='/boards/#{boardId}/processAudio', method='POST', ectype='multipart/form-data')
+      h3 Upload Audio File
+      input.form-control#choose-upload-audio(type='file', name='audio')

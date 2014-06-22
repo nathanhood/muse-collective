@@ -241,14 +241,14 @@ body {
   position: relative;
 }
 
-#note-container {
+#note-container, #image-container, #audio-container {
   // background-color: #edeff0;
   height: 210px;
   width: 100%;
   display: none;
 }
 
-#note-container .inner-container {
+#note-container .inner-container, #image-container .inner-container, #audio-container .inner-container {
   width: 700px;
   height: 100%;
   margin-left: auto;
@@ -284,6 +284,8 @@ body {
 }
 
 
+
+
 /* --------------- START OF IMPORTED SETTINGS ---------- */
 
 
@@ -306,6 +308,17 @@ body {
 .image-container {
   display: inline-block;
   position: absolute;
+  max-height: 400px;
+  max-width: 400px;
+  top: 70px;
+  left: 160px;
+}
+
+.audio-container {
+  width: 300px;
+  height: 30px;
+  top: 70px;
+  left: 160px;
 }
 
 // .sticky-note-inner > h2, .sticky-note-inner > textarea, .sticky-note-inner > p {
@@ -314,7 +327,6 @@ body {
 
 .sticky-note-title {
   font-size: 24px;
-  margin-bottom: 103px;
   font-weight: normal;
 }
 
@@ -334,6 +346,26 @@ body {
   height: 12px;
   left: 160px;
   top: 15px;
+  background-image: url('/img/x2.gif');
+  background-size: contain;
+}
+
+.image-delete {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  right: 5px;
+  top: 5px;
+  background-image: url('/img/x2.gif');
+  background-size: contain;
+}
+
+.audio-delete {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  right: -12px;
+  top: -12px;
   background-image: url('/img/x2.gif');
   background-size: contain;
 }
