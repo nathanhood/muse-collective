@@ -1,9 +1,9 @@
 extends ../shared/template
 
 block content
-  h1= title
+  h1.logo= title
   if(user)
-    form(method='post', action='/logout')
+    form.homepage-logout(method='post', action='/logout')
       button.btn.btn-default.btn-sm#logout Logout
 
   if(message)
@@ -11,22 +11,22 @@ block content
       p= message
 
   if(!user)
-    form(action='/login', method='post')
-      input(type='email', name='email', placeholder='Email', autofocus=true)
-      br
-      input(type='password', name='password', placeholder='Password')
-      br
-      button(type='submit') Login
+    .container.login-container
+      .col-md-12
+        .well
+          form(action='/login', method='post')
+            .form-group
+              input(type='email', name='email', placeholder='Email', autofocus=true)
+              br
+              input(type='password', name='password', placeholder='Password')
+              br
+              button#login-button.action-button(type='submit') Login
 
-      hr
-      p
-        | Need an account?
-        a(href='/register') Register
-      br
-      a.btn.btn-primary(href='/auth/facebook')
-        span.fa.fa-facebook
-        | &nbsp Facebook
-      br
-      a.btn.btn-info(href='/auth/twitter')
-        span.fa.fa-twitter
-        | &nbsp Twitter
+              hr
+              p
+                | Need an account?
+                a#register-link(href='/register') Register
+              a#facebook-login(href='/auth/facebook')
+                img(src='/img/facebook.png')
+              a#twitter-login(href='/auth/facebook')
+                img(src='/img/twitter.png')

@@ -1,0 +1,4 @@
+h4(style='font-weight: bold;') #{definitions[0].word}
+each definition in definitions
+  p.part-of-speech(style='margin-bottom: 0; font-style: italic;')= definition.partOfSpeech
+  p.definition= definition.text

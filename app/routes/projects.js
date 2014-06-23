@@ -17,12 +17,20 @@ exports.show = (req, res)=>{
   res.render('projects/show', {title:'Project'});
 };
 
-exports.edit = (req, res)=>{
-  res.render('projects/draft', {title:'Working Draft'});
+exports.draft = (req, res)=>{
+  Project.findById(req.params.projId, (err, project)=>{
+    res.render('projects/draft', {project:project, title:'MC: Working Draft'});
+  });
 };
 
-exports.update = (req, res)=>{
-  // res.redirect(`/projects/${project._id}`);
+exports.updateDraftText = (req, res)=>{
+  Project.findById(req.params.projId, (err, project)=>{
+    project.updateDraftText(req.body, ()=>{
+      project.save(()=>{
+        res.render('projects/save-confirmation', {project:project});
+      });
+    });
+  });
 };
 
 exports.create = (req, res)=>{
@@ -57,4 +65,12 @@ exports.create = (req, res)=>{
 
 exports.destroy = (req, res)=>{
   res.redirect('/home');
+};
+
+exports.getDefinition = (req, res)=>{
+  res.render('projects/dictionary', {definitions:req.body.data});
+};
+
+exports.getRelatedWords = (req, res)=>{
+  res.render('projects/related-words', {data:req.body.data});
 };

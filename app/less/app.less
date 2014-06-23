@@ -123,6 +123,60 @@ body {
 // }
 
 
+/* ============= HOME PAGE ============ */
+
+.login-container {
+  width: 500px;
+}
+
+.login-container input {
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+.logo {
+  text-align: center;
+  margin-top: 150px;
+  font-size: 4em;
+}
+
+#register-link {
+  color: #1dc16f;
+  margin-left: 3px;
+}
+
+.homepage-logout {
+  text-align: center;
+}
+
+.login-container {
+  padding-top: 30px;
+}
+
+.login-container .well {
+  background-color: rgba(255, 252, 252, 0.69);
+}
+
+#login-button {
+  background-color: #323232;
+  color: white;
+  font-family: 'Open Sans';
+  border: 1px solid black;
+  padding: 10px 15px 10px 15px;
+  border-radius: 5px;
+}
+
+#facebook-login img, #twitter-login img {
+  width: 50px;
+  height: 50px;
+}
+
+.alert {
+  text-align: center;
+  font-size: 20px;
+}
+
+
 /* =================================== */
 /* Navbar customization */
 
@@ -236,6 +290,15 @@ body {
   border-radius: 5px;
 }
 
+.action-button:hover {
+  background-color: #444444;
+  color: white;
+  font-family: 'Open Sans';
+  border: 1px solid black;
+  padding: 10px;
+  border-radius: 5px;
+}
+
 .save-button {
   background-color: #1dc16f;
   color: white;
@@ -246,6 +309,155 @@ body {
   border-radius: 5px;
 }
 
+/* ==================== DRAFT PAGE ================ */
+
+#draft-title {
+  text-align: center;
+}
+
+.outer-draft-container {
+  width: 700px;
+  height: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.draft-container {
+  display: inline-block;
+  position: relative;
+  // top: 50px;
+  // left: 100px;
+  width: 700px;
+  height: 900px;
+  background-color: #323232;
+  // border-radius: 8px;
+}
+
+.draft-container textarea {
+  width: 80%;
+  height: 86%;
+  position: absolute;
+  top: 7%;
+  left: 10%;
+  resize: none;
+  color: black;
+  font-size: 1.5em;
+}
+
+#draft-title {
+  margin-bottom: 40px;
+}
+
+#draft-title-edit {
+  width: 300px;
+  height: 42px;
+  margin-right: auto;
+  margin-left: auto;
+  padding: 10px, 0, 10px, 0;
+  margin-top: 21px;
+  margin-bottom: 40px;
+  font-size: 1.5em;
+  font-family: 'Open Sans', 'Helvetica', 'sans-serif';
+  font-weight: 300;
+  color: black;
+}
+
+#draft-title-edit:focus {
+  outline: none;
+  border: black !important;
+  box-shadow: 0 0 5px #1dc16f !important;
+}
+
+.draft-toolbar {
+  position: absolute;
+  height: 54px;
+  max-width: 300px;
+  top: 20px;
+  left: 15px;
+}
+
+#toggle-tools {
+  top: 5px;
+  font-size: 13px;
+  padding: 6px;
+  z-index: 10px;
+  margin-left: 15px;
+}
+
+#save-draft {
+  background-color: #1dc16f;
+  border: 1px solid #1dc16f;
+  margin-left: 10px;
+}
+
+#save-draft:hover {
+  background-color: #27d87a;
+  border: 1px solid #27d87a;
+}
+
+#exit-draft {
+  background-color: #e22a2a;
+  border: 1px solid #e22a2a;
+  margin-left: 10px;
+}
+
+#exit-draft:hover {
+  background-color: #f12f2f;
+  border: 1px solid #f12f2f;
+}
+
+#draft-tools {
+  display: none;
+  width: 100%;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+#rhyme-button, #dictionary-button, #clear-dictionary, #clear-rhymes {
+  background-color: white;
+  border: none;
+  margin-left: 10px;
+  padding: 7px;
+}
+
+#RhymeBrainInput {
+  margin-bottom: 20px;
+}
+
+#dictionary-results {
+  width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+  display: none;
+  text-align: left;
+}
+
+.save-draft-confirmation {
+  max-width: 300px;
+  position: absolute;
+  top: 20px;
+  right: 90px;
+  background-color: rgba(30, 195, 107, .3);
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.save-draft-error {
+  max-width: 300px;
+  position: absolute;
+  top: 20px;
+  right: 90px;
+  background-color: rgba(197, 44, 30, 0.3);
+  padding: 10px;
+  border-radius: 5px;
+}
+
+// #draft-background {
+//   height: 100%;
+//   width: 100%;
+//   background-image: url('/img/wood-grain.jpeg');
+//   background-position: cover;
+// }
 
 /* ======================== Show/Edit Board Page ================== */
 

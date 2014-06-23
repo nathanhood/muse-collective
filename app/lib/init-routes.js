@@ -137,9 +137,11 @@ function load(app, fn){
   app.get('/projects', dbg, projects.index);
   app.get('/projects/:projId', dbg, projects.show);
   app.post('/projects/create', dbg, projects.create);
-  app.get('/projects/:projId/draft', dbg, projects.edit);
-  app.post('/projects/:projId/draft', dbg, projects.update);
+  app.get('/projects/:projId/draft', dbg, projects.draft);
+  app.post('/projects/:projId/draft', dbg, projects.updateDraftText);
   app.post('/projects/:projId/destroy', dbg, projects.destroy);
+  app.post('/projects/:projId/getDefinition', dbg, projects.getDefinition);
+  app.post('/projects/:projId/getRelatedWords', dbg, projects.getRelatedWords);
 
 
   app.get('/boards/:boardId', dbg, boards.show);

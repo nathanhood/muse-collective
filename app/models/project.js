@@ -91,7 +91,7 @@ class Project {
   }
 
   updateDraftText(obj, fn){
-    this.draftText = obj.draftText;
+    this.draftText = obj.draft;
     fn(this);
   }
 

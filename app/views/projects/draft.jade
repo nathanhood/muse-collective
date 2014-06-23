@@ -1,5 +1,31 @@
 extends ../shared/template
 
 block content
-  h1= title
-  
+  #draft-background
+    h1#draft-title(data-id=project._id.toString())= project.title
+    input#draft-title-edit.form-control.hidden(autofocus=true, value=project.title)
+
+    .draft-toolbar
+      button.action-button#save-draft Save
+      a(href='/projects/#{project._id.toString()}')
+        button.action-button#exit-draft Exit
+      button.action-button#toggle-tools Writing Tools
+    .col-sm-12#draft-tools
+      form(action='javascript:RhymeBrainSubmit()')
+        input#RhymeBrainInput(type='text', placeholder='franchise, bank, brain...')
+        input(type='submit', value='Rhyme')#rhyme-button
+        button#clear-rhymes Clear
+      script(type='text/javascript')
+        var RhymeBrainMaxResults = 50;
+      script(type='text/javascript', src='/js/vendor/rhymebrain.js')
+      input#dictionary-input(type='text', name='word', placeholder='Dictionary/Thesaurus')
+      button#dictionary-button Dictionary
+      button#clear-dictionary Clear
+      #dictionary-results
+
+    .outer-draft-container
+      .draft-container
+        textarea#draft-content= project.draftText
+
+block scripts
+  script(src='/js/es6/compiled/draft.js')
