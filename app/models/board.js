@@ -22,8 +22,6 @@ var _ = require('lodash');
 
 class Board {
   static create(obj, fn){
-    obj.projId = obj._id;
-    obj = _.omit(obj, '_id').valueOf();
 
     var board = new Board();
     board._id = Mongo.ObjectID(obj._id);
@@ -60,6 +58,12 @@ class Board {
     boardCollection.save(this, ()=>fn());
   }
 
+  replace(fn){
+    boardCollection.remove({_id:this._id}, (err, writeResult)=>{
+      fn(writeResult);
+    });
+  }
+
   destroy(fn){
     var audioPath = path.normalize(`${__dirname}/../static/audio/${this.userId}/${this.projId}/${this._id}`);
     var imagePath = path.normalize(`${__dirname}/../static/img/${this.userId}/${this.projId}/${this._id}`);
@@ -78,7 +82,7 @@ class Board {
   }
 
   addNotes(obj, fn){
-    if(obj.notes.length > 0){
+    if(obj.notes){
       var newNotes = [];
       obj.notes.forEach(n=>{
         var note = new Note(n);
@@ -94,7 +98,7 @@ class Board {
   }
 
   addWords(obj, fn){
-    if(obj.words.length > 0){
+    if(obj.words){
       var newWords = [];
       obj.words.forEach(w=>{
         var word = new Word(w);
@@ -110,7 +114,7 @@ class Board {
   }
 
   addNotepads(obj, fn){
-    if(obj.notepads.length > 0){
+    if(obj.notepads){
       var newNotepads = [];
       obj.notepads.forEach(n=>{
         var notepad = new Notepad(n);
@@ -126,7 +130,7 @@ class Board {
   }
 
   addPhoto(obj, fn){
-    if(obj.photos.length > 0){
+    if(obj.photos){
       var newPhotos = [];
 
       obj.photos.forEach(p=>{
@@ -144,7 +148,7 @@ class Board {
   }
 
   addAudio(obj, fn){
-    if(obj.audio.length > 0){
+    if(obj.audio){
       var newAudio = [];
 
       obj.audio.forEach(a=>{

@@ -6,19 +6,47 @@ var Board = traceur.require(__dirname + '/../../app/models/board.js');
 var multiparty = require('multiparty');
 
 exports.show = (req, res)=>{
-  res.render('boards/show', {title:'Board', boardId:req.params.boardId});
+  Board.findById(req.params.boardId, (err, board)=>{
+    var boardId = board._id.toString();
+    res.render('boards/show', {title:'Board', board:board, boardId:boardId});
+  });
 };
 
 exports.create = (req, res)=>{
   Project.findById(req.body._id, (err, project)=>{
     Board.create(project, board=>{
-      res.send(board);
+      project.addBoardId(board._id, ()=>{
+        res.send(board);
+      });
     });
   });
 };
 
 exports.update = (req, res)=>{
-  // res.redirect(`/projects/${project._id}`);
+  var body = req.body;
+
+  Board.findById(req.params.boardId, (err, board)=>{
+    body._id = board._id;
+    body.userId = board.userId;
+    body.projId = board.projId;
+    body.title = board.title;
+
+    board.replace(()=>{
+      Board.create(body, newBoard=>{
+        newBoard.addNotes(body, ()=>{
+          newBoard.addWords(body, ()=>{
+            newBoard.addNotepads(body, ()=>{
+              newBoard.addPhoto(body, ()=>{
+                newBoard.addAudio(body, ()=>{
+                  res.send(newBoard);
+                });
+              });
+            });
+          });
+        });
+      });
+    });
+  });
 };
 
 exports.destroy = (req, res)=>{
@@ -60,5 +88,11 @@ exports.audioContainer = (req, res)=>{
 exports.removeFileFromDirectory = (req, res)=>{
   Board.removeFileFromDirectory(req.body.filePath, (err)=>{
     res.send({});
+  });
+};
+
+exports.retrieveDraft = (req, res)=>{
+  Project.findByBoardId(req.params.boardId, project=>{
+    res.render('boards/draft', {draft:project.draftText});
   });
 };

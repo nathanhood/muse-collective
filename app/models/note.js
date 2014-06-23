@@ -4,7 +4,7 @@
 class Note {
   constructor(obj){
     this.id = this.createId();
-    this.title = obj.title;
+    // this.title = obj.title;
     this.content = obj.content;
     this.x = obj.x;
     this.y = obj.y;

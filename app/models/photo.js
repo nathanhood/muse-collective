@@ -6,7 +6,7 @@ class Photo {
     this.id = this.createId();
     this.fileName = obj.fileName;
     this.filePath = obj.filePath;
-    this.origFileName = obj.origFileName;
+    // this.origFileName = obj.origFileName;
     this.x = obj.x;
     this.y = obj.y;
     this.width = obj.width;

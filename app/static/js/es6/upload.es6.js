@@ -1,4 +1,5 @@
 /* jshint unused:false */
+/* global counter */
 
 'use strict';
 
@@ -9,6 +10,11 @@
   function init(){
     $('#bt-menu').on('click', '#choose-upload-image', upload);
     $('#bt-menu').on('click', '#choose-upload-audio', uploadAudio);
+  }
+
+  function checkNewElements(){
+    $('.new').css('z-index', counter);
+    $('.new').removeClass('new');
   }
 
   function upload(){
@@ -42,6 +48,7 @@
                 aspectRatio: true
               });
               $('.draggable').draggable();
+              checkNewElements();
             }
 	      });
 
@@ -80,6 +87,7 @@
                 aspectRatio: true
               });
               $('.draggable').draggable();
+              checkNewElements();
             }
         });
 

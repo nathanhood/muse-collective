@@ -1,9 +1,36 @@
 extends ../shared/template
 
 block content
+  #board-title
+    h1= board.title
   #board(data-id=boardId)
-    .draft-container.draggable
-      textarea
+    button.save-button#save-board Save/Exit
+    if(board.notes)
+      each note in board.notes
+        .sticky-note.draggable(class=note.classes[0], style='top: #{note.y}; left: #{note.x}; z-index: #{note.zIndex};')
+          .sticky-note-inner
+            .sticky-note-delete
+            textarea.sticky-note-title-edit(resize=none, maxlength='40')= note.content
+    if(board.photos)
+      each photo in board.photos
+        .image-container.draggable.resizable(style='top: #{photo.y}; left: #{photo.x}; width: #{photo.width}; height: #{photo.height}; z-index: #{photo.zIndex}')
+          .image-delete
+          img.board-image.ui-widget-content(src=photo.filePath)
+    if(board.audio)
+      each audio in board.audio
+        .audio-container.draggable(style='top: #{audio.y}; left: #{audio.x}; z-index: #{audio.zIndex}')
+          .audio-delete
+          audio(src=audio.filePath, type='audio/mp3', controls=true)
+    if(board.notepads)
+      each draft in board.notepads
+        .draft-container.draggable.resizable(style='top: #{draft.y}; left: #{draft.x}; z-index: #{draft.zIndex}')
+          .draft-delete
+          textarea.draggable= draft.content
+    if(board.words)
+      each word in board.words
+        .word.draggable(class=word.classes[0], style='top: #{word.y}; left: #{word.x}; z-index: #{word.zIndex}')= word.content
+          .word-delete
+
     #random-words
       #nouns-container
       #verbs-container

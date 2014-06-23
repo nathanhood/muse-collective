@@ -2,6 +2,8 @@
 
 'use strict';
 
+var counter = 0;
+
 function ajax(url, verb, data={}, success=r=>console.log(r), dataType='html'){//defaulting to html
   $.ajax({url:url, type:verb, dataType:dataType, data:data, success:success});
 }
@@ -18,9 +20,9 @@ function ajax(url, verb, data={}, success=r=>console.log(r), dataType='html'){//
     $('#board').on('mousedown', '.resizable', resize);
     $('#board').on('mousedown', '.draggable', drag);
     $('#board').on('mousedown', '.draggable', zCounter);
-    $('#board').on('click', '.sticky-note-title, .sticky-note-text', editNoteTitle);
-    $('#board').on('blur', '.sticky-note-title-edit, .sticky-note-text-edit', saveNoteTitle);
-    $('.sticky-note-title-edit, .sticky-note-text-edit').keypress(enterSaveNoteTitle);
+    // $('#board').on('click', '.sticky-note-title, .sticky-note-text', editNoteTitle);
+    // $('#board').on('blur', '.sticky-note-title-edit, .sticky-note-text-edit', saveNoteTitle);
+    // $('.sticky-note-title-edit, .sticky-note-text-edit').keypress(enterSaveNoteTitle);
     $('#search-word').click(getDefinition);
     $('#search-word').click(getRelatedWords);
     $('#search-word').click(getWordExample);
@@ -66,10 +68,18 @@ function ajax(url, verb, data={}, success=r=>console.log(r), dataType='html'){//
     $('#random-poetry').click(hideMenu);
     $('#board').on('click', '.word-delete', removeWord);
     $('#random-poetry').click(toggleContainer);
+
+    /* Dynamically Generating Draft */
+    $('#draft').click(retrieveDraft);
+    $('#board').on('click', '.draft-delete', removeDraft);
+
+    /* Saving Board */
+    $('#save-board').click(saveBoard);
   }
 
+
   function menuZIndex(){
-    $('.bt-menu').css('z-index', counter);
+    $('.bt-menu').css('z-index', (counter+30));
   }
 
   function chooseFile(event){
@@ -78,9 +88,134 @@ function ajax(url, verb, data={}, success=r=>console.log(r), dataType='html'){//
     event.stopPropagation();
   }
 
-  /* ================= DRAFT =============== */
-  
+  function zCounter(){
+    counter++;
+    $(this).css('z-index', counter);
+  }
 
+  function checkNewElements(){
+    $('.new').css('z-index', counter);
+    $('.new').removeClass('new');
+  }
+
+  /* ================ SAVE BOARD ================= */
+
+  function saveBoard(){
+    var boardId = $('#board').attr('data-id');
+
+    var yellowNotes = collectNotes('yellow');
+    var blueNotes = collectNotes('blue');
+    var greenNotes = collectNotes('green');
+    var notes = $.merge(yellowNotes, blueNotes);
+    notes = $.merge(notes, greenNotes);
+    var photos = collectPhotos();
+    var audio = collectAudio();
+    var drafts = collectDrafts();
+    var words = collectWords();
+
+    ajax(`/boards/${boardId}`, 'POST', {notes:notes, photos:photos,
+    audio:audio, notepads:drafts, words:words}, jsonObj=>{
+      window.location = `/projects/${jsonObj.projId}`;
+    }, 'json');
+  }
+
+  function collectWords(){
+    var words = $('.word').toArray().map(w=>{
+      var obj = {};
+      obj.content = $(w).text();
+      obj.x = $(w).css('left');
+      obj.y = $(w).css('top');
+      obj.zIndex = $(w).css('zIndex');
+      return obj;
+    });
+    return words;
+  }
+
+  function collectDrafts(){
+    var drafts = $('.draft-container').toArray().map(d=>{
+      if(d){
+        var obj = {};
+        obj.content = $(d).find('textarea').val();
+        obj.x = $(d).css('left');
+        obj.y = $(d).css('top');
+        obj.width = $(d).css('width');
+        obj.height = $(d).css('height');
+        obj.zIndex = $(d).css('z-index');
+        return obj;
+      }
+    });
+    return drafts;
+  }
+
+  function collectAudio(){
+    var soundFiles = $('.audio-container').toArray().map(a=>{
+      if(a){
+        var obj = {};
+        obj.filePath = $(a).children('audio').attr('src');
+        var name = $(a).children('audio').attr('src').split('/');
+        obj.fileName = name[5];
+        obj.x = $(a).css('left');
+        obj.y = $(a).css('top');
+        obj.zIndex = $(a).css('z-index');
+        return obj;
+      }
+    });
+    return soundFiles;
+  }
+
+  function collectPhotos(){
+    var images = $('.image-container').toArray().map(img=>{
+      if(img){
+        var obj = {};
+        obj.filePath = $(img).children('img').attr('src');
+        var name = $(img).children('img').attr('src').split('/');
+        obj.fileName = name[5];
+        obj.x = $(img).css('left');
+        obj.y = $(img).css('top');
+        obj.width = $(img).css('width');
+        obj.height = $(img).css('height');
+        obj.zIndex = $(img).css('z-index');
+        return obj;
+      }
+    });
+    return images;
+  }
+
+  function collectNotes(color){
+    var notes = $(`.sticky-note.${color}`).toArray().map(n=>{
+      if(n){
+        var obj = {};
+        obj.classes = [];
+        obj.classes.push(color);
+        obj.content = $(n).find('textarea').val();
+        obj.x = $(n).css('left');
+        obj.y = $(n).css('top');
+        obj.zIndex = $(n).css('z-index');
+        // $(n).attr('style').split(';').map((value)=>{
+        //   var array = value.split(':');
+        //   array = array.map((v)=>{return v.trim();});
+        //   obj[array[0]] = array[1];
+        // });
+        return obj;
+      }
+    });
+    return notes;
+  }
+
+  /* ================= DRAFT =============== */
+
+  function retrieveDraft(){
+    var boardId = $('#board').attr('data-id');
+    ajax(`/boards/${boardId}/retrieveDraft`, 'POST', {}, html=>{
+      $('#board').append(html);
+      $('.draggable').draggable();
+      checkNewElements();
+    });
+  }
+
+  function removeDraft(){
+    $(this).parents('.draft-container').remove();
+  }
 
 
   /* ================= RANDOM POETRY ============= */
@@ -214,7 +349,6 @@ function ajax(url, verb, data={}, success=r=>console.log(r), dataType='html'){//
 
   function removeAudio(){
     var filePath = $(this).next('audio').attr('src');
-    console.log(filePath);
     ajax(`/boards/removeDirFile`, 'POST', 'filePath='+filePath, ()=>{
       $(this).parents('.audio-container').remove();
     });
@@ -225,7 +359,6 @@ function ajax(url, verb, data={}, success=r=>console.log(r), dataType='html'){//
 
   function removeImage(){
     var filePath = $(this).next('img').attr('src');
-    console.log(filePath);
     ajax(`/boards/removeDirFile`, 'POST', 'filePath='+filePath, ()=>{
       $(this).parents('.image-container').remove();
     });
@@ -267,12 +400,12 @@ function ajax(url, verb, data={}, success=r=>console.log(r), dataType='html'){//
     var note = `<div class='sticky-note green draggable', style='top: 70px; left: 160px;'>
                 <div class='sticky-note-inner'>
                 <div class='sticky-note-delete'></div>
-                <h2 class='sticky-note-title'>Click Here</h2>
-                <textarea class='hidden sticky-note-title-edit', resize=none, maxlength='40'></textarea>
+                <textarea class='sticky-note-title-edit', resize=none, maxlength='40'>Add Text</textarea>
                 </div>
                 </div>`;
     $('#board').append(note);
     $('.draggable').draggable();
+    checkNewElements();
     event.preventDefault();
   }
 
@@ -281,26 +414,26 @@ function ajax(url, verb, data={}, success=r=>console.log(r), dataType='html'){//
     var note = `<div class='sticky-note blue draggable', style='top: 70px; left: 160px;'>
                 <div class='sticky-note-inner'>
                 <div class='sticky-note-delete'></div>
-                <h2 class='sticky-note-title'>Click Here</h2>
-                <textarea class='hidden sticky-note-title-edit', resize=none, maxlength='40'></textarea>
+                <textarea class='sticky-note-title-edit', resize=none, maxlength='40'>Add Text</textarea>
                 </div>
                 </div>`;
     $('#board').append(note);
     $('.draggable').draggable();
+    checkNewElements();
     event.preventDefault();
   }
 
   function addYellowNote(event){
     $('#note-container').remove();
-    var note = `<div class='sticky-note yellow draggable', style='top: 70px; left: 160px;'>
+    var note = `<div class='sticky-note yellow draggable new', style='top: 70px; left: 160px;'>
                 <div class='sticky-note-inner'>
                 <div class='sticky-note-delete'></div>
-                <h2 class='sticky-note-title'>Click Here</h2>
-                <textarea class='hidden sticky-note-title-edit', resize=none, maxlength='40'></textarea>
+                <textarea class='sticky-note-title-edit', resize=none, maxlength='40'>Add Text</textarea>
                 </div>
                 </div>`;
     $('#board').append(note);
     $('.draggable').draggable();
+    checkNewElements();
     event.preventDefault();
   }
 
@@ -314,6 +447,7 @@ function ajax(url, verb, data={}, success=r=>console.log(r), dataType='html'){//
                       </div>`;
     $('.bt-overlay').append(container);
     $('#note-container').slideToggle('slow');
+
   }
 
 
@@ -333,34 +467,29 @@ function ajax(url, verb, data={}, success=r=>console.log(r), dataType='html'){//
 
   /* Sticky Note Functionality Below */
 
-  var counter = 0;
-  function zCounter(){
-    counter++;
-    $(this).css('z-index', counter);
-  }
 
-  function editNoteTitle(){
-    $(this).addClass('hidden');
-    $(this).next('textarea').removeClass('hidden');
-    $(this).next('textarea').val($(this).text()).focus();
-    var background = $(this).parent().css('background-color');
-    $(this).next('textarea').css('background-color', background);
-  }
+  // function editNoteTitle(){
+  //   $(this).addClass('hidden');
+  //   $(this).next('textarea').removeClass('hidden');
+  //   $(this).next('textarea').val($(this).text()).focus();
+  //   var background = $(this).parent().css('background-color');
+  //   $(this).next('textarea').css('background-color', background);
+  // }
 
-  function saveNoteTitle(){
-    $(this).addClass('hidden');
-    $(this).prev().removeClass('hidden');
-    $(this).prev().text($(this).val());
-  }
-
-  function enterSaveNoteTitle(event){
-    var keycode = (event.keyCode ? event.keyCode : event.which);
-    if(keycode === 13){
-      $(this).addClass('hidden');
-      $(this).prev().removeClass('hidden');
-      $(this).prev().text($(this).val());
-    }
-  }
+  // function saveNoteTitle(){
+  //   $(this).addClass('hidden');
+  //   $(this).prev().removeClass('hidden');
+  //   $(this).prev().text($(this).val());
+  // }
+  //
+  // function enterSaveNoteTitle(event){
+  //   var keycode = (event.keyCode ? event.keyCode : event.which);
+  //   if(keycode === 13){
+  //     $(this).addClass('hidden');
+  //     $(this).prev().removeClass('hidden');
+  //     $(this).prev().text($(this).val());
+  //   }
+  // }
 
 
   /* Wordnik API Below */

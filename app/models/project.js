@@ -36,6 +36,13 @@ class Project {
     Base.findAllByUserId(userId, projectCollection, Project, fn);
   }
 
+  static findByBoardId(boardId, fn){
+    boardId = Mongo.ObjectID(boardId);
+    projectCollection.findOne({boards:boardId}, (err, project)=>{
+      fn(project);
+    });
+  }
+
 
   save(fn){
     projectCollection.save(this, ()=>fn());

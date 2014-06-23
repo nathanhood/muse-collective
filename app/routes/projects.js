@@ -5,6 +5,8 @@
 var traceur = require('traceur');
 var Project = traceur.require(__dirname + '/../../app/models/project.js');
 var Board = traceur.require(__dirname + '/../../app/models/board.js');
+var User = traceur.require(__dirname + '/../../app/models/user.js');
+var _ = require('lodash');
 
 
 exports.index = (req, res)=>{
@@ -29,14 +31,27 @@ exports.create = (req, res)=>{
   if(obj.title === ''){
     obj.title = 'Untitled';
   }
-  Project.create(obj, project=>{
-    if(project.status === 'brainstorming'){
-      Board.create(project, board=>{
-        res.redirect(`/boards/${board._id}`);
+  User.findById(req.user._id, (err, user)=>{
+    Project.create(obj, project=>{
+      user.addProject(project._id, ()=>{
+        if(project.status === 'brainstorming'){
+          var obj = project;
+          obj.projId = obj._id;
+          obj = _.omit(obj, '_id').valueOf();
+          Board.create(obj, board=>{
+            project.addBoardId(board._id, ()=>{
+              user.save(()=>{
+                project.save(()=>{
+                  res.redirect(`/boards/${board._id}`);
+                });
+              });
+            });
+          });
+        } else {
+            res.redirect(`/projects/${project._id}`);
+        }
       });
-    } else {
-      res.redirect(`/projects/${project._id}`);
-    }
+    });
   });
 };
 
