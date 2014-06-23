@@ -1,5 +1,25 @@
 extends ../shared/template
 
 block content
-  h1= title
-  
+  .container
+    .page-header.text-center
+      h1= project.title
+
+    .col-sm-6.project-board-container
+      .well
+        h2 Boards
+        if(boards)
+          each board in boards
+            .board-list-container
+              .well
+                h3.board-list-title(data-boardId=board._id.toString())= board.title
+                input.board-list-title-edit.hidden(autofocus=true, value=board.title)
+                p.board-list-date= board.dateCreated
+                a.board-list-link(href='/boards/#{board._id.toString()}')
+                  i.fa.fa-pencil-square-o edit
+    .col-sm-6.project-draft-container
+      .well
+        h2 Drafts
+
+block scripts
+  script(src='/js/es6/compiled/project-show.js')

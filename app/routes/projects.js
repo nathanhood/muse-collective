@@ -7,6 +7,7 @@ var Project = traceur.require(__dirname + '/../../app/models/project.js');
 var Board = traceur.require(__dirname + '/../../app/models/board.js');
 var User = traceur.require(__dirname + '/../../app/models/user.js');
 var _ = require('lodash');
+var moment = require('moment');
 
 
 exports.index = (req, res)=>{
@@ -14,7 +15,15 @@ exports.index = (req, res)=>{
 };
 
 exports.show = (req, res)=>{
-  res.render('projects/show', {title:'Project'});
+  Project.findById(req.params.projId, (err, project)=>{
+    Board.findAllByProjectId(project._id, boards=>{
+      boards = boards.map(board=>{
+        board.dateCreated = moment(board.dateCreated).format('MMMM Do YYYY');
+        return board;
+      });
+      res.render('projects/show', {boards:boards, project:project, title:`MC: ${project.title}`});
+    });
+  });
 };
 
 exports.draft = (req, res)=>{
@@ -43,10 +52,10 @@ exports.create = (req, res)=>{
     Project.create(obj, project=>{
       user.addProject(project._id, ()=>{
         if(project.status === 'brainstorming'){
-          var obj = project;
-          obj.projId = obj._id;
-          obj = _.omit(obj, '_id').valueOf();
-          Board.create(obj, board=>{
+          var boardObj = project;
+          boardObj.projId = boardObj._id;
+          boardObj = _.omit(boardObj, '_id').valueOf();
+          Board.create(boardObj, board=>{
             project.addBoardId(board._id, ()=>{
               user.save(()=>{
                 project.save(()=>{

@@ -28,7 +28,7 @@ class Board {
     board.userId = Mongo.ObjectID(obj.userId);
     board.projId = Mongo.ObjectID(obj.projId);
     board.dateCreated = new Date();
-    board.title = obj.title;
+    board.title = 'Untitled';
     board.notes = [];
     board.photos = [];
     board.audio = [];
@@ -40,6 +40,12 @@ class Board {
 
   static findById(id, fn){
     Base.findById(id, boardCollection, Board, fn);
+  }
+
+  static findAllByProjectId(projId, fn){
+    boardCollection.find({projId:projId}).toArray((err, boards)=>{
+      fn(boards);
+    });
   }
 
   static findAllByUserId(userId, fn){

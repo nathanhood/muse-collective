@@ -2,7 +2,6 @@ extends ../shared/template
 
 block content
   #board-title
-    h1= board.title
   #board(data-id=boardId)
     button.save-button#save-board Save/Exit
     if(board.notes)

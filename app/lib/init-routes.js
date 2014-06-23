@@ -154,6 +154,7 @@ function load(app, fn){
   app.post('/boards/:boardId/processPhoto', dbg, boards.processPhoto);
   app.post('/boards/:boardId/processAudio', dbg, boards.processAudio);
   app.post('/boards/:boardId/retrieveDraft', dbg, boards.retrieveDraft);
+  app.post('/boards/:boardId/updateTitle', dbg, boards.updateTitle);
 
   console.log('Routes Loaded');
   fn();

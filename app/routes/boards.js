@@ -8,7 +8,7 @@ var multiparty = require('multiparty');
 exports.show = (req, res)=>{
   Board.findById(req.params.boardId, (err, board)=>{
     var boardId = board._id.toString();
-    res.render('boards/show', {title:'Board', board:board, boardId:boardId});
+    res.render('boards/show', {title:`MC: Board ${board.title}`, board:board, boardId:boardId});
   });
 };
 
@@ -94,5 +94,15 @@ exports.removeFileFromDirectory = (req, res)=>{
 exports.retrieveDraft = (req, res)=>{
   Project.findByBoardId(req.params.boardId, project=>{
     res.render('boards/notepad', {draft:project.draftText});
+  });
+};
+
+exports.updateTitle = (req, res)=>{
+  Board.findById(req.params.boardId, (err, board)=>{
+    board.updateTitle(req.body, ()=>{
+      board.save(()=>{
+        res.send(board);
+      });
+    });
   });
 };
