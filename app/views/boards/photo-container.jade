@@ -1,0 +1,5 @@
+#photo-container
+  .inner-container
+    form#upload-photo(action='/boards/#{boardId}/processPhoto', method='POST', ectype='multipart/form-data')
+      h3 Upload Image
+      input.form-control#choose-upload-photo(type='file', name='photo')

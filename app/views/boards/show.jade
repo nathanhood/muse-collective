@@ -13,9 +13,9 @@ block content
             textarea.sticky-note-title-edit(resize=none, maxlength='40')= note.content
     if(board.photos)
       each photo in board.photos
-        .image-container.draggable.resizable(style='top: #{photo.y}; left: #{photo.x}; width: #{photo.width}; height: #{photo.height}; z-index: #{photo.zIndex}')
-          .image-delete
-          img.board-image.ui-widget-content(src=photo.filePath)
+        .photo-container.draggable.resizable(style='top: #{photo.y}; left: #{photo.x}; width: #{photo.width}; height: #{photo.height}; z-index: #{photo.zIndex}')
+          .photo-delete
+          img.board-photo.ui-widget-content(src=photo.filePath)
     if(board.audio)
       each audio in board.audio
         .audio-container.draggable(style='top: #{audio.y}; left: #{audio.x}; z-index: #{audio.zIndex}')
@@ -44,15 +44,15 @@ block content
       span Menu
     ul
       li
-        a.bt-icon.icon-zoom#notes(href='#') Zoom
+        a.fa.fa-pencil-square-o#notes(href='#') Notes
       li
-        a.bt-icon.icon-refresh#images(href='#') Refresh
+        a.fa.fa-camera#photos(href='#') Photos
       li
-        a.bt-icon.icon-lock#audio(href='#') Lock
+        a.fa.fa-music#audio(href='#') Audio
       li
-        a.bt-icon.icon-speaker#random-poetry(href='#') Sound
+        a.fa.fa-book#draft(href='#') Draft
       li
-        a.bt-icon.icon-star#draft(href='#') Favorite
+        a.fa.fa-random#random-poetry(href='#') Random Poetry
 
 block scripts
   script(src='/js/es6/compiled/board-show.js')

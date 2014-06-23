@@ -59,7 +59,7 @@ exports.processPhoto = (req, res)=>{
   form.parse(req, (err, fields, files)=>{
     Board.findById(id, (err, board)=>{
       board.processPhoto(files.photo[0], photoObj=>{
-        res.render('boards/image', {imagePath:photoObj.filePath});
+        res.render('boards/photo', {photoPath:photoObj.filePath});
       });
     });
   });
@@ -77,8 +77,8 @@ exports.processAudio = (req, res)=>{
   });
 };
 
-exports.imageContainer = (req, res)=>{
-  res.render('boards/image-container', {boardId:req.params.boardId});
+exports.photoContainer = (req, res)=>{
+  res.render('boards/photo-container', {boardId:req.params.boardId});
 };
 
 exports.audioContainer = (req, res)=>{

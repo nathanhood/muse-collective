@@ -44,10 +44,10 @@ function ajax(url, verb, data={}, success=r=>console.log(r), dataType='html'){//
     $('#bt-menu').on('click', '.bt-overlay', removeNoteContainer);
 
     /* Dynamically Generating Images */
-    $('#images').click(appendImageContainer);
-    $('#bt-menu').on('click', '#choose-upload-image', chooseFile);
-    $('#board').on('click', '.image-delete', removeImage);
-    $('#bt-menu').on('click', '.bt-overlay', removeImageContainer);
+    $('#photos').click(appendPhotoContainer);
+    $('#bt-menu').on('click', '#choose-upload-photo', chooseFile);
+    $('#board').on('click', '.photo-delete', removePhoto);
+    $('#bt-menu').on('click', '.bt-overlay', removePhotoContainer);
 
     /* Dynamically Generating Audio */
     $('#audio').click(appendAudioContainer);
@@ -164,7 +164,7 @@ function ajax(url, verb, data={}, success=r=>console.log(r), dataType='html'){//
   }
 
   function collectPhotos(){
-    var images = $('.image-container').toArray().map(img=>{
+    var images = $('.photo-container').toArray().map(img=>{
       if(img){
         var obj = {};
         obj.filePath = $(img).children('img').attr('src');
@@ -357,10 +357,10 @@ function ajax(url, verb, data={}, success=r=>console.log(r), dataType='html'){//
 
 /* =============== IMAGES ==================== */
 
-  function removeImage(){
+  function removePhoto(){
     var filePath = $(this).next('img').attr('src');
     ajax(`/boards/removeDirFile`, 'POST', 'filePath='+filePath, ()=>{
-      $(this).parents('.image-container').remove();
+      $(this).parents('.photo-container').remove();
     });
   }
 
@@ -370,16 +370,16 @@ function ajax(url, verb, data={}, success=r=>console.log(r), dataType='html'){//
   // <button class='action-button', id='url-image', style='margin-top: 10px;'>Add Online Image</button>
   // </form>
 
-  function appendImageContainer(){
+  function appendPhotoContainer(){
     var boardId = $('#board').attr('data-id');
-    ajax(`/boards/${boardId}/imageContainer`, 'POST', null, html=>{
+    ajax(`/boards/${boardId}/photoContainer`, 'POST', null, html=>{
       $('.bt-overlay').append(html);
-      $('#image-container').slideToggle('slow');
+      $('#photo-container').slideToggle('slow');
     });
   }
 
-  function removeImageContainer(){
-    $('#image-container').remove();
+  function removePhotoContainer(){
+    $('#photo-container').remove();
   }
 
 

@@ -148,7 +148,7 @@ function load(app, fn){
   app.post('/boards/:boardId', dbg, boards.update);
   app.post('/boards/:boardId/destroy', dbg, boards.destroy);
   app.post('/boards/:boardId/audioContainer', dbg, boards.audioContainer);
-  app.post('/boards/:boardId/imageContainer', dbg, boards.imageContainer);
+  app.post('/boards/:boardId/photoContainer', dbg, boards.photoContainer);
   app.post('/boards/:boardId/processPhoto', dbg, boards.processPhoto);
   app.post('/boards/:boardId/processAudio', dbg, boards.processAudio);
   app.post('/boards/:boardId/retrieveDraft', dbg, boards.retrieveDraft);

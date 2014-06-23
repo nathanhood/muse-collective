@@ -8,7 +8,7 @@
   $(document).ready(init);
 
   function init(){
-    $('#bt-menu').on('click', '#choose-upload-image', upload);
+    $('#bt-menu').on('click', '#choose-upload-photo', upload);
     $('#bt-menu').on('click', '#choose-upload-audio', uploadAudio);
   }
 
@@ -23,14 +23,14 @@
     // Check to see when a user has selected a file
     var timerId;
     timerId = setInterval(function() {
-	    if($('#choose-upload-image').val() !== '') {
+	    if($('#choose-upload-photo').val() !== '') {
           clearInterval(timerId);
 
-          $('#upload-image').submit();
+          $('#upload-photo').submit();
       }
     }, 500);
 
-    $('#upload-image').submit(function() {
+    $('#upload-photo').submit(function() {
         // status('uploading the file ...');
 
         $(this).ajaxSubmit({
@@ -43,7 +43,7 @@
 		          $('#board').append(html);
               $('#bt-menu').removeClass('bt-menu-open');
               $('#bt-menu').addClass('bt-menu-close');
-              $('#image-container').remove();
+              $('#photo-container').remove();
               $('.resizable').resizable({
                 aspectRatio: true
               });
