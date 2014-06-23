@@ -69,9 +69,9 @@ function ajax(url, verb, data={}, success=r=>console.log(r), dataType='html'){//
     $('#board').on('click', '.word-delete', removeWord);
     $('#random-poetry').click(toggleContainer);
 
-    /* Dynamically Generating Draft */
-    $('#draft').click(retrieveDraft);
-    $('#board').on('click', '.draft-delete', removeDraft);
+    /* Dynamically Generating Notepad */
+    $('#notepad').click(retrieveDraft);
+    $('#board').on('click', '.notepad-delete', removeNotepad);
 
     /* Saving Board */
     $('#save-board').click(saveBoard);
@@ -110,11 +110,11 @@ function ajax(url, verb, data={}, success=r=>console.log(r), dataType='html'){//
     notes = $.merge(notes, greenNotes);
     var photos = collectPhotos();
     var audio = collectAudio();
-    var drafts = collectDrafts();
+    var notepads = collectNotepads();
     var words = collectWords();
 
     ajax(`/boards/${boardId}`, 'POST', {notes:notes, photos:photos,
-    audio:audio, notepads:drafts, words:words}, jsonObj=>{
+    audio:audio, notepads:notepads, words:words}, jsonObj=>{
       window.location = `/projects/${jsonObj.projId}`;
     }, 'json');
   }
@@ -131,8 +131,8 @@ function ajax(url, verb, data={}, success=r=>console.log(r), dataType='html'){//
     return words;
   }
 
-  function collectDrafts(){
-    var drafts = $('.draft-container').toArray().map(d=>{
+  function collectNotepads(){
+    var drafts = $('.notepad-container').toArray().map(d=>{
       if(d){
         var obj = {};
         obj.content = $(d).find('textarea').val();
@@ -213,8 +213,8 @@ function ajax(url, verb, data={}, success=r=>console.log(r), dataType='html'){//
     });
   }
 
-  function removeDraft(){
-    $(this).parents('.draft-container').remove();
+  function removeNotepad(){
+    $(this).parents('.notepad-container').remove();
   }
 
 

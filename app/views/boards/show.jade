@@ -22,10 +22,10 @@ block content
           .audio-delete
           audio(src=audio.filePath, type='audio/mp3', controls=true)
     if(board.notepads)
-      each draft in board.notepads
-        .draft-container.draggable.resizable(style='top: #{draft.y}; left: #{draft.x}; z-index: #{draft.zIndex}')
-          .draft-delete
-          textarea.draggable= draft.content
+      each notepad in board.notepads
+        .notepad-container.draggable.resizable(style='top: #{notepad.y}; left: #{notepad.x}; z-index: #{notepad.zIndex}')
+          .notepad-delete
+          textarea.draggable= notepad.content
     if(board.words)
       each word in board.words
         .word.draggable(class=word.classes[0], style='top: #{word.y}; left: #{word.x}; z-index: #{word.zIndex}')= word.content
@@ -50,7 +50,7 @@ block content
       li
         a.fa.fa-music#audio(href='#') Audio
       li
-        a.fa.fa-book#draft(href='#') Draft
+        a.fa.fa-book#notepad(href='#') Notepad
       li
         a.fa.fa-random#random-poetry(href='#') Random Poetry
 

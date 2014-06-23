@@ -93,6 +93,6 @@ exports.removeFileFromDirectory = (req, res)=>{
 
 exports.retrieveDraft = (req, res)=>{
   Project.findByBoardId(req.params.boardId, project=>{
-    res.render('boards/draft', {draft:project.draftText});
+    res.render('boards/notepad', {draft:project.draftText});
   });
 };
