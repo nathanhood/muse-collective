@@ -8,6 +8,7 @@ var fs = require('fs');
 var path = require('path');
 var crypto = require('crypto');
 var rimraf = require('rimraf');
+var request = require('request');
 
 class Project {
   static create(obj, fn){
@@ -67,6 +68,12 @@ class Project {
     }else{
       fn(projects);
     }
+  }
+
+  static inviteCollaborator(projId, obj, fn){
+    var messageInfo = obj;
+    messageInfo.projId = projId;
+    sendVerificationEmail(messageInfo, fn);
   }
 
 
@@ -179,5 +186,24 @@ class Project {
 
 
 }
+
+function sendVerificationEmail(message, fn){
+  var key = process.env.MAILGUN;
+  var url = 'https://api:' + key + '@api.mailgun.net/v2/sandboxca5bcce9a29f4c5da3e715d4fa6b3ae2.mailgun.org/messages';
+  var post = request.post(url, function(err, response, body){
+    fn(message); //callback from static create function being called
+  });
+
+  var form = post.form();
+  form.append('from', 'admin@musecollective.com');
+  form.append('to', message.email);
+  form.append('subject', 'Muse[collective]: Collaboration Invite');
+  form.append('html', `<p>You have been invited by ${message.inviteeName} to collaborate on a Muse[collectve] project.</p>
+                      <br>
+                      <h4>Message from ${message.inviteeName}:</h4>
+                      <p>${message.personalMessage}</p>
+                      <a href="http://localhost:3000/confirmInvite/${message.projId}">Click to Join Project</a>`);
+}
+
 
 module.exports = Project;

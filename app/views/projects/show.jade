@@ -21,7 +21,7 @@ block content
             a(href='/logout') Logout
         ul.nav.navbar-nav.navbar-right
           li
-            a#message-alert(href='#')
+            a#message-alert(href='#')(type='submit', data-toggle='modal', data-target='#messageModal')
               i.fa.fa-comments.fa-2x
 
 
@@ -69,6 +69,23 @@ block content
             form(action='/projects/#{project._id}/draftAudio', method='POST', enctype='multipart/form-data')
               input(type='file', name='audio')
               button.action-button Submit
+
+  .modal.fade#messageModal(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+    .modal-dialog
+      .modal-content
+        .modal-header
+          button.close(type='button', data-dismiss='modal', aria-hidden='true') &times;
+          h4.modal-title#myModalLable Send Collaboration Invite
+        .modal-body
+          #collaboration-invitation
+            form(action='/projects/#{project._id}/inviteCollaborator', method='POST')
+              input.form-control.invite-invitee(type='text', name='inviteeName', placeholder='Your Name', required='required')
+              br
+              input.form-control.invite-email(type='email', name='email', placeholder='Collaborator Email', required='required')
+              br
+              textarea.form-control.invite-message(type='text', name='personalMessage', placeholder='Enter Personal Message (optional)')
+              .modal-footer
+                button.invite-submit.action-button Submit
 
 
 

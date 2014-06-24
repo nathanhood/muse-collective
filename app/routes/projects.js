@@ -98,7 +98,7 @@ exports.create = (req, res)=>{
 };
 
 exports.destroy = (req, res)=>{
-  res.redirect('/home');
+  res.redirect('/dashboard');
 };
 
 exports.getDefinition = (req, res)=>{
@@ -117,4 +117,33 @@ exports.updateTitle = (req, res)=>{
       });
     });
   });
+};
+
+exports.inviteCollaborator = (req, res)=>{
+  var projId = req.params.projId;
+  Project.inviteCollaborator(projId, req.body, ()=>{
+    res.redirect('/dashboard');
+  });
+};
+
+exports.confirmInvite = (req, res)=>{
+  res.render('users/invite-login', {projId:req.params.projId, title:'MC: Confirm Invitation'});
+};
+
+exports.inviteConfirmRedirect = (req, res)=>{
+  var userId = req.user._id;
+  var projId = req.session.projId;
+  Project.findById(projId, (err, project)=>{
+    project.addCollaborator(userId, ()=>{
+      project.save(()=>{
+        req.session.projId = null;
+        res.redirect(`/projects/${projId}`);
+      });
+    });
+  });
+};
+
+exports.inviteError = (req, res)=>{
+  res.render('projects/invitationError', {title:'MC: Error', registerMessage: req.flash('registerMessage'), loginMssage: req.flash('loginMessage'),
+  credentialsMessage:req.flash('error')});
 };

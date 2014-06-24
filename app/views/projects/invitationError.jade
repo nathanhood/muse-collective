@@ -1,0 +1,20 @@
+extends ../shared/template
+
+block content
+  .col-md-4
+  .col-md-4
+    .well
+      h2 Something Went Wrong
+      p Sorry, please try the invitation email link one more time.
+      br
+      if(registerMessage)
+        .alert(style='color: red')
+          p= registerMessage
+      if(loginMessage)
+        .alert(style='color: red')
+          p= loginMessage
+      if(credentialsMessage)
+        .alert(style='color: red')
+          p= credentialsMessage
+
+  .col-md-4

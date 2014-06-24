@@ -268,4 +268,118 @@ module.exports = function(passport){
     });
   }));
 
+
+  /* ================== INVITE CONFIRMATION LOCAL REGISTER & LOGIN ================ */
+
+  /* Local Registration */
+
+  // Using named strategies since we have login & register
+    // by default, if there was no name, it would just be called 'local'
+  passport.use('invite-local-register', new LocalStrategy({
+    // by default, local strategy uses username and password. Overriding with email
+    usernameField: 'email',
+    passwordField: 'password',
+    passReqToCallback: true
+  },
+
+  function(req, email, password, done){
+    // console.log('============ REQ =========== ');
+    // console.log(req.params);
+    // console.log(email);
+    // console.log(password);
+    req.flash('registerMessage', '');
+
+    // if (!req.user) {
+      //asynchronous
+      //User.findOne won't fire unless data is sent back
+      process.nextTick(function(){
+        User.findByEmail(email, function(err, user){
+
+          if(err){
+            return done(err);
+          }
+
+          if(user){
+            return done(null, false, req.flash('registerMessage', 'That email is already taken.'));
+          } else {
+            var newUser = new User();
+
+            newUser.local.email = email;
+            newUser.local.password = newUser.generateHash(password);
+
+        /* =========== DUPLICATED REGISTER AND LOGIN FOR SESSION ========== */
+              req.session.projId = req.params.projId;
+
+            newUser.save(function(err){
+              if(err){
+                throw err;
+              }
+              return done(null, newUser);
+            });
+          }
+        });
+      });
+    // } else {
+    //   process.nextTick(function(){
+    //     User.findByEmail(email, function(err, user){
+    //
+    //       if(err){
+    //         return done(err);
+    //       }
+    //
+    //       if(user){
+    //         return done(null, false, req.flash('registerMessage', 'That email is already taken.'));
+    //       } else {
+    //         var existingUser = req.user; // pull the user out of the session
+    //
+    //         existingUser.local.email = email;
+    //         existingUser.local.password = existingUser.generateHash(password);
+    //
+    //         existingUser.save(function(err){
+    //           if(err){
+    //             throw err;
+    //           }
+    //           return done(null, existingUser);
+    //         });
+    //       }
+    //     });
+    //   });
+    // }
+  }));
+
+
+  /* Local Login */
+
+  passport.use('invite-local-login', new LocalStrategy({
+    usernameField: 'email',
+    passwordField: 'password',
+    passReqToCallback: true
+  },
+  function(req, email, password, done){
+
+    User.findByEmail(email, function(err, user){
+
+      if(user){
+        user = _.create(User.prototype, user);
+      }
+
+      if(err){
+        return done(err);
+      }
+
+      if(!user){
+        return done(null, false, req.flash('loginMessage', 'No user found.')); // setting flash data
+      }
+
+      if(!user.validPassword(password)){
+        return done(null, false, req.flash('loginMessage', 'Incorrect password.'));
+      }
+
+      req.session.projId = req.params.projId;
+      
+      return done(null, user);
+    });
+  }));
+
+
 };

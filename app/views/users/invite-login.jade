@@ -1,0 +1,33 @@
+extends ../shared/template
+
+block content
+
+  .page-header.text-center
+    h1 Register or Login
+
+  if(message)
+    .alert(style='color: red')
+      p= message
+
+  .col-sm-6
+    .well
+      h3 Register
+      form#registration-form(action='/register/#{projId}', method='post')
+        label Email
+        input.form-control(type='email', name='email')
+        br
+        label Password
+        input.form-control(type='password', name='password')
+        br
+        button.action-button(type='submit') Register
+  .col-sm-6
+    .well
+      h3 Login
+      form(action='/login/#{projId}', method='post')
+        label Email
+        input.form-control(type='email', name='email')
+        br
+        label Password
+        input.form-control(type='password', name='password')
+        br
+        button#login-button.action-button(type='submit') Login

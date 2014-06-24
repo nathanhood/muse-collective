@@ -1,3 +1,5 @@
+/* jshint unused:false */
+
 'use strict';
 
 var traceur = require('traceur');
@@ -79,3 +81,26 @@ exports.updatePhoto = (req, res)=>{
     });
   });
 };
+
+// exports.inviteRegistration = (req, res)=>{
+//   console.log('======== INVITE REGISTRATION ==========');
+//   var projId = req.params.projId;
+//   if(!req.user){
+//     User.findByEmail(req.body.email, (err, user)=>{
+//       if(user){
+//         req.flash('registerMessage', 'That email is already taken');
+//         res.render('users/invite-login', {title:'MC: Confirm Invitation', message:req.flash('registerMessage')});
+//       }else{
+//         var newUser = new User();
+//         newUser.local.email = req.body.email;
+//         newUser.local.password = newUser.generateHash(req.body.password);
+//         newUser.save(()=>{
+//           req.user = newUser;
+//           console.log('================REQ.USER===========');
+//           console.log(req.user);
+//           res.redirect('/projects/${projId}');
+//         });
+//       }
+//     });
+//   }
+// };

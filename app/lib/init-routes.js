@@ -27,6 +27,8 @@ function load(app, fn){
 
 
   app.get('/', dbg, home.index);
+  app.get('/confirmInvite/:projId', dbg, projects.confirmInvite);
+  app.get('/inviteError', dbg, projects.inviteError);
 
 
   app.get('/register', dbg, users.registration);
@@ -40,6 +42,20 @@ function load(app, fn){
     failureRedirect : '/', // redirect back to the home page if there is an error
     failureFlash : true // allow flash messages
   }));
+
+  /* ============== INVITATION LOGIN ================= */
+  app.post('/register/:projId', dbg, passport.authenticate('invite-local-register', {
+      successRedirect : '/projects/inviteConfirmRedirect',
+      failureRedirect : '/inviteError',
+      failureFlash : true
+    }));
+  app.post('/login/:projId', dbg, passport.authenticate('invite-local-login', {
+    successRedirect : '/projects/inviteConfirmRedirect',
+    failureRedirect : '/inviteError',
+    failureFlash : true
+  }));
+
+
   app.get('/auth/facebook', passport.authenticate('facebook', {
     scope: 'email'
   })); // facebook does not provide email by default. Must add scope.
@@ -134,6 +150,7 @@ function load(app, fn){
   app.post('/users/updatePhoto', dbg, users.updatePhoto);
 
   app.get('/projects', dbg, projects.index);
+  app.get('/projects/inviteConfirmRedirect', dbg, projects.inviteConfirmRedirect);
   app.get('/projects/:projId', dbg, projects.show);
   app.post('/projects/create', dbg, projects.create);
   app.get('/projects/:projId/draft', dbg, projects.draft);
@@ -143,7 +160,7 @@ function load(app, fn){
   app.post('/projects/:projId/destroy', dbg, projects.destroy);
   app.post('/projects/:projId/getDefinition', dbg, projects.getDefinition);
   app.post('/projects/:projId/getRelatedWords', dbg, projects.getRelatedWords);
-
+  app.post('/projects/:projId/inviteCollaborator', dbg, projects.inviteCollaborator);
 
   app.get('/boards/:boardId', dbg, boards.show);
   app.post('/boards/removeDirFile', dbg, boards.removeFileFromDirectory);
