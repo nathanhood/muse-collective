@@ -101,6 +101,7 @@ KERN=
 @racing-sans-one: "Racing Sans One", cursive;
 @reenie-beanie: "Reenie Beanie", cursive;
 @vollkorn: "Vollkorn", serif;
+@import url(http://fonts.googleapis.com/css?family=Pompiere);
 
 
 html, body {
@@ -135,9 +136,11 @@ body {
 }
 
 .logo {
+  font-family: 'Pompiere', 'Open Sans', 'sans-serif';
   text-align: center;
-  margin-top: 150px;
-  font-size: 4em;
+  margin-top: 0;
+  padding-top: 125px;
+  font-size: 5em;
 }
 
 #register-link {
@@ -155,6 +158,11 @@ body {
 
 .login-container .well {
   background-color: rgba(255, 252, 252, 0.69);
+  margin-bottom: 0;
+}
+
+.login-container .col-md-12 {
+  margin-bottom: 0;
 }
 
 #login-button {
@@ -174,62 +182,58 @@ body {
 .alert {
   text-align: center;
   font-size: 20px;
+  margin: 0;
+  padding: 0;
+}
+
+.home-container {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-image: url('/img/brainstorm-idea.jpg');
+  background-repeat: none;
 }
 
 
 /* =================================== */
 /* Navbar customization */
 
-.navbar {
-  // background: linear-gradient(to top right, #2b2b2b, #848383);
-  background-color: #333;
-  height: 90px;
+.navbar-default {
+  min-height: 65px !important;
 }
 
-.navbar > .container-fluid > .navbar-header > ul > li > a#edit-profile {
-  margin-left: 20px;
-  margin-top: 22px;
-  font-size: 1.4em;
+.container-fluid {
+  min-height: 65px !important;
 }
 
-.navbar > .container-fluid > .navbar-header > ul > li > a#edit-profile:hover {
-  border-radius: 5px;
+#bs-example-navbar-collapse-1 {
+  font-size: 1.2em;
 }
 
-.navbar > .container-fluid > .navbar-header > .navbar-toggle {
-  margin-top: 25px;
+ul.nav.navbar-nav, .navbar-brand {
+  margin-top: 9px;
 }
 
-.navbar > .container-fluid > ul.nav {
-  margin-top: 15px;
-  margin-right: 45px;
+button.navbar-toggle {
+  margin-top: 14px;
 }
 
-.navbar > .container-fluid > .navbar-header > ul > li > img {
-  max-height: 60px;
-  max-width: 60px;
-  border-radius: 50%;
-  margin-top: 15px;
-  margin-left: 15px;
-}
-
-.navbar > .container-fluid > .navbar-header > ul > li > #message-alert {
-  margin-top: 12px;
-  margin-left: 15px;
+#message-alert {
   color: #1dc16f;
+  margin-right: 30px;
+  padding-top: 8px;
 }
 
-.navbar > .container-fluid > .navbar-header > ul > li > #message-alert:hover {
-  border-radius: 5px;
+#navbar-image {
+  max-height: 50px;
+  max-width: 50px;
+  border-radius: 50%;
+  margin-right: 10px;
 }
 
-.navbar > .container-fluid > ul > .dropdown > .dropdown-toggle {
-  font-size: 1.3em;
-  margin-top: 5px;
-}
-
-.navbar > .container-fluid > ul > .dropdown > .dropdown-toggle:hover {
-  border-radius: 5px;
+.navbar-brand {
+  font-family: 'Pompiere', 'Open Sans', 'sans-serif';
+  font-size: 1.9em;
 }
 
 .fa-flag {
@@ -309,8 +313,38 @@ body {
   border-radius: 5px;
 }
 
+/* =================== PROFILE PAGE ================= */
+
+#profile-container {
+  padding-top: 30px;
+}
+
 
 /* ==================== PROJECT PAGE ================= */
+
+#privacy-lock {
+  background-color: rgba(0,0,0,0);
+  border: none;
+  color: #1dc16f;
+  position: absolute;
+  margin-top: 60px;
+}
+
+#privacy-unlock {
+  background-color: rgba(0,0,0,0);
+  border: none;
+  position: absolute;
+  margin-top: 60px;
+}
+
+.privacy-form {
+  display: inline-block;
+
+}
+
+#project-container {
+  padding-top: 15px;
+}
 
 .project-board-container h2, .project-draft-container h2 {
   text-align: center;
@@ -320,6 +354,20 @@ body {
   margin-bottom: 5px;
   display: inline-block;
   margin-right: 30px;
+}
+
+.project-draft-container h2{
+  display: inline-block;
+  margin-left: 38%;
+  text-align: center;
+}
+
+
+.project-title-edit {
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 1.5em;
+  display: block;
 }
 
 .board-list-title-edit {
@@ -333,14 +381,14 @@ body {
   margin-bottom: 5px;
 }
 
-.board-list-link {
+.board-list-link, .draft-list-link {
   display: inline-block;
   max-width: 250px;
   margin-left: 15px;
   color: #1dc16f;
 }
 
-.board-list-link:hover, .board-list-link:focus {
+.board-list-link:hover, .board-list-link:focus, .draft-list-link:hover, .draft-list-link:focus {
   color: #27d87a;
 }
 
@@ -349,6 +397,10 @@ body {
   margin-right: auto;
   min-width: 250px;
   max-width: 350px;
+}
+
+#add-audio-draft {
+  margin-top: 15px;
 }
 
 

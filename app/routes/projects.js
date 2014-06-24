@@ -8,6 +8,7 @@ var Board = traceur.require(__dirname + '/../../app/models/board.js');
 var User = traceur.require(__dirname + '/../../app/models/user.js');
 var _ = require('lodash');
 var moment = require('moment');
+var multiparty = require('multiparty');
 
 
 exports.index = (req, res)=>{
@@ -37,6 +38,19 @@ exports.updateDraftText = (req, res)=>{
     project.updateDraftText(req.body, ()=>{
       project.save(()=>{
         res.render('projects/save-confirmation', {project:project});
+      });
+    });
+  });
+};
+
+exports.updateDraftAudio = (req, res)=>{
+  var form = new multiparty.Form();
+  form.parse(req, (err, fields, files)=>{
+    Project.findById(req.params.projId, (err, project)=>{
+      project.updateDraftAudio(files.audio[0], ()=>{
+        project.save(()=>{
+          res.redirect(`/projects/${project._id}`);
+        });
       });
     });
   });
@@ -82,4 +96,14 @@ exports.getDefinition = (req, res)=>{
 
 exports.getRelatedWords = (req, res)=>{
   res.render('projects/related-words', {data:req.body.data});
+};
+
+exports.updateTitle = (req, res)=>{
+  Project.findById(req.params.projId, (err, project)=>{
+    project.updateTitle(req.body, ()=>{
+      project.save(()=>{
+        res.send();
+      });
+    });
+  });
 };

@@ -31,12 +31,12 @@ function load(app, fn){
 
   app.get('/register', dbg, users.registration);
   app.post('/register', dbg, passport.authenticate('local-register', {
-    successRedirect : '/profile', // redirect to the secure profile section
+    successRedirect : '/dashboard', // redirect to the secure profile section
     failureRedirect : '/register', // redirect back to the register page if there is an error
     failureFlash : true // allow flash messages
   }));
   app.post('/login', dbg, passport.authenticate('local-login', {
-    successRedirect : '/profile', // redirect to the secure profile section
+    successRedirect : '/dashboard', // redirect to the secure profile section
     failureRedirect : '/', // redirect back to the home page if there is an error
     failureFlash : true // allow flash messages
   }));
@@ -45,13 +45,13 @@ function load(app, fn){
   })); // facebook does not provide email by default. Must add scope.
   app.get('/auth/facebook/callback',
   passport.authenticate('facebook', {
-    successRedirect: '/profile',
+    successRedirect: '/dashboard',
     failureRedirect: '/'
   }));
   app.get('/auth/twitter', passport.authenticate('twitter'));
 	app.get('/auth/twitter/callback',
 		passport.authenticate('twitter', {
-			successRedirect : '/profile',
+			successRedirect : '/dashboard',
 			failureRedirect : '/'
 	}));
 
@@ -127,7 +127,7 @@ function load(app, fn){
 
   app.all('*', users.bounce);
   app.get('/profile', dbg, users.profile);
-  app.post('/logout', dbg, users.logout);
+  app.get('/logout', dbg, users.logout);
   app.get('/dashboard', dbg, users.dashboard);
   app.get('/users/password', dbg, users.password);
   app.post('/users/password', dbg, users.updatePassword);
@@ -139,6 +139,8 @@ function load(app, fn){
   app.post('/projects/create', dbg, projects.create);
   app.get('/projects/:projId/draft', dbg, projects.draft);
   app.post('/projects/:projId/draft', dbg, projects.updateDraftText);
+  app.post('/projects/:projId/draftAudio', dbg, projects.updateDraftAudio);
+  app.post('/projects/:projId/updateTitle', dbg, projects.updateTitle);
   app.post('/projects/:projId/destroy', dbg, projects.destroy);
   app.post('/projects/:projId/getDefinition', dbg, projects.getDefinition);
   app.post('/projects/:projId/getRelatedWords', dbg, projects.getRelatedWords);

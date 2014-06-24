@@ -1,32 +1,33 @@
 extends ../shared/template
 
 block content
-  h1.logo= title
-  if(user)
-    form.homepage-logout(method='post', action='/logout')
-      button.btn.btn-default.btn-sm#logout Logout
+  .home-container
+    h1.logo Muse[collective]
+    if(user)
+      a(href='/logout')
+        button.btn.btn-default.btn-sm#logout Logout
 
-  if(message)
-    .alert(style='color: red')
-      p= message
+    if(message)
+      .alert(style='color: red')
+        p= message
 
-  if(!user)
-    .container.login-container
-      .col-md-12
-        .well
-          form(action='/login', method='post')
-            .form-group
-              input(type='email', name='email', placeholder='Email', autofocus=true)
-              br
-              input(type='password', name='password', placeholder='Password')
-              br
-              button#login-button.action-button(type='submit') Login
+    if(!user)
+      .container.login-container
+        .col-md-12
+          .well
+            form(action='/login', method='post')
+              .form-group
+                input(type='email', name='email', placeholder='Email', autofocus=true)
+                br
+                input(type='password', name='password', placeholder='Password')
+                br
+                button#login-button.action-button(type='submit') Login
 
-              hr
-              p
-                | Need an account?
-                a#register-link(href='/register') Register
-              a#facebook-login(href='/auth/facebook')
-                img(src='/img/facebook.png')
-              a#twitter-login(href='/auth/facebook')
-                img(src='/img/twitter.png')
+                hr
+                p
+                  | Need an account?
+                  a#register-link(href='/register') Register
+                a#facebook-login(href='/auth/facebook')
+                  img(src='/img/facebook.png')
+                a#twitter-login(href='/auth/facebook')
+                  img(src='/img/twitter.png')

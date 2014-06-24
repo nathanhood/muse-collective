@@ -1,9 +1,45 @@
 extends ../shared/template
 
 block content
-  .container
+
+  nav.navbar.navbar-default#project-navbar(role='navigation')
+    .container-fluid#project-navbar-container
+      // Brand and toggle get grouped for better mobile display
+      .navbar-header
+        button.navbar-toggle(type='button', data-toggle='collapse', data-target='#bs-example-navbar-collapse-1')
+          span.sr-only Toggle navigation
+          span.icon-bar
+          span.icon-bar
+          span.icon-bar
+        a.navbar-brand(href='/') Muse[collective]
+      // Collect the nav links, forms, and other content for toggling
+      #bs-example-navbar-collapse-1.collapse.navbar-collapse
+        ul.nav.navbar-nav
+          li
+            a(href='/dashboard') Home
+          li
+            a(href='/logout') Logout
+        ul.nav.navbar-nav.navbar-right
+          li
+            a#message-alert(href='#')
+              i.fa.fa-comments.fa-2x
+
+
+  .container#project-container
+    if(project.privacy === 'private')
+      form.privacy-form(action='/projects/#{project._id}/updatePrivacy', method='post')
+        button#privacy-lock
+          i.privacy.fa.fa-lock.fa-3x
+    else
+      form.privacy-form(action='/projects/#{project._id}/updatePrivacy', method='post')
+        button#privacy-unlock
+          i.privacy.fa.fa-unlock-alt.fa-3x
+
+
     .page-header.text-center
-      h1= project.title
+      h1#project-title(data-projId=project._id.toString())= project.title
+      input.project-title-edit.hidden(autofocus=true, value=project.title)
+      i.fa.fa-pencil-square-o click title to edit
 
     .col-sm-6.project-board-container
       .well
@@ -19,7 +55,20 @@ block content
                   i.fa.fa-pencil-square-o edit
     .col-sm-6.project-draft-container
       .well
-        h2 Drafts
+        h2 Draft
+        a.draft-list-link(href='/projects/#{project._id.toString()}/draft')
+          i.fa.fa-pencil-square-o edit
+        .audio-draft-container
+          .well
+            if(project.draftAudio)
+              h3 Audio
+              audio(src=project.draftAudio.filePath, type='audio/mp3', controls=true)
+            h4#add-audio-draft Add/Overwrite Audio Draft
+            form(action='/projects/#{project._id}/draftAudio', method='POST', enctype='multipart/form-data')
+              input(type='file', name='audio')
+              button.action-button Submit
+
+
 
 block scripts
   script(src='/js/es6/compiled/project-show.js')
