@@ -4,6 +4,7 @@ var traceur = require('traceur');
 var Project = traceur.require(__dirname + '/../../app/models/project.js');
 var Board = traceur.require(__dirname + '/../../app/models/board.js');
 var multiparty = require('multiparty');
+var _ = require('lodash');
 
 exports.show = (req, res)=>{
   Board.findById(req.params.boardId, (err, board)=>{
@@ -13,10 +14,13 @@ exports.show = (req, res)=>{
 };
 
 exports.create = (req, res)=>{
-  Project.findById(req.body._id, (err, project)=>{
-    Board.create(project, board=>{
+  Project.findById(req.params.projId, (err, project)=>{
+    var boardObj = project;
+    boardObj.projId = boardObj._id;
+    boardObj = _.omit(boardObj, '_id').valueOf();
+    Board.create(boardObj, board=>{
       project.addBoardId(board._id, ()=>{
-        res.send(board);
+        res.redirect(`/boards/${board._id}`);
       });
     });
   });

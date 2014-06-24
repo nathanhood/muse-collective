@@ -44,6 +44,8 @@ block content
     .col-sm-6.project-board-container
       .well
         h2 Boards
+        form.create-board-form(action='/boards/#{project._id}/create', method='POST')
+          button.action-button Create Board
         if(boards)
           each board in boards
             .board-list-container

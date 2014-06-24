@@ -5,7 +5,11 @@ block content
     h1.logo Muse[collective]
     if(user)
       a(href='/logout')
-        button.btn.btn-default.btn-sm#logout Logout
+        .col-md-5
+        .col-md-2
+          .logout-button-container
+            button.action-button#logout-home-button Logout
+        .col-md-5
 
     if(message)
       .alert(style='color: red')

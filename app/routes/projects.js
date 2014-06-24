@@ -90,7 +90,7 @@ exports.create = (req, res)=>{
             });
           });
         } else {
-            res.redirect(`/projects/${project._id}`);
+            res.redirect(`/projects/${project._id}/draft`);
         }
       });
     });
