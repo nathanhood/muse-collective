@@ -23,11 +23,23 @@ block content
             a#message-alert(href='#')
               i.fa.fa-comments.fa-2x
           li
-            img#navbar-image(src='/img/profile_placeholder.png')
+            if(user.image)
+              img#navbar-image(src=user.image.filePath)
+            else
+              img#navbar-image(src='/img/profile_placeholder.png')
           li
             a#edit-profile(href='/profile') Profile&nbsp
               i.fa.fa-pencil-square-o
 
+  .col-sm-3
+  .col-sm-6
+    .well
+      h3 Upload Profile Picture
+      form(action='/users/updatePhoto', method='POST', enctype='multipart/form-data')
+        input.form-control(type='file', name='photo')
+        br
+        button.action-button Submit
+  .col-sm-3
 
   .container#profile-container
     .row

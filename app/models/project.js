@@ -43,6 +43,32 @@ class Project {
     });
   }
 
+  static sortProjectsByDate(projects, fn){
+    projects.sort((a, b)=>{
+        if (a.dateCreated > b.dateCreated){
+          return 1;
+        }
+        if (a.dateCreate < b.dateCreated){
+          return -1;
+        }
+        // a must be equal to b
+        return 0;
+    });
+    fn(projects);
+  }
+
+  static takeFiveProjects(projects, fn){
+    var recentProjects = [];
+    if(projects.length >= 5){
+      for(var i = 0; i < 5; i++){
+        recentProjects.push(projects[i]);
+      }
+      fn(recentProjects);
+    }else{
+      fn(projects);
+    }
+  }
+
 
   save(fn){
     projectCollection.save(this, ()=>fn());

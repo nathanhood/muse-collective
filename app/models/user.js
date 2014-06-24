@@ -5,6 +5,10 @@ var traceur = require('traceur');
 var Base = traceur.require(__dirname + '/base.js');
 var bcrypt = require('bcrypt');
 var Mongo = require('mongodb');
+var fs = require('fs');
+var path = require('path');
+var crypto = require('crypto');
+var rimraf = require('rimraf');
 
 class User {
   constructor(){
@@ -32,7 +36,7 @@ class User {
     this.influences = [];
     this.genres = [];
     this.bio = null;
-    this.images = null;
+    this.image = null;
 
   }
 
@@ -103,6 +107,66 @@ class User {
     this.bio = obj.bio;
     fn(this);
   }
+
+  updatePhoto(photo, fn){
+    if(this.image){
+      console.log('============ THIS.IMAGE==========');
+      var normPath = path.normalize(`${__dirname}/../static/${this.image.filePath}`);
+
+      rimraf(normPath, (err)=>{
+        if(photo.size){
+          var name = crypto.randomBytes(12).toString('hex') + path.extname(photo.originalFilename).toLowerCase();
+          var file = `/img/${this._id}/${name}`;
+
+          var newPhoto = {};
+          newPhoto.fileName = name;
+          newPhoto.filePath = file;
+          newPhoto.origFileName = photo.originalFilename;
+
+          var userDir = `${__dirname}/../static/img/${this._id}`;
+          // var projDir = `${userDir}/${this._id}`;
+          var fullDir = `${userDir}/${name}`;
+
+          if(!fs.existsSync(userDir)){fs.mkdirSync(userDir);}
+          // if(!fs.existsSync(projDir)){fs.mkdirSync(projDir);}
+
+          fs.renameSync(photo.path, fullDir);
+          this.image = newPhoto;
+          fn(this);
+
+        }else{
+          fn(null);
+        }
+      });
+    } else {
+      if(photo.size){
+        console.log(photo);
+        var name = crypto.randomBytes(12).toString('hex') + path.extname(photo.originalFilename).toLowerCase();
+        var file = `/img/${this._id}/${name}`;
+
+        var newPhoto = {};
+        newPhoto.fileName = name;
+        newPhoto.filePath = file;
+        newPhoto.origFileName = photo.originalFilename;
+
+        var userDir = `${__dirname}/../static/img/${this._id}`;
+        // var projDir = `${userDir}/${this._id}`;
+        var fullDir = `${userDir}/${name}`;
+
+        if(!fs.existsSync(userDir)){fs.mkdirSync(userDir);}
+        // if(!fs.existsSync(projDir)){fs.mkdirSync(projDir);}
+
+        fs.renameSync(photo.path, fullDir);
+        this.image = newPhoto;
+        console.log('============ USER ===========');
+        console.log(this);
+        fn(this);
+      }else{
+        fn(null);
+      }
+    }
+  }
+
 
   static findByTwitterId(id, fn){
     userCollection.findOne({'twitter.id':id}, (err, user)=>{

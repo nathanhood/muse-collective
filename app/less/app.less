@@ -119,9 +119,14 @@ body {
   display: none;
 }
 
-// body a:hover {
-//   color: orange;
-// }
+.link {
+  color: #1dc16f;
+}
+
+.link:hover, .link:focus {
+  color: #27d87a;
+}
+
 
 
 /* ============= HOME PAGE ============ */
@@ -197,6 +202,7 @@ body {
 
 /* =================================== */
 /* Navbar customization */
+
 
 .navbar-default {
   min-height: 65px !important;
@@ -319,6 +325,46 @@ button.navbar-toggle {
   padding-top: 30px;
 }
 
+/* ==================== VIEW ALL PROJECTS PAGE =============== */
+
+#project-listing {
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#project-listing-container .well {
+  padding-top: 40px;
+}
+
+#project-listing h2 {
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-right: 40px;
+  display: inline-block;
+}
+
+#project-listing span {
+  font-size: 1.5em;
+  font-weight: 100;
+  margin-right: 100px;
+}
+
+#project-listing .well {
+  padding-top: 20px;
+  padding-bottom: 15px;
+}
+
+.project-list-link {
+  display: block;
+  color: #1dc16f;
+}
+
+.project-list-link:hover, .project-list-link:focus {
+  color: #27d87a;
+}
+
+
 
 /* ==================== PROJECT PAGE ================= */
 
@@ -401,6 +447,31 @@ button.navbar-toggle {
 
 #add-audio-draft {
   margin-top: 15px;
+}
+
+/* ==================== DASHBOARD PAGE ================== */
+
+.recent-project h3 {
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-right: 20px;
+  display: inline-block;
+}
+
+.recent-project span {
+  font-size: 1.2em;
+  font-weight: 100;
+  margin-right: 100px;
+}
+
+.recent-project a {
+  display: block;
+  color: #1dc16f;
+}
+
+#view-all-projects {
+  margin-bottom: 15px;
+  display: block;
 }
 
 
@@ -663,6 +734,19 @@ button.navbar-toggle {
 }
 
 
+/* ================== Change Password Page ================= */
+
+#change-password-form input{
+  margin-bottom: 15px;
+}
+
+/* =================== REGISTRATION PAGE ================== */
+
+#registration-form input:focus {
+  outline: none;
+  border: black !important;
+  box-shadow: 0 0 5px #1dc16f !important;
+}
 
 
 /* --------------- START OF IMPORTED SETTINGS ---------- */

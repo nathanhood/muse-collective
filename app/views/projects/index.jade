@@ -1,5 +1,38 @@
 extends ../shared/template
 
 block content
-  h1= title
-  
+
+  nav.navbar.navbar-default#project-navbar(role='navigation')
+    .container-fluid#project-navbar-container
+      // Brand and toggle get grouped for better mobile display
+      .navbar-header
+        button.navbar-toggle(type='button', data-toggle='collapse', data-target='#bs-example-navbar-collapse-1')
+          span.sr-only Toggle navigation
+          span.icon-bar
+          span.icon-bar
+          span.icon-bar
+        a.navbar-brand(href='/') Muse[collective]
+      // Collect the nav links, forms, and other content for toggling
+      #bs-example-navbar-collapse-1.collapse.navbar-collapse
+        ul.nav.navbar-nav
+          li
+            a(href='/dashboard') Home
+          li
+            a(href='/logout') Logout
+
+  .page-header.text-center
+    h1 View Projects
+
+  if(projects.length < 4)
+    .col-sm-1
+    .col-sm-10#project-listing-container
+      .well
+        #project-listing
+          .well
+            each project in projects
+              h2= project.title
+              span= project.dateCreated
+              audio(src=project.draftAudio.filePath, type='audio/mp3', controls=true)
+              a.project-list-link(href='/projects/#{project._id.toString()}')
+                i.fa.fa-pencil-square-o edit
+    .col-sm-1

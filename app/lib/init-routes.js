@@ -131,8 +131,7 @@ function load(app, fn){
   app.get('/dashboard', dbg, users.dashboard);
   app.get('/users/password', dbg, users.password);
   app.post('/users/password', dbg, users.updatePassword);
-  // app.post('/profile', dbg, users.updateProfile);
-  app.get('/users/:id', dbg, users.publicProfile);
+  app.post('/users/updatePhoto', dbg, users.updatePhoto);
 
   app.get('/projects', dbg, projects.index);
   app.get('/projects/:projId', dbg, projects.show);

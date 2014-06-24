@@ -12,7 +12,18 @@ var multiparty = require('multiparty');
 
 
 exports.index = (req, res)=>{
-  res.render('projects/index', {title:'View Projects'});
+  Project.findAllByUserId(req.user._id, (projects)=>{
+    console.log(projects);
+    if(projects.length > 0){
+      projects = projects.map(project=>{
+        project.dateCreated = moment(project.dateCreated).format('MMMM Do YYYY');
+        return project;
+      });
+      res.render('projects/index', {projects:projects, title:'View Projects'});
+    }else{
+      res.redirect('/dashboard');
+    }
+  });
 };
 
 exports.show = (req, res)=>{
