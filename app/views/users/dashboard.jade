@@ -20,9 +20,9 @@ block content
           li
             a(href='/logout') Logout
         ul.nav.navbar-nav.navbar-right
-          li
-            a#message-alert(href='#')
-              i.fa.fa-comments.fa-2x
+          li#create-project-li
+            a#create-project-link(href='#') Create Project&nbsp&nbsp
+              i.fa.fa-plus
           li
             if(user.image)
               img#navbar-image(src=user.image.filePath)
@@ -33,7 +33,33 @@ block content
               i.fa.fa-pencil-square-o
 
 
-  .container
+  .container.dashboard-container
+    .col-sm-12.create-project.page-header
+      .well
+        h2#create-project-heading Create Project
+        .form-group
+          .well
+            form#create-project(action='/projects/create', method='POST')
+              h4 Project Title
+              input#project-title-input.form-control(type='text', name='title', placeholder='Untitled')
+              #select-type
+                h4 Project Type
+                select.form-control(name='type') Select Type
+                  option Song
+                  option Poem
+                  option Short Story
+                  option Other
+              h4.hidden Do you want outside opinion?
+              select.hidden.form-control(name='privacy') Select One
+                option(value='private') Private
+                option(value='public') Public
+              #starting-point
+                h4 Where would you like to begin?
+                select.form-control(name='status') Select One
+                  option(value='brainstorming') Start Brainstorming (creativity board)
+                  option(value='drafting') Start Drafting
+              button#submit-create-project.action-button Create
+
     .col-sm-4.recent-projects
       .well
         h2#recent-projects-heading Recent Projects
@@ -49,33 +75,10 @@ block content
         else
           p No projects yet. Start Creating...
 
-    .col-sm-5.create-project
-      .well
-        h2#create-project-heading Create Project
-        form#create-project(action='/projects/create', method='POST')
-          .form-group
-            h4 Project Title
-            input#project-title-input.form-control(type='text', name='title', placeholder='Untitled')
-            h4 Project Type
-            select.form-control(name='type') Select Type
-              option Song
-              option Poem
-              option Short Story
-              option Other
-            h4 Do you want outside opinion?
-            select.form-control(name='privacy') Select One
-              option(value='private') Private
-              option(value='public') Public
-            h4 Where would you like to begin?
-            select.form-control(name='status') Select One
-              option(value='brainstorming') Start Brainstorming (creativity board)
-              option(value='drafting') Start Drafting
-            button#submit-create-project.action-button Create
-
     //may want to make this a menu dropdown
-    .col-sm-3.collaborators
+    .col-sm-4.collaborators
       .well
-        h3 Collaborators
+        h3 Collaborations
 
 block scripts
   script(src='/js/es6/compiled/dashboard.js')

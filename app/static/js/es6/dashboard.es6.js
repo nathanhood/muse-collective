@@ -7,7 +7,12 @@
   $(document).ready(init);
 
   function init(){
-    // $('#submit-create-project').click(createProject);
+    $('#create-project-link').click(toggleProjectForm);
+  }
+
+  function toggleProjectForm(event){
+    $('.create-project').slideToggle('slow');
+    event.preventDefault();
   }
 
   // function createProject(event){
