@@ -14,6 +14,20 @@
     $('.container').on('blur', '.project-title-edit', saveProjectTitle);
     $('.project-title-edit').keypress(enterSaveProjectTitle);
     $('.project-collaborators').on('click', '.remove-collaborator', removeCollaborator);
+    $('.project-board-container').on('click', '.delete-board-link', destroyBoard);
+  }
+
+  function destroyBoard(event){
+    var boardId = $(this).siblings('.board-list-title').attr('data-boardId');
+    var boardContainer = $(this).parent().parent();
+
+    var r = confirm('Are you sure you want to delete this board?');
+    if (r === true) {
+      ajax(`/boards/${boardId}/destroy`, 'POST', {}, ()=>{
+        $(boardContainer).remove();
+      });
+    }
+    event.preventDefault();
   }
 
   function removeCollaborator(event){

@@ -103,7 +103,11 @@ exports.create = (req, res)=>{
 };
 
 exports.destroy = (req, res)=>{
-  res.redirect('/dashboard');
+  Project.findById(req.params.projId, (err, project)=>{
+    project.destroy(()=>{
+      res.send({});
+    });
+  });
 };
 
 exports.getDefinition = (req, res)=>{

@@ -68,7 +68,7 @@ block content
           each project in projects
             .current-project
               .well
-                h3= project.title
+                h3.project-list-title(data-projId=project._id.toString())= project.title
                 span= project.dateCreated
                 p=project.type
                 a.link(href='/projects/#{project._id.toString()}')

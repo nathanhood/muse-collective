@@ -54,7 +54,11 @@ exports.update = (req, res)=>{
 };
 
 exports.destroy = (req, res)=>{
-  // res.redirect(`/projects/${project._id}`);
+  Board.findById(req.params.boardId, (err, board)=>{
+    board.destroy(()=>{
+      res.send({});
+    });
+  });
 };
 
 exports.processPhoto = (req, res)=>{
