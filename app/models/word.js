@@ -8,8 +8,10 @@ class Word {
     this.x = obj.x;
     this.y = obj.y;
     this.classes = [];
-    obj.classes.forEach(c=>{this.classes.push(c);});
-    this.zIndex = obj.zIndex;
+    // if(obj.classes.length > 0){
+    //   obj.classes.forEach(c=>{this.classes.push(c);});
+    //   this.zIndex = obj.zIndex;
+    // }
   }
 
   createId(){

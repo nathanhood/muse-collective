@@ -68,6 +68,9 @@ function ajax(url, verb, data={}, success=r=>console.log(r), dataType='html'){//
     $('#random-poetry').click(hideMenu);
     $('#board').on('click', '.word-delete', removeWord);
     $('#random-poetry').click(toggleContainer);
+    $('#random-words').on('mousedown', '.word', checkForMove);
+    $('#random-words').on('mouseup', '.word', unbindMouseMove);
+
 
     /* Dynamically Generating Notepad */
     $('#notepad').click(retrieveDraft);
@@ -76,7 +79,6 @@ function ajax(url, verb, data={}, success=r=>console.log(r), dataType='html'){//
     /* Saving Board */
     $('#save-board').click(saveBoard);
   }
-
 
   function menuZIndex(){
     $('.bt-menu').css('z-index', (counter+30));
@@ -94,7 +96,10 @@ function ajax(url, verb, data={}, success=r=>console.log(r), dataType='html'){//
   }
 
   function checkNewElements(){
-    $('.new').css('z-index', counter);
+    var newClass = $('.new');
+    console.log(newClass);
+    console.log(counter);
+    $('.new').css('z-index', counter++);
     $('.new').removeClass('new');
   }
 
@@ -222,7 +227,20 @@ function ajax(url, verb, data={}, success=r=>console.log(r), dataType='html'){//
 
   /* Random Poetry API calls - wordnik */
 
+  function unbindMouseMove(){
+    $(window).unbind('mousemove');
+  }
+
+  function checkForMove(){
+    $(this).mousemove(function() {
+        $(this).css('position', 'absolute');
+        $(this).unbind('mousemove');
+    });
+  }
+
   function toggleContainer(){
+    $('#random-words').css('display', 'none');
+    console.log('inside if statement');
     $('#random-words').slideToggle('slow');
   }
 
@@ -261,6 +279,7 @@ function ajax(url, verb, data={}, success=r=>console.log(r), dataType='html'){//
         var div = $('<div class="word noun draggable">').text(obj.word);
         div = $(div).append('<div class="word-delete">');
         $('#nouns-container').append(div);
+        $('.draggable').draggable();
       });
     });
   }
@@ -272,6 +291,7 @@ function ajax(url, verb, data={}, success=r=>console.log(r), dataType='html'){//
         var div = $('<div class="word verb draggable">').text(obj.word);
         div = $(div).append('<div class="word-delete">');
         $('#verbs-container').append(div);
+        $('.draggable').draggable();
       });
     });
   }
@@ -283,6 +303,7 @@ function ajax(url, verb, data={}, success=r=>console.log(r), dataType='html'){//
         var div = $('<div class="word adjective draggable">').text(obj.word);
         div = $(div).append('<div class="word-delete">');
         $('#adjectives-container').append(div);
+        $('.draggable').draggable();
       });
     });
   }
@@ -294,17 +315,19 @@ function ajax(url, verb, data={}, success=r=>console.log(r), dataType='html'){//
         var div = $('<div class="word adverb draggable">').text(obj.word);
         div = $(div).append('<div class="word-delete">');
         $('#adverbs-container').append(div);
+        $('.draggable').draggable();
       });
     });
   }
 
   function getRandomPronouns(){
-    var url = `http://api.wordnik.com:80/v4/words.json/randomWords?hasDictionaryDef=false&includePartOfSpeech=pronoun&minCorpusCount=10000&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=1&maxLength=16&limit=4&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5`;
+    var url = `http://api.wordnik.com:80/v4/words.json/randomWords?hasDictionaryDef=false&includePartOfSpeech=pronoun&minCorpusCount=100000&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=1&maxLength=16&limit=4&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5`;
     $.getJSON(url, function(data){
       data.forEach(obj=>{
         var div = $('<div class="word pronoun draggable">').text(obj.word);
         div = $(div).append('<div class="word-delete">');
         $('#pronouns-container').append(div);
+        $('.draggable').draggable();
       });
     });
   }
@@ -316,6 +339,7 @@ function ajax(url, verb, data={}, success=r=>console.log(r), dataType='html'){//
         var div = $('<div class="word auxiliary draggable">').text(obj.word);
         div = $(div).append('<div class="word-delete">');
         $('#auxiliaries-container').append(div);
+        $('.draggable').draggable();
       });
     });
   }
@@ -327,6 +351,7 @@ function ajax(url, verb, data={}, success=r=>console.log(r), dataType='html'){//
         var div = $('<div class="word preposition draggable">').text(obj.word);
         div = $(div).append('<div class="word-delete">');
         $('#prepositions-container').append(div);
+        $('.draggable').draggable();
       });
     });
   }
@@ -364,12 +389,6 @@ function ajax(url, verb, data={}, success=r=>console.log(r), dataType='html'){//
     });
   }
 
-  // <form>
-  // <h3>Add Image URL</h3>
-  // <input class='form-control', type='text'>
-  // <button class='action-button', id='url-image', style='margin-top: 10px;'>Add Online Image</button>
-  // </form>
-
   function appendPhotoContainer(){
     var boardId = $('#board').attr('data-id');
     ajax(`/boards/${boardId}/photoContainer`, 'POST', null, html=>{
@@ -397,7 +416,7 @@ function ajax(url, verb, data={}, success=r=>console.log(r), dataType='html'){//
 
   function addGreenNote(event){
     $('#note-container').remove();
-    var note = `<div class='sticky-note green draggable', style='top: 70px; left: 160px;'>
+    var note = `<div class='sticky-note green draggable new', style='top: 70px; left: 160px;'>
                 <div class='sticky-note-inner'>
                 <div class='sticky-note-delete'></div>
                 <textarea class='sticky-note-title-edit', resize=none, maxlength='40'>Add Text</textarea>
@@ -411,7 +430,7 @@ function ajax(url, verb, data={}, success=r=>console.log(r), dataType='html'){//
 
   function addBlueNote(event){
     $('#note-container').remove();
-    var note = `<div class='sticky-note blue draggable', style='top: 70px; left: 160px;'>
+    var note = `<div class='sticky-note blue draggable new', style='top: 70px; left: 160px;'>
                 <div class='sticky-note-inner'>
                 <div class='sticky-note-delete'></div>
                 <textarea class='sticky-note-title-edit', resize=none, maxlength='40'>Add Text</textarea>

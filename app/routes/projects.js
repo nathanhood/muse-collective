@@ -122,7 +122,7 @@ exports.updateTitle = (req, res)=>{
 exports.inviteCollaborator = (req, res)=>{
   var projId = req.params.projId;
   Project.inviteCollaborator(projId, req.body, ()=>{
-    res.redirect('/dashboard');
+    res.redirect(`/projects/${projId}`);
   });
 };
 

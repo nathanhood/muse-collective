@@ -344,6 +344,21 @@ button.navbar-toggle {
   padding-top: 30px;
 }
 
+#image-password-container {
+  padding-top: 30px;
+  padding-bottom: 0;
+}
+
+#facebook-account-logo {
+  color: #4c66a4 !important;
+}
+
+#facebook-account-button {
+  background-color: #4c66a4;
+  border-color: #4c66a4;
+  padding: 14px 28px 14px 28px;
+}
+
 /* ==================== VIEW ALL PROJECTS PAGE =============== */
 
 #project-listing {
@@ -469,6 +484,10 @@ button.navbar-toggle {
   margin-right: auto;
   min-width: 250px;
   max-width: 350px;
+}
+
+.project-collaborators .well {
+  width: 250px !important;
 }
 
 #add-audio-draft {
@@ -646,9 +665,18 @@ button.navbar-toggle {
 
 #rhyme-button, #dictionary-button, #clear-dictionary, #clear-rhymes {
   background-color: white;
+  box-shadow: 0 0 5px;
   border: none;
   margin-left: 10px;
   padding: 7px;
+}
+
+#rhyme-button:hover, #dictionary-button:hover {
+  box-shadow: 0 0 6px #1dc16f;
+}
+
+#clear-dictionary:hover, #clear-rhymes:hover {
+  box-shadow: 0 0 6px #e22a2a;
 }
 
 #RhymeBrainInput {
@@ -994,14 +1022,14 @@ button.navbar-toggle {
 /* Random Word Poetry */
 
 #random-words {
-  // float: right;
-  position: absolute;
+  position: relative;
   width: 100%;
   height: 300px;
   display: inline-block;
-  bottom: 0px;
+  top: 0px;
   padding: 0px;
   display: none;
+  // border: 1px solid black;
 }
 
 .word-delete {
@@ -1014,20 +1042,59 @@ button.navbar-toggle {
   background-size: contain;
 }
 
-#nouns-container, #verbs-container, #adjectives-container {
-  height: 100%;
+#nouns-container {
+  position: absolute;
+  height: 300px;
   width: 12%;
   margin: 0;
   display: inline-block;
-  top: -37px;
+  bottom: 0px;
+  left: 6%;
+}
+
+#verbs-container {
+  position: absolute;
+  height: 300px;
+  width: 12%;
+  margin: 0;
+  display: inline-block;
+  bottom: 0px;
+  left: 18%;
+}
+
+#adjectives-container {
+  position: absolute;
+  height: 300px;
+  width: 12%;
+  margin: 0;
+  display: inline-block;
+  bottom: 0px;
+  left: 30%;
 }
 
 #auxiliaries-container, #prepositions-container, #adverbs-container, #pronouns-container {
-  height: 50%;
+  position: absolute;
+  height: 300px;
   width: 12%;
   margin: 0;
   display: inline-block;
-  top: -37px;
+  bottom: 0px;
+}
+
+#auxiliaries-container {
+  left: 42%;
+}
+
+#prepositions-container {
+  left: 54%;
+}
+
+#adverbs-container {
+  left: 66%;
+}
+
+#pronouns-container {
+  left: 78%;
 }
 
 .word {

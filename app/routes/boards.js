@@ -96,9 +96,9 @@ exports.removeFileFromDirectory = (req, res)=>{
 };
 
 exports.retrieveDraft = (req, res)=>{
-  Project.findByBoardId(req.params.boardId, project=>{
-    res.render('boards/notepad', {draft:project.draftText});
-  });
+  // Project.findByBoardId(req.params.boardId, project=>{
+    res.render('boards/notepad');
+  // });
 };
 
 exports.updateTitle = (req, res)=>{
