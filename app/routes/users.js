@@ -10,15 +10,19 @@ var multiparty = require('multiparty');
 
 exports.dashboard = (req, res)=>{
   var user = req.user;
-  Project.findAllByUserId(req.user._id, projects=>{
+  Project.findAllByUserId(user._id, projects=>{
     if(projects.length > 0){
       Project.sortProjectsByDate(projects, p=>{
-        Project.takeFiveProjects(p, recentProjects=>{
-          recentProjects = recentProjects.map(proj=>{
-            proj.dateCreated = moment(proj.dateCreated).format('MMMM Do YYYY');
-            return proj;
+        p = p.map(proj=>{
+          proj.dateCreated = moment(proj.dateCreated).format('MMMM Do YYYY');
+          return proj;
+        });
+        Project.findCollaborationsByUserId(user._id, (collabs)=>{
+          collabs = collabs.map(c=>{
+            c.dateCreated = moment(c.dateCreated).format('MMMM Do YYYY');
+            return c;
           });
-          res.render('users/dashboard', {projects:recentProjects, user:user, title:'MC: Dashboard'});
+          res.render('users/dashboard', {projects:p, user:user, collaborations:collabs, title:'MC: Dashboard'});
         });
       });
     }else{

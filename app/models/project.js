@@ -76,6 +76,12 @@ class Project {
     sendVerificationEmail(messageInfo, fn);
   }
 
+  static findCollaborationsByUserId(userId, fn){
+    projectCollection.find({collaborators:userId}).toArray((err, projects)=>{
+      fn(projects);
+    });
+  }
+
 
   save(fn){
     projectCollection.save(this, ()=>fn());

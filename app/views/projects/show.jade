@@ -42,7 +42,7 @@ block content
       input.project-title-edit.hidden(autofocus=true, value=project.title)
       i.fa.fa-pencil-square-o click title to edit
 
-    .col-sm-6.project-board-container
+    .col-sm-5.project-board-container
       .well
         h2 Boards
         form.create-board-form(action='/boards/#{project._id}/create', method='POST')
@@ -56,7 +56,7 @@ block content
                 p.board-list-date= board.dateCreated
                 a.board-list-link(href='/boards/#{board._id.toString()}')
                   i.fa.fa-pencil-square-o edit
-    .col-sm-6.project-draft-container
+    .col-sm-5.project-draft-container
       .well
         h2 Draft
         a.draft-list-link(href='/projects/#{project._id.toString()}/draft')
@@ -70,6 +70,16 @@ block content
             form(action='/projects/#{project._id}/draftAudio', method='POST', enctype='multipart/form-data')
               input(type='file', name='audio')
               button.action-button Submit
+    .col-sm-2.project-collaborators
+      .well
+        h5(style='font-weight: 600;') Created By
+        p(style='font-size: 14px;')= user.local.email
+        if(collaborators)
+          h5(style='font-weight: 600;') Collaborators
+          each collaborator in collaborators
+            ul
+              li= collaborator.email
+
 
   .modal.fade#messageModal(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
     .modal-dialog

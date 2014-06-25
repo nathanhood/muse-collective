@@ -58,27 +58,39 @@ block content
                 select.form-control(name='status') Select One
                   option(value='brainstorming') Start Brainstorming (creativity board)
                   option(value='drafting') Start Drafting
-              button#submit-create-project.action-button Create
+              button#submit-create-project.save-button Create
 
-    .col-sm-4.recent-projects
+    .col-sm-6.current-projects
       .well
-        h2#recent-projects-heading Recent Projects
+        h2#current-projects-heading Current Projects
         if(projects)
-          a#view-all-projects.link(href='/projects') View All
+          //- a#view-all-projects.link(href='/projects') View All
           each project in projects
-            .recent-project
+            .current-project
               .well
                 h3= project.title
                 span= project.dateCreated
+                p=project.type
                 a.link(href='/projects/#{project._id.toString()}')
                   i.fa.fa-pencil-square-o edit
+
         else
           p No projects yet. Start Creating...
-
     //may want to make this a menu dropdown
-    .col-sm-4.collaborators
+    .col-sm-6.collaborators
       .well
-        h3 Collaborations
+        h2 Collaborations
+        if(collaborations)
+          each collaboration in collaborations
+            .collaboration-project
+              .well
+                h3= collaboration.title
+                span= collaboration.dateCreated
+                a.link(href='/projects/#{collaboration._id.toString()}')
+                  i.fa.fa-pencil-square-o edit
+                p= collaboration.type
+        else
+          p You do not have any collaborations at this time...
 
 block scripts
   script(src='/js/es6/compiled/dashboard.js')

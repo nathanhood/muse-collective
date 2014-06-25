@@ -33,7 +33,7 @@ exports.show = (req, res)=>{
         board.dateCreated = moment(board.dateCreated).format('MMMM Do YYYY');
         return board;
       });
-      res.render('projects/show', {boards:boards, project:project, title:`MC: ${project.title}`});
+      res.render('projects/show', {boards:boards, project:project, user:req.user, title:`MC: ${project.title}`});
     });
   });
 };
