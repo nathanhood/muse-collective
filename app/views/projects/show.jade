@@ -21,7 +21,7 @@ block content
             a(href='/logout') Logout
         ul.nav.navbar-nav.navbar-right
           li
-            a#message-alert(href='#')(type='submit', data-toggle='modal', data-target='#messageModal')
+            a#message-alert(href='#', type='submit', data-toggle='modal', data-target='#messageModal')
               span Collaborate&nbsp
               i.fa.fa-comments.fa-2x
 
@@ -73,12 +73,24 @@ block content
     .col-sm-2.project-collaborators
       .well
         h5(style='font-weight: 600;') Created By
-        p(style='font-size: 14px;')= user.local.email
+        if(user.image)
+          img#navbar-image(src=creator.image.filePath)
+        else
+          img#navbar-image(src='/img/profile_placeholder.png')
+        span(style='font-size: 14px;', data-creatorid=creator._id)= creator.local.email
         if(collaborators)
           h5(style='font-weight: 600;') Collaborators
           each collaborator in collaborators
-            ul
-              li= collaborator.email
+            if(collaborator.image)
+              img#navbar-image(src=collaborator.image.filePath)
+            else
+              img#navbar-image(src='/img/profile_placeholder.png')
+            span(style='font-size: 14px;')= collaborator.local.email
+            if(creator._id.toString() === user._id.toString())
+              a.remove-collaborator.link(href='#', data-collaboratorId=collaborator._id.toString())
+                i.fa.fa-minus-square
+
+
 
 
   .modal.fade#messageModal(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')

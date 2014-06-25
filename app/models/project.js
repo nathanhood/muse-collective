@@ -9,6 +9,7 @@ var path = require('path');
 var crypto = require('crypto');
 var rimraf = require('rimraf');
 var request = require('request');
+var _ = require('lodash');
 
 class Project {
   static create(obj, fn){
@@ -97,6 +98,19 @@ class Project {
         });
       });
     });
+  }
+
+  removeCollaborator(collaboratorId, fn){
+    this.collaborators = this.collaborators.map(c=>{
+      return c.toString();
+    });
+    _.pull(this.collaborators, collaboratorId).valueOf();
+    this.collaborators = this.collaborators.map(c=>{
+      return Mongo.ObjectID(c);
+    });
+    console.log('========== COLLABORATORS ARRAY ==========');
+    console.log(this.collaborators);
+    fn(this);
   }
 
   updateTitle(obj, fn){

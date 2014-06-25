@@ -13,6 +13,22 @@
     $('#project-title').click(editTitle);
     $('.container').on('blur', '.project-title-edit', saveProjectTitle);
     $('.project-title-edit').keypress(enterSaveProjectTitle);
+    $('.project-collaborators').on('click', '.remove-collaborator', removeCollaborator);
+  }
+
+  function removeCollaborator(event){
+    var projId = $('#project-title').attr('data-projId');
+    var collabId = $(this).attr('data-collaboratorId');
+    var image = $(this).prev().prev('img');
+    var email = $(this).prev('span');
+    var button = $(this);
+    ajax(`/projects/${projId}/removeCollaborator`, 'POST', {collaboratorId:collabId}, ()=>{
+      console.log('RETURNED AJAX RESPONSE');
+      $(image).remove();
+      $(email).remove();
+      $(button).remove();
+    });
+    event.preventDefault();
   }
 
   function editTitle(){

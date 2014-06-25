@@ -28,12 +28,17 @@ exports.index = (req, res)=>{
 
 exports.show = (req, res)=>{
   Project.findById(req.params.projId, (err, project)=>{
-    Board.findAllByProjectId(project._id, boards=>{
-      boards = boards.map(board=>{
-        board.dateCreated = moment(board.dateCreated).format('MMMM Do YYYY');
-        return board;
+    User.findById(project.userId, (err, creator)=>{
+      User.findAllById(project.collaborators, (collaborators)=>{
+        Board.findAllByProjectId(project._id, boards=>{
+          boards = boards.map(board=>{
+            board.dateCreated = moment(board.dateCreated).format('MMMM Do YYYY');
+            return board;
+          });
+          res.render('projects/show', {boards:boards, project:project, user:req.user, creator:creator,
+            collaborators:collaborators, title:`MC: ${project.title}`});
+        });
       });
-      res.render('projects/show', {boards:boards, project:project, user:req.user, title:`MC: ${project.title}`});
     });
   });
 };
@@ -146,4 +151,16 @@ exports.inviteConfirmRedirect = (req, res)=>{
 exports.inviteError = (req, res)=>{
   res.render('projects/invitationError', {title:'MC: Error', registerMessage: req.flash('registerMessage'), loginMssage: req.flash('loginMessage'),
   credentialsMessage:req.flash('error')});
+};
+
+exports.removeCollaborator = (req, res)=>{
+  console.log('========== INSIDE ROUTES ==========');
+  Project.findById(req.params.projId, (err, project)=>{
+    project.removeCollaborator(req.body.collaboratorId, ()=>{
+      project.save(()=>{
+        console.log('========== POST SAVE ==========');
+        res.send();
+      });
+    });
+  });
 };

@@ -161,6 +161,7 @@ function load(app, fn){
   app.post('/projects/:projId/getDefinition', dbg, projects.getDefinition);
   app.post('/projects/:projId/getRelatedWords', dbg, projects.getRelatedWords);
   app.post('/projects/:projId/inviteCollaborator', dbg, projects.inviteCollaborator);
+  app.post('/projects/:projId/removeCollaborator', dbg, projects.removeCollaborator);
 
   app.get('/boards/:boardId', dbg, boards.show);
   app.post('/boards/removeDirFile', dbg, boards.removeFileFromDirectory);

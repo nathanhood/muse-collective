@@ -186,6 +186,12 @@ class User {
     });
   }
 
+  static findAllById(array, fn){
+    userCollection.find({_id: { $in: array }}).toArray((err, users)=>{
+      fn(users);
+    });
+  }
+
   static findById(id, fn){
     Base.findById(id, userCollection, User, fn);
   }
