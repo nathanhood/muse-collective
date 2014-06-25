@@ -93,6 +93,7 @@ function ajax(url, verb, data={}, success=r=>console.log(r), dataType='html'){//
   function zCounter(){
     counter++;
     $(this).css('z-index', counter);
+    $('#save-board').css('z-index', counter++);
   }
 
   function checkNewElements(){

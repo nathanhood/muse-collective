@@ -108,8 +108,6 @@ class Project {
     this.collaborators = this.collaborators.map(c=>{
       return Mongo.ObjectID(c);
     });
-    console.log('========== COLLABORATORS ARRAY ==========');
-    console.log(this.collaborators);
     fn(this);
   }
 

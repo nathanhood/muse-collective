@@ -27,13 +27,13 @@ block content
 
 
   .container#project-container
-    if(project.privacy === 'private')
+    if(collaborators.length === 0)
       form.privacy-form(action='/projects/#{project._id}/updatePrivacy', method='post')
-        button#privacy-lock
+        button#collaboration-lock
           i.privacy.fa.fa-lock.fa-3x
     else
       form.privacy-form(action='/projects/#{project._id}/updatePrivacy', method='post')
-        button#privacy-unlock
+        button#collaboration-unlock
           i.privacy.fa.fa-unlock-alt.fa-3x
 
 
@@ -56,6 +56,8 @@ block content
                 p.board-list-date= board.dateCreated
                 a.board-list-link(href='/boards/#{board._id.toString()}')
                   i.fa.fa-pencil-square-o edit
+                a.delete-board-link(href='#')
+                  i.fa.fa-exclamation-triangle delete
     .col-sm-5.project-draft-container
       .well
         h2 Draft
@@ -78,7 +80,7 @@ block content
         else
           img#navbar-image(src='/img/profile_placeholder.png')
         span(style='font-size: 14px;', data-creatorid=creator._id)= creator.local.email
-        if(collaborators)
+        if(collaborators.length > 0)
           h5(style='font-weight: 600;') Collaborators
           each collaborator in collaborators
             if(collaborator.image)

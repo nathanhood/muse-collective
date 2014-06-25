@@ -409,7 +409,7 @@ button.navbar-toggle {
   box-shadow: 0 0 5px #1dc16f !important;
 }
 
-#privacy-lock {
+#collaboration-lock, #collaboration-unlock {
   background-color: rgba(0,0,0,0);
   border: none;
   color: #1dc16f;
@@ -417,12 +417,12 @@ button.navbar-toggle {
   margin-top: 60px;
 }
 
-#privacy-unlock {
-  background-color: rgba(0,0,0,0);
-  border: none;
-  position: absolute;
-  margin-top: 60px;
-}
+// #collaboration-unlock {
+//   background-color: rgba(0,0,0,0);
+//   border: none;
+//   position: absolute;
+//   margin-top: 60px;
+// }
 
 .privacy-form {
   display: inline-block;
@@ -503,6 +503,15 @@ button.navbar-toggle {
   margin-top: 15px;
 }
 
+.delete-board-link {
+  color: #ca2222;
+  margin-left: 10px;
+}
+
+.delete-board-link:hover {
+  color: #de3030;
+}
+
 /* ==================== DASHBOARD PAGE ================== */
 
 .current-project h3, .collaboration-project h3 {
@@ -569,12 +578,12 @@ button.navbar-toggle {
   font-size: 3em;
 }
 
-#delete-project-link {
+.current-project .delete-project-link {
   color: #ca2222;
   margin-left: 10px;
 }
 
-#delete-project-link:hover {
+.current-project .delete-project-link:hover {
   color: #de3030;
 }
 
@@ -755,6 +764,7 @@ button.navbar-toggle {
   float: right;
   top: 20px;
   right: 20px;
+  z-index: 30;
 }
 
 #board {
@@ -1048,6 +1058,7 @@ button.navbar-toggle {
   top: 0px;
   padding: 0px;
   display: none;
+  z-index: 0;
   // border: 1px solid black;
 }
 
