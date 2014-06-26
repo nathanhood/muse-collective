@@ -9,7 +9,7 @@ block content
         .sticky-note.draggable(class=note.classes[0], style='top: #{note.y}; left: #{note.x}; z-index: #{note.zIndex};')
           .sticky-note-inner
             .sticky-note-delete
-            textarea.sticky-note-title-edit(resize=none, maxlength='40')= note.content
+            textarea.sticky-note-title-edit(resize=none, maxlength='50')= note.content
     if(board.photos)
       each photo in board.photos
         .photo-container.draggable.resizable(style='top: #{photo.y}; left: #{photo.x}; width: #{photo.width}; height: #{photo.height}; z-index: #{photo.zIndex}')

@@ -420,7 +420,7 @@ function ajax(url, verb, data={}, success=r=>console.log(r), dataType='html'){//
     var note = `<div class='sticky-note green draggable new', style='top: 70px; left: 160px;'>
                 <div class='sticky-note-inner'>
                 <div class='sticky-note-delete'></div>
-                <textarea class='sticky-note-title-edit', resize=none, maxlength='40'>Add Text</textarea>
+                <textarea class='sticky-note-title-edit', resize=none, maxlength='70'>Add Text</textarea>
                 </div>
                 </div>`;
     $('#board').append(note);
@@ -434,7 +434,7 @@ function ajax(url, verb, data={}, success=r=>console.log(r), dataType='html'){//
     var note = `<div class='sticky-note blue draggable new', style='top: 70px; left: 160px;'>
                 <div class='sticky-note-inner'>
                 <div class='sticky-note-delete'></div>
-                <textarea class='sticky-note-title-edit', resize=none, maxlength='40'>Add Text</textarea>
+                <textarea class='sticky-note-title-edit', resize=none, maxlength='70'>Add Text</textarea>
                 </div>
                 </div>`;
     $('#board').append(note);
@@ -448,7 +448,7 @@ function ajax(url, verb, data={}, success=r=>console.log(r), dataType='html'){//
     var note = `<div class='sticky-note yellow draggable new', style='top: 70px; left: 160px;'>
                 <div class='sticky-note-inner'>
                 <div class='sticky-note-delete'></div>
-                <textarea class='sticky-note-title-edit', resize=none, maxlength='40'>Add Text</textarea>
+                <textarea class='sticky-note-title-edit', resize=none, maxlength='70'>Add Text</textarea>
                 </div>
                 </div>`;
     $('#board').append(note);
