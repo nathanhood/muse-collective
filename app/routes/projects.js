@@ -36,7 +36,7 @@ exports.show = (req, res)=>{
             return board;
           });
           res.render('projects/show', {boards:boards, project:project, user:req.user, creator:creator,
-            collaborators:collaborators, title:`MC: ${project.title}`});
+            collaborators:collaborators, title:`MC: ${project.title}`, inviteConfirm:req.flash('invitationConfirmation')});
         });
       });
     });
@@ -131,6 +131,7 @@ exports.updateTitle = (req, res)=>{
 exports.inviteCollaborator = (req, res)=>{
   var projId = req.params.projId;
   Project.inviteCollaborator(projId, req.body, ()=>{
+    req.flash('invitationConfirmation', 'Your invitation was sent successfully!');
     res.redirect(`/projects/${projId}`);
   });
 };

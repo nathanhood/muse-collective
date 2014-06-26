@@ -63,7 +63,7 @@ block content
     .col-sm-6.current-projects
       .well
         h2#current-projects-heading Current Projects
-        if(projects)
+        if(projects.length > 0)
           //- a#view-all-projects.link(href='/projects') View All
           each project in projects
             .current-project
@@ -82,15 +82,15 @@ block content
     .col-sm-6.collaborators
       .well
         h2 Collaborations
-        if(collaborations)
+        if(collaborations.length > 0)
           each collaboration in collaborations
             .collaboration-project
               .well
                 h3= collaboration.title
-                p= collaboration.dateCreated
+                span= collaboration.dateCreated
+                p= collaboration.type
                 a.link(href='/projects/#{collaboration._id.toString()}')
                   i.fa.fa-pencil-square-o edit
-                p= collaboration.type
         else
           p You do not have any collaborations at this time...
 

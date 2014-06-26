@@ -38,6 +38,10 @@ block content
 
 
     .page-header.text-center
+      if(inviteConfirm)
+        .alert(style='color: red')
+          p= registerMessage
+
       h1#project-title(data-projId=project._id.toString())= project.title
       input.project-title-edit.hidden(autofocus=true, value=project.title)
       i.fa.fa-pencil-square-o click title to edit
@@ -75,7 +79,7 @@ block content
     .col-sm-2.project-collaborators
       .well
         h5(style='font-weight: 600;') Created By
-        if(user.image)
+        if(creator.image)
           img#navbar-image(src=creator.image.filePath)
         else
           img#navbar-image(src='/img/profile_placeholder.png')
