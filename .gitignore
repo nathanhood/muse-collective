@@ -5,3 +5,4 @@ app/static/js/es6/compiled/*
 !app/static/js/es6/compiled/.gitkeep
 app/config/oauth.js
 app/static/audio/*
+app/static/img/*
