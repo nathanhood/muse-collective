@@ -62,24 +62,39 @@ block content
 
     .col-sm-6.current-projects
       .well
-        h2#current-projects-heading Current Projects
+        h2#current-projects-heading My Projects
         if(projects.length > 0)
           //- a#view-all-projects.link(href='/projects') View All
           each project in projects
-            .current-project
-              .well
-                h3.project-list-title(data-projId=project._id.toString())= project.title
-                span= project.dateCreated
-                p=project.type
-                a.link(href='/projects/#{project._id.toString()}')
-                  i.fa.fa-pencil-square-o edit
-                a.delete-project-link(href='#')
-                  i.fa.fa-exclamation-triangle delete
+            if(project.collaborators.length === 0)
+              .current-project
+                .well
+                  h3.project-list-title(data-projId=project._id.toString())= project.title
+                  span= project.dateCreated
+                  p=project.type
+                  a.link(href='/projects/#{project._id.toString()}')
+                    i.fa.fa-pencil-square-o edit
+                  a.delete-project-link(href='#')
+                    i.fa.fa-exclamation-triangle delete
 
         else
-          p No projects yet. Start Creating...
+          p Start Creating...
     //may want to make this a menu dropdown
     .col-sm-6.collaborators
+      .well
+        h2 Managed Collaborations
+        if(projects.length > 0)
+          each project in projects
+            if(project.collaborators.length > 0)
+              .collaboration-project
+                .well
+                  h3= project.title
+                  span= project.dateCreated
+                  p= project.type
+                  a.link(href='/projects/#{project._id.toString()}')
+                    i.fa.fa-pencil-square-o edit
+        else
+          p You do not have any collaborations that you manage at this time...
       .well
         h2 Collaborations
         if(collaborations.length > 0)
@@ -92,7 +107,7 @@ block content
                 a.link(href='/projects/#{collaboration._id.toString()}')
                   i.fa.fa-pencil-square-o edit
         else
-          p You do not have any collaborations at this time...
+          p You do not have any collaborations that you are helping on at this time...
 
 block scripts
   script(src='/js/es6/compiled/dashboard.js')

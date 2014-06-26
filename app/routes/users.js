@@ -11,8 +11,6 @@ var multiparty = require('multiparty');
 exports.dashboard = (req, res)=>{
   var user = req.user;
   Project.findAllByUserId(user._id, p=>{
-    console.log('========== PROJECTS ===========');
-    console.log(p);
     // if(projects.length > 0){
       // Project.sortProjectsByDate(projects, p=>{
         p = p.map(proj=>{

@@ -57,7 +57,7 @@ block content
               .well
                 h3.board-list-title(data-boardId=board._id.toString())= board.title
                 input.board-list-title-edit.hidden(autofocus=true, value=board.title)
-                p.board-list-date= board.dateCreated
+                span.board-list-date= board.dateCreated
                 a.board-list-link(href='/boards/#{board._id.toString()}')
                   i.fa.fa-pencil-square-o edit
                 a.delete-board-link(href='#')
