@@ -20,7 +20,7 @@
   }
 
   function destroyBoard(event){
-    var boardId = $(this).siblings('.board-list-title').attr('data-boardId');
+    var boardId = $(this).siblings('.board-list-title-link').attr('data-boardId');
     var boardContainer = $(this).parent().parent();
 
     var r = confirm('Are you sure you want to delete this board?');

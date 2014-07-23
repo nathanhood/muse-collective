@@ -17,6 +17,7 @@ function ajax(url, verb, data={}, success=r=>console.log(r), dataType='html'){//
       aspectRatio: true
     });
     $('.draggable').draggable();
+    calculateZIndex();
     $('#board').on('mousedown', '.resizable', resize);
     $('#board').on('mousedown', '.draggable', drag);
     $('#board').on('mousedown', '.draggable', zCounter);
@@ -78,6 +79,18 @@ function ajax(url, verb, data={}, success=r=>console.log(r), dataType='html'){//
 
     /* Saving Board */
     $('#save-board').click(saveBoard);
+  }
+
+  function calculateZIndex(){
+    var divs = $('div');
+    var highestValue = 0;
+    divs.each((i, div)=>{
+      var zIndex = $(div).css('z-index');
+      if(zIndex > highestValue && zIndex !== 'auto' && zIndex !== '90'){
+        highestValue = zIndex;
+      }
+    });
+    counter = highestValue * 1;
   }
 
   function menuZIndex(){
