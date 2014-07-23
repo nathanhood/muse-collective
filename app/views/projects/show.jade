@@ -77,16 +77,18 @@ block content
             h4 Create a board
     .col-sm-5.project-draft-container
       .well
-        h2 Drafts
+        //- h2 Drafts
         .text-draft-container
           .well
-            h3 Text
+            h3 Working Text Draft
             a.draft-list-link(href='/projects/#{project._id.toString()}/draft')
               i.fa.fa-pencil-square-o edit
+            span.project-last-update Last updated by...
+            a#view-all-text-drafts(href='#') View All Versions
         if(project.type === "Song")
           .audio-draft-container
             .well
-              h3 Audio
+              h3 Working Audio Draft
               if(project.draftAudio)
                 audio(src=project.draftAudio.filePath, type='audio/mp3', controls=true)
               form(action='/projects/#{project._id}/draftAudio', method='POST', enctype='multipart/form-data')

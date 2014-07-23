@@ -121,6 +121,7 @@ function ajax(url, verb, data={}, success=r=>console.log(r), dataType='html'){//
 
   function saveBoard(){
     var boardId = $('#board').attr('data-id');
+    var boardTitle = $('#board-title').text();
 
     var yellowNotes = collectNotes('yellow');
     var blueNotes = collectNotes('blue');
@@ -133,7 +134,7 @@ function ajax(url, verb, data={}, success=r=>console.log(r), dataType='html'){//
     var words = collectWords();
 
     ajax(`/boards/${boardId}`, 'POST', {notes:notes, photos:photos,
-    audio:audio, notepads:notepads, words:words}, jsonObj=>{
+    audio:audio, notepads:notepads, words:words, title:boardTitle}, jsonObj=>{
       window.location = `/projects/${jsonObj.projId}`;
     }, 'json');
   }
@@ -471,6 +472,8 @@ function ajax(url, verb, data={}, success=r=>console.log(r), dataType='html'){//
   }
 
   function appendNoteContainer(){
+    var oldContainer = $('#note-container');
+    $(oldContainer).remove();
     var container = `<div id='note-container'>
                       <div class='inner-container'>
                       <a href='#'><div class='sticky-note yellow'></div></a>
@@ -480,7 +483,6 @@ function ajax(url, verb, data={}, success=r=>console.log(r), dataType='html'){//
                       </div>`;
     $('.bt-overlay').append(container);
     $('#note-container').slideToggle('slow');
-
   }
 
 

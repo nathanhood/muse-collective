@@ -1,7 +1,7 @@
 extends ../shared/template
 
 block content
-  #board-title
+  #board-title.hidden= board.title
   #board(data-id=boardId)
     button.save-button#save-board Save/Exit
     if(board.notes)

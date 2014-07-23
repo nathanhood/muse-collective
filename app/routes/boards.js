@@ -42,7 +42,11 @@ exports.update = (req, res)=>{
             newBoard.addNotepads(body, ()=>{
               newBoard.addPhoto(body, ()=>{
                 newBoard.addAudio(body, ()=>{
-                  res.send(newBoard);
+                  newBoard.updateTitle(body, ()=>{
+                    newBoard.save(()=>{
+                      res.send(newBoard);
+                    });
+                  });
                 });
               });
             });
