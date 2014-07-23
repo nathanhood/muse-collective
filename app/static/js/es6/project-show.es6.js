@@ -7,10 +7,11 @@
   $(document).ready(init);
 
   function init(){
-    $('.project-board-container').on('click', '.board-list-title', editTitle);
-    $('.project-board-container').on('blur', '.board-list-title-edit', saveTitle);
-    $('.board-list-title-edit').keypress(enterSaveTitle);
-    $('#click-to-edit-title').click(editMainTitle);
+    $('.project-board-container').on('click', '.edit-board-list-title', editBoardTitle);
+    $('.project-board-container').on('blur', '.board-list-title-edit', saveBoardTitle);
+    $('.project-board-container').on('click', '.save-board-list-title', saveBoardTitle);
+    $('.board-list-title-edit').keypress(enterSaveBoardTitle);
+    $('#click-to-edit-title').click(editProjectTitle);
     $('.container').on('blur', '.project-title-edit', saveProjectTitle);
     $('.container').on('click', '#save-project-title', saveProjectTitle);
     $('.project-title-edit').keypress(enterSaveProjectTitle);
@@ -46,13 +47,14 @@
     event.preventDefault();
   }
 
-  function editTitle(){
+  function editBoardTitle(){
+    $(this).siblings('.board-list-title-link').addClass('hidden');
+    $(this).siblings('.board-list-title-edit').removeClass('hidden').focus();
     $(this).addClass('hidden');
     $(this).next().removeClass('hidden');
-    $(this).next().focus();
   }
 
-  function editMainTitle(){
+  function editProjectTitle(){
     $(this).addClass('hidden');
     $(this).next().removeClass('hidden');
     $(this).prev().prev().addClass('hidden');
@@ -60,25 +62,29 @@
     $(this).prev().focus();
   }
 
-  function saveTitle(){
-    var newTitle = $(this).val().trim();
-    var boardId = $(this).prev().attr('data-boardId');
-    $(this).addClass('hidden');
-    $(this).prev().removeClass('hidden');
-    $(this).prev().text(newTitle);
+  function saveBoardTitle(){
+    var newTitle = $(this).parent().children('.board-list-title-edit').val().trim();
+    var boardId = $(this).parent().children('.board-list-title-link').attr('data-boardId');
+    $(this).parent().children('.save-board-list-title').addClass('hidden');
+    $(this).parent().children('.edit-board-list-title').removeClass('hidden');
+    $(this).parent().children('.board-list-title-edit').addClass('hidden');
+    $(this).parent().children('.board-list-title-link').removeClass('hidden');
+    $(this).parent().children('.board-list-title-link').children('.board-list-title').text(newTitle);
     ajax(`/boards/${boardId}/updateTitle`, 'POST', {title:newTitle}, jsonObj=>{
       console.log(jsonObj);
     }, 'json');
   }
 
-  function enterSaveTitle(event){
+  function enterSaveBoardTitle(event){
     var newTitle = $(this).val().trim();
     var boardId = $(this).prev().attr('data-boardId');
     var keycode = (event.keyCode ? event.keyCode : event.which);
     if(keycode === 13){
+      $('.save-board-list-title').addClass('hidden');
+      $('.edit-board-list-title').removeClass('hidden');
       $(this).addClass('hidden');
       $(this).prev().removeClass('hidden');
-      $(this).prev().text($(this).val());
+      $(this).prev().children('.board-list-title').text(newTitle);
       ajax(`/boards/${boardId}/updateTitle`, 'POST', {title:newTitle}, jsonObj=>{
         console.log(jsonObj);
       }, 'json');

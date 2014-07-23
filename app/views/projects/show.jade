@@ -50,21 +50,28 @@ block content
         i.fa.fa-pencil-square-o save title
 
     .col-sm-5.project-board-container
+      .project-board-header
+        .board-header-inner-left
+          h4 Boards
+        .board-header-inner-right
+          form.create-board-form(action='/boards/#{project._id}/create', method='POST')
+            button#create-board-button
+              i.fa.fa-plus
       .well
-        h2 Boards
-        form.create-board-form(action='/boards/#{project._id}/create', method='POST')
-          button.action-button Create Board
         if(boards)
           each board in boards
             .board-list-container
               .well
-                h3.board-list-title(data-boardId=board._id.toString())= board.title
+                a.board-list-title-link(href='/boards/#{board._id.toString()}', data-boardId=board._id.toString())
+                  h3.board-list-title= board.title
                 input.board-list-title-edit.hidden(autofocus=true, value=board.title)
                 span.board-list-date= board.dateCreated
-                a.board-list-link(href='/boards/#{board._id.toString()}')
-                  i.fa.fa-pencil-square-o edit
+                a.edit-board-list-title(href='#')
+                  i.fa.fa-pencil-square-o edit title
+                a.save-board-list-title.hidden(href='#')
+                  i.fa.fa-pencil-square-o save title
                 a.delete-board-link(href='#')
-                  i.fa.fa-exclamation-triangle delete
+                  i.fa.fa-exclamation-triangle delete board
     .col-sm-5.project-draft-container
       .well
         h2 Draft

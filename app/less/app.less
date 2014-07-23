@@ -430,11 +430,57 @@ button.navbar-toggle {
 }
 
 #project-container {
-  padding-top: 15px;
+  padding-top: 0px;
+}
+
+#project-container > .page-header {
+  margin-top: 0px;
 }
 
 .project-board-container h2, .project-draft-container h2 {
   text-align: center;
+}
+
+.project-board-header {
+  width: 100%;
+  height: 50px;
+  background-color: #a09f9f;
+  border-top: 1px solid #e8e8e8;
+  border-left: 1px solid #e8e8e8;
+  border-right: 1px solid #e8e8e8;
+}
+
+.project-board-header > .board-header-inner-left > h4 {
+  margin-left: 15px;
+  margin-top: 15px;
+  margin-bottom: 14px;
+  font-weight: 400;
+}
+
+.project-board-header > .board-header-inner-left {
+  width: 85%;
+  height: 100%;
+  display: inline-block;
+  margin: 0;
+}
+
+.project-board-header > .board-header-inner-right {
+  width: 15%;
+  height: 100%;
+  display: inline-block;
+  margin: 0;
+  text-align: center;
+}
+
+#create-board-button {
+  background-color: #a09f9f;
+  border: none;
+  padding: 8px 8px 7px 8px;
+  font-size: 1.6em;
+}
+
+#create-board-button:hover {
+  color: #3d3d3d;
 }
 
 .board-list-title {
@@ -484,13 +530,22 @@ button.navbar-toggle {
   color: #1dc16f;
 }
 
-.board-list-link {
+.board-list-link, .edit-board-list-title, .save-board-list-title {
   display: inline-block;
   max-width: 250px;
   color: #1dc16f;
 }
 
-.board-list-link:hover, .board-list-link:focus, .draft-list-link:hover, .draft-list-link:focus {
+.board-list-title-link {
+  color: black;
+}
+
+.board-list-title-link:hover {
+  color: #1dc16f;
+}
+
+.board-list-link:hover, .board-list-link:focus, .draft-list-link:hover, .draft-list-link:focus,
+.edit-board-list-title:hover, .edit-board-list-title:focus, .save-board-list-title:hover, .save-board-list-title:focus  {
   color: #27d87a;
 }
 
