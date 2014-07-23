@@ -72,20 +72,29 @@ block content
                   i.fa.fa-pencil-square-o save title
                 a.delete-board-link(href='#')
                   i.fa.fa-exclamation-triangle delete board
+        else
+          .board-list-container
+            h4 Create a board
     .col-sm-5.project-draft-container
       .well
-        h2 Draft
-        a.draft-list-link(href='/projects/#{project._id.toString()}/draft')
-          i.fa.fa-pencil-square-o edit
-        .audio-draft-container
+        h2 Drafts
+        .text-draft-container
           .well
-            if(project.draftAudio)
+            h3 Text
+            a.draft-list-link(href='/projects/#{project._id.toString()}/draft')
+              i.fa.fa-pencil-square-o edit
+        if(project.type === "Song")
+          .audio-draft-container
+            .well
               h3 Audio
-              audio(src=project.draftAudio.filePath, type='audio/mp3', controls=true)
-            h4#add-audio-draft Add/Overwrite Audio Draft
-            form(action='/projects/#{project._id}/draftAudio', method='POST', enctype='multipart/form-data')
-              input(type='file', name='audio')
-              button.action-button Submit
+              if(project.draftAudio)
+                audio(src=project.draftAudio.filePath, type='audio/mp3', controls=true)
+              form(action='/projects/#{project._id}/draftAudio', method='POST', enctype='multipart/form-data')
+                input#audio-file-input(type='file', name='audio')
+                button.action-button Submit
+              h5#add-audio-draft Note: existing audio draft will be overwritten
+
+
     .col-sm-2.project-collaborators
       .well
         h5(style='font-weight: 600;') Created By
