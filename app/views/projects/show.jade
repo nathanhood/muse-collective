@@ -44,7 +44,10 @@ block content
 
       h1#project-title(data-projId=project._id.toString())= project.title
       input.project-title-edit.hidden(autofocus=true, value=project.title)
-      i.fa.fa-pencil-square-o click title to edit
+      a#click-to-edit-title.link(href='#')
+        i.fa.fa-pencil-square-o click to edit title
+      a#save-project-title.link.hidden(href='#')
+        i.fa.fa-pencil-square-o save title
 
     .col-sm-5.project-board-container
       .well

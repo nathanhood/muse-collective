@@ -10,8 +10,9 @@
     $('.project-board-container').on('click', '.board-list-title', editTitle);
     $('.project-board-container').on('blur', '.board-list-title-edit', saveTitle);
     $('.board-list-title-edit').keypress(enterSaveTitle);
-    $('#project-title').click(editTitle);
+    $('#click-to-edit-title').click(editMainTitle);
     $('.container').on('blur', '.project-title-edit', saveProjectTitle);
+    $('.container').on('click', '#save-project-title', saveProjectTitle);
     $('.project-title-edit').keypress(enterSaveProjectTitle);
     $('.project-collaborators').on('click', '.remove-collaborator', removeCollaborator);
     $('.project-board-container').on('click', '.delete-board-link', destroyBoard);
@@ -51,6 +52,14 @@
     $(this).next().focus();
   }
 
+  function editMainTitle(){
+    $(this).addClass('hidden');
+    $(this).next().removeClass('hidden');
+    $(this).prev().prev().addClass('hidden');
+    $(this).prev().removeClass('hidden');
+    $(this).prev().focus();
+  }
+
   function saveTitle(){
     var newTitle = $(this).val().trim();
     var boardId = $(this).prev().attr('data-boardId');
@@ -77,11 +86,13 @@
   }
 
   function saveProjectTitle(){
-    var newTitle = $(this).val().trim();
+    var newTitle = $('.project-title-edit').val().trim();
     var projId = $('#project-title').attr('data-projId');
-    $(this).addClass('hidden');
-    $(this).prev().removeClass('hidden');
-    $(this).prev().text(newTitle);
+    $('.project-title-edit').addClass('hidden');
+    $('#save-project-title').addClass('hidden');
+    $('#click-to-edit-title').removeClass('hidden');
+    $('#project-title').removeClass('hidden');
+    $('#project-title').text(newTitle);
     ajax(`/projects/${projId}/updateTitle`, 'POST', {title:newTitle}, ()=>{});
   }
 
