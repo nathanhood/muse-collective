@@ -10,6 +10,7 @@ var crypto = require('crypto');
 var rimraf = require('rimraf');
 var request = require('request');
 var _ = require('lodash');
+var moment = require('moment');
 
 class Project {
   static create(obj, fn){
@@ -221,6 +222,15 @@ class Project {
         fn(null);
       }
     }
+  }
+
+  formatDraftRecordDates(fn){
+    var records = [];
+    this.draftTextRecord.forEach(record=>{
+      record.date = moment(record.date).format('MMMM Do YYYY, h:mm a');
+      records.unshift(record);
+    });
+    fn(records);
   }
 
 

@@ -18,6 +18,7 @@ var path = require('path');
 var crypto = require('crypto');
 var rimraf = require('rimraf');
 var _ = require('lodash');
+var moment = require('moment');
 
 
 class Board {
@@ -57,6 +58,14 @@ class Board {
     rimraf(path, (err)=>{
       fn(err);
     });
+  }
+
+  static sortByDate(boards, fn){
+    boards = boards.map(board=>{
+      board.dateCreated = moment(board.dateCreated).format('MMMM Do YYYY');
+      return board;
+    });
+    fn(boards);
   }
 
 

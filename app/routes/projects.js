@@ -31,18 +31,13 @@ exports.show = (req, res)=>{
     User.findById(project.userId, (err, creator)=>{
       User.findAllById(project.collaborators, (collaborators)=>{
         Board.findAllByProjectId(project._id, boards=>{
-          boards = boards.map(board=>{
-            board.dateCreated = moment(board.dateCreated).format('MMMM Do YYYY');
-            return board;
+          Board.sortByDate(boards, sortedBoards=>{
+            project.formatDraftRecordDates(sortedDrafts=>{
+              var lastRecord = sortedDrafts.pop();
+              res.render('projects/show', {boards:sortedBoards, project:project, user:req.user, creator:creator,
+                collaborators:collaborators, draftRecord:sortedDrafts, lastRecord:lastRecord, title:`MC: ${project.title}`, inviteConfirm:req.flash('invitationConfirmation')});
+            });
           });
-          var records = [];
-          project.draftTextRecord.forEach(record=>{
-            record.date = moment(record.date).format('MMMM Do YYYY, h:mm a');
-            records.unshift(record);
-          });
-          var lastRecord = records.pop();
-          res.render('projects/show', {boards:boards, project:project, user:req.user, creator:creator,
-            collaborators:collaborators, draftRecord:records, lastRecord:lastRecord, title:`MC: ${project.title}`, inviteConfirm:req.flash('invitationConfirmation')});
         });
       });
     });
