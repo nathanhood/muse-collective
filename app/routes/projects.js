@@ -159,11 +159,9 @@ exports.inviteError = (req, res)=>{
 };
 
 exports.removeCollaborator = (req, res)=>{
-  console.log('========== INSIDE ROUTES ==========');
   Project.findById(req.params.projId, (err, project)=>{
     project.removeCollaborator(req.body.collaboratorId, ()=>{
       project.save(()=>{
-        console.log('========== POST SAVE ==========');
         res.send();
       });
     });

@@ -69,7 +69,8 @@ block content
             if(project.collaborators.length === 0)
               .current-project
                 .well
-                  h3.project-list-title(data-projId=project._id.toString())= project.title
+                  a.project-list-title-link(href='/projects/#{project._id.toString()}')  
+                    h3.project-list-title(data-projId=project._id.toString())= project.title
                   span= project.dateCreated
                   p=project.type
                   a.link(href='/projects/#{project._id.toString()}')

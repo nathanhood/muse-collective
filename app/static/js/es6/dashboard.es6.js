@@ -12,7 +12,7 @@
   }
 
   function destroyProject(event){
-    var projId = $(this).siblings('.project-list-title').attr('data-projId');
+    var projId = $(this).siblings('.project-list-title-link').children('.project-list-title').attr('data-projId');
     var projContainer = $(this).parent().parent();
 
     var r = confirm('Are you sure you want to delete this project?');
