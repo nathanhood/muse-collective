@@ -11,7 +11,7 @@ block content
           span.icon-bar
           span.icon-bar
           span.icon-bar
-        a.navbar-brand(href='/') Muse[collective]
+        span.navbar-brand Muse[collective]
       // Collect the nav links, forms, and other content for toggling
       #bs-example-navbar-collapse-1.collapse.navbar-collapse
         ul.nav.navbar-nav
@@ -69,7 +69,7 @@ block content
             if(project.collaborators.length === 0)
               .current-project
                 .well
-                  a.project-list-title-link(href='/projects/#{project._id.toString()}')  
+                  a.project-list-title-link(href='/projects/#{project._id.toString()}')
                     h3.project-list-title(data-projId=project._id.toString())= project.title
                   span= project.dateCreated
                   p=project.type
