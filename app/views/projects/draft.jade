@@ -7,7 +7,7 @@ block content
 
     .draft-toolbar
       button.action-button#save-draft Save
-      a(href='/projects/#{project._id.toString()}')
+      form.exit-draft-form(action='/projects/#{project._id}/addDraftTextRecord', method='POST')
         button.action-button#exit-draft Exit
       button.action-button#toggle-tools Writing Tools
     .col-sm-12#draft-tools

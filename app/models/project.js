@@ -20,6 +20,7 @@ class Project {
     project.title = obj.title;
     project.type = obj.type;
     project.draftText = null;
+    project.draftTextRecord = [];
     project.draftAudio = null;
     project.boards = [];
     project.collaborators = [];
@@ -146,6 +147,26 @@ class Project {
     fn(this);
   }
 
+  addDraftTextRecord(text, userObj, fn){
+    this.draftText = text;
+    var obj = {};
+    obj.date = new Date();
+    obj.text = text;
+    obj.userId = userObj._id;
+    obj.id = createId();
+    if (Object.keys(userObj.facebook).length > 0) {
+      console.log('facebook');
+      obj.name = userObj.facebook.displayName;
+    } else if (Object.keys(userObj.twitter).length > 0) {
+      console.log('twitter');
+      obj.name = userObj.twitter.displayName;
+    } else {
+      obj.name = userObj.local.email;
+    }
+    this.draftTextRecord.push(obj);
+    fn(this);
+  }
+
   updateDraftAudio(audio, fn){
     if(this.draftAudio){
       var normPath = path.normalize(`${__dirname}/../static/${this.draftAudio.filePath}`);
@@ -203,6 +224,15 @@ class Project {
   }
 
 
+}
+
+function createId(){
+  var text='';
+  var possible = '0123456789abcdefghijklmnopqrstuvwxyz0123456789';
+  for( var i=0; i < 6; i++ ){
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+  return text;
 }
 
 function sendVerificationEmail(message, fn){

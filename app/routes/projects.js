@@ -35,8 +35,14 @@ exports.show = (req, res)=>{
             board.dateCreated = moment(board.dateCreated).format('MMMM Do YYYY');
             return board;
           });
+          var records = [];
+          project.draftTextRecord.forEach(record=>{
+            record.date = moment(record.date).format('MMMM Do YYYY, h:mm a');
+            records.unshift(record);
+          });
+          var lastRecord = records.pop();
           res.render('projects/show', {boards:boards, project:project, user:req.user, creator:creator,
-            collaborators:collaborators, title:`MC: ${project.title}`, inviteConfirm:req.flash('invitationConfirmation')});
+            collaborators:collaborators, draftRecord:records, lastRecord:lastRecord, title:`MC: ${project.title}`, inviteConfirm:req.flash('invitationConfirmation')});
         });
       });
     });
@@ -49,11 +55,37 @@ exports.draft = (req, res)=>{
   });
 };
 
+exports.pastDraft = (req, res)=>{
+  Project.findById(req.params.projId, (err, project)=>{
+    var text;
+    project.draftTextRecord.forEach(record=>{
+      if (record.id === req.params.recordId) {
+        text = record.text;
+      }
+    });
+    res.render('projects/pastDraft', {project:project, draftText:text, title:'MC: Working Draft'});
+  });
+};
+
 exports.updateDraftText = (req, res)=>{
   Project.findById(req.params.projId, (err, project)=>{
     project.updateDraftText(req.body, ()=>{
       project.save(()=>{
         res.render('projects/save-confirmation', {project:project});
+      });
+    });
+  });
+};
+
+exports.addDraftTextRecord = (req, res)=>{
+  var userId = req.session.passport.user;
+  var projId = req.params.projId;
+  User.findById(userId, (err, user)=>{
+    Project.findById(projId, (err, project)=>{
+      project.addDraftTextRecord(project.draftText, user, ()=>{
+        project.save(()=>{
+          res.redirect(`/projects/${projId}`);
+        });
       });
     });
   });

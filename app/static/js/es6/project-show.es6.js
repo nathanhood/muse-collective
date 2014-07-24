@@ -17,6 +17,21 @@
     $('.project-title-edit').keypress(enterSaveProjectTitle);
     $('.project-collaborators').on('click', '.remove-collaborator', removeCollaborator);
     $('.project-board-container').on('click', '.delete-board-link', destroyBoard);
+    $('#view-all-text-drafts').click(showDraftHistoryList);
+    $('#hide-all-text-drafts').click(hideDraftHistoryList);
+  }
+
+  function showDraftHistoryList(){
+    $('#view-all-text-drafts').hide();
+    $('#hide-all-text-drafts').show();
+    $('#hide-all-text-drafts').css('display', 'block');
+    $('#draft-history-list').slideToggle();
+  }
+
+  function hideDraftHistoryList(){
+    $('#hide-all-text-drafts').hide();
+    $('#view-all-text-drafts').show();
+    $('#draft-history-list').slideToggle();
   }
 
   function destroyBoard(event){

@@ -320,6 +320,19 @@ button.navbar-toggle {
   padding: 10px;
 }
 
+.cancel-button {
+  background-color: #5b5b5b;
+  color: white;
+  font-family: 'Open Sans';
+  border: 1px solid black;
+  padding: 10px;
+  margin-left: 10px;
+}
+
+.cancel-button:hover {
+  background-color: #616161;
+}
+
 .save-button {
   background-color: #1dc16f;
   color: white;
@@ -403,10 +416,29 @@ button.navbar-toggle {
 /* ==================== PROJECT PAGE ================= */
 
 
-#collaboration-invitation input:focus, #collaboration-invitation textarea:focus {
+#collaboration-invitation input:focus, #collaboration-invitation textarea:focus,
+.draft-record-text textarea:focus {
   outline: none;
   border: black !important;
   box-shadow: 0 0 5px #1dc16f !important;
+}
+
+.draft-record-text textarea {
+  resize: none;
+  min-height: 300px;
+  width: 98%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 15px;
+}
+
+.draft-record-text span {
+  margin-left: 10px;
+}
+
+.draft-record-modal span {
+  display: block;
+  margin-top: 10px;
 }
 
 #collaboration-lock, #collaboration-unlock {
@@ -426,7 +458,10 @@ button.navbar-toggle {
 
 .privacy-form {
   display: inline-block;
+}
 
+#draft-history-list {
+  display: none;
 }
 
 #project-container {
@@ -525,9 +560,16 @@ button.navbar-toggle {
   margin-top: 21px;
 }
 
-.board-list-container span, .project-last-update {
+.board-list-container span {
   display: block;
   font-size: 1.2em;
+  font-weight: 100;
+  margin-right: 100px;
+}
+
+.project-last-update {
+  font-size: 1.1em;
+  display: block;
   font-weight: 100;
   margin-right: 100px;
 }
@@ -544,12 +586,35 @@ button.navbar-toggle {
   color: #1dc16f;
 }
 
-#view-all-text-drafts {
-  color: #1dc16f;
-  font-size: 14px;
+#hide-all-text-drafts {
+  display: none;
 }
 
-#view-all-text-drafts:hover {
+.draft-record {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.draft-record-link > h5 {
+  font-weight: 400;
+}
+
+.draft-record-link {
+  color: black;
+}
+
+.draft-record > p {
+  font-weight: 300;
+}
+
+#view-all-text-drafts, #hide-all-text-drafts {
+  color: #1dc16f;
+  font-size: 14px;
+  margin-bottom: 15px;
+}
+
+#view-all-text-drafts:hover, #hide-all-text-drafts:hover,
+.draft-record-link:hover {
   color: #27d87a;
   text-decoration: none;
 }
@@ -775,15 +840,31 @@ button.navbar-toggle {
   border: 1px solid #27d87a;
 }
 
+.exit-draft-form {
+  display: inline;
+}
+
+#current-draft {
+  margin-left: 10px;
+  margin-top: 10px;
+  background-color: #1e92c3;
+  border: 1px solid #1e92c3;
+}
+
+#current-draft:hover {
+  background-color: #21a8d0;
+  border: 1px solid #21a8d0;
+}
+
 #exit-draft {
-  background-color: #ac2222;
-  border: 1px solid #ac2222;
+  background-color: #c42626;
+  border: 1px solid #c42626;
   margin-left: 10px;
 }
 
 #exit-draft:hover {
-  background-color: #c92c2c;
-  border: 1px solid #c92c2c;
+  background-color: #d52d2d;
+  border: 1px solid #d52d2d;
 }
 
 #draft-tools {

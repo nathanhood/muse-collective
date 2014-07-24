@@ -155,6 +155,7 @@ function load(app, fn){
   app.post('/projects/create', dbg, projects.create);
   app.get('/projects/:projId/draft', dbg, projects.draft);
   app.post('/projects/:projId/draft', dbg, projects.updateDraftText);
+  app.post('/projects/:projId/addDraftTextRecord', dbg, projects.addDraftTextRecord);
   app.post('/projects/:projId/draftAudio', dbg, projects.updateDraftAudio);
   app.post('/projects/:projId/updateTitle', dbg, projects.updateTitle);
   app.post('/projects/:projId/destroy', dbg, projects.destroy);
@@ -162,6 +163,7 @@ function load(app, fn){
   app.post('/projects/:projId/getRelatedWords', dbg, projects.getRelatedWords);
   app.post('/projects/:projId/inviteCollaborator', dbg, projects.inviteCollaborator);
   app.post('/projects/:projId/removeCollaborator', dbg, projects.removeCollaborator);
+  app.get('/projects/:projId/:recordId', dbg, projects.pastDraft);
 
   app.get('/boards/:boardId', dbg, boards.show);
   app.post('/boards/removeDirFile', dbg, boards.removeFileFromDirectory);
