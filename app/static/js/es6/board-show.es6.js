@@ -28,15 +28,14 @@ function ajax(url, verb, data={}, success=r=>console.log(r), dataType='html'){//
     $('#search-word').click(getRelatedWords);
     $('#search-word').click(getWordExample);
     $('#search-rhymes').click(getRhymes);
-    /* Random Poetry */
-    $('#find-random-poetry').click(getRandomNouns);
-    $('#find-random-poetry').click(getRandomVerbs);
-    $('#find-random-poetry').click(getRandomAdjectives);
-    $('#find-random-poetry').click(getRandomAdverbs);
-    $('#find-random-poetry').click(getRandomAuxiliaries);
-    $('#find-random-poetry').click(getRandomPrepositions);
-    /* Dynamically Generating Notes */
+    /* Board Menu */
     $('.bt-menu-trigger').click(menuZIndex);
+    $('.bt-menu-trigger').click(removeAllMenuContainers);
+    $('#bt-menu').on('click', '#notes', removeOtherMenuContainers);
+    $('#bt-menu').on('click', '#photos', removeOtherMenuContainers);
+    $('#bt-menu').on('click', '#audio', removeOtherMenuContainers);
+
+    /* Dynamically Generating Notes */
     $('#notes').click(appendNoteContainer);
     $('#bt-menu').on('click', '.yellow', addYellowNote);
     $('#bt-menu').on('click', '.blue', addBlueNote);
@@ -111,10 +110,30 @@ function ajax(url, verb, data={}, success=r=>console.log(r), dataType='html'){//
 
   function checkNewElements(){
     var newClass = $('.new');
-    console.log(newClass);
-    console.log(counter);
     $('.new').css('z-index', counter++);
     $('.new').removeClass('new');
+  }
+
+  /* ================= BOARD MENU MGMT ============= */
+
+  function removeAllMenuContainers(){
+    $('#note-container').remove();
+    $('#photo-container').remove();
+    $('#audio-container').remove();
+  }
+
+  function removeOtherMenuContainers(){
+    var menuItem = $(this).text();
+    if (menuItem === 'Notes') {
+      $('#photo-container').remove();
+      $('#audio-container').remove();
+    } else if (menuItem === 'Photos') {
+      $('#note-container').remove();
+      $('#audio-container').remove();
+    } else if (menuItem === 'Audio') {
+      $('#photo-container').remove();
+      $('#note-container').remove();
+    }
   }
 
   /* ================ SAVE BOARD ================= */
@@ -141,14 +160,18 @@ function ajax(url, verb, data={}, success=r=>console.log(r), dataType='html'){//
 
   function collectWords(){
     var words = $('.word').toArray().map(w=>{
-      var obj = {};
-      obj.content = $(w).text();
-      obj.x = $(w).css('left');
-      obj.y = $(w).css('top');
-      obj.zIndex = $(w).css('zIndex');
-      return obj;
+      if ($(w).css('left') !== 'auto') {
+        var obj = {};
+        obj.content = $(w).text();
+        var position = $(w).offset();
+        obj.x = position.left.toString() + 'px';
+        obj.y = position.top.toString() + 'px';
+        obj.zIndex = $(w).css('zIndex');
+        return obj;
+      }
     });
-    return words;
+    var filteredWords = words.filter((w)=>{ return w !== undefined; });
+    return filteredWords;
   }
 
   function collectNotepads(){
@@ -255,7 +278,6 @@ function ajax(url, verb, data={}, success=r=>console.log(r), dataType='html'){//
 
   function toggleContainer(){
     $('#random-words').css('display', 'none');
-    console.log('inside if statement');
     $('#random-words').slideToggle('slow');
   }
 
@@ -270,30 +292,38 @@ function ajax(url, verb, data={}, success=r=>console.log(r), dataType='html'){//
 
   function getArticles(){
     for(var i = 0; i < 2; i++){
+      let divContainer = $('<div class=word-container>');
       let div = $('<div class="word article draggable">').text('the');
       div = $(div).append('<div class="word-delete">');
-      $('#prepositions-container').append(div);
+      divContainer = $(divContainer).append(div);
+      $('#prepositions-container').append(divContainer);
     }
     for(var j = 0; j < 2; j++){
+      let divContainer = $('<div class=word-container>');
       let div = $('<div class="word article draggable">').text('an');
       div = $(div).append('<div class="word-delete">');
-      $('#auxiliaries-container').append(div);
+      divContainer = $(divContainer).append(div);
+      $('#auxiliaries-container').append(divContainer);
     }
     for(var y = 0; y < 2; y++){
+      let divContainer = $('<div class=word-container>');
       let div = $('<div class="word article draggable">').text('a');
       div = $(div).append('<div class="word-delete">');
-      $('#adverbs-container').append(div);
+      divContainer = $(divContainer).append(div);
+      $('#adverbs-container').append(divContainer);
     }
 
   }
 
   function getRandomNouns(){
-    var url = `http://api.wordnik.com:80/v4/words.json/randomWords?hasDictionaryDef=false&includePartOfSpeech=noun&minCorpusCount=1000&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=1&maxLength=14&limit=5&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5`;
+    var url = `http://api.wordnik.com:80/v4/words.json/randomWords?hasDictionaryDef=false&includePartOfSpeech=noun&minCorpusCount=5000&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=1&maxLength=14&limit=5&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5`;
     $.getJSON(url, function(data){
       data.forEach(obj=>{
+        var divContainer = $('<div class=word-container>');
         var div = $('<div class="word noun draggable">').text(obj.word);
         div = $(div).append('<div class="word-delete">');
-        $('#nouns-container').append(div);
+        divContainer = $(divContainer).append(div);
+        $('#nouns-container').append(divContainer);
         $('.draggable').draggable();
       });
     });
@@ -303,9 +333,11 @@ function ajax(url, verb, data={}, success=r=>console.log(r), dataType='html'){//
     var url = `http://api.wordnik.com:80/v4/words.json/randomWords?hasDictionaryDef=false&includePartOfSpeech=verb&minCorpusCount=1000&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=1&maxLength=16&limit=5&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5`;
     $.getJSON(url, function(data){
       data.forEach(obj=>{
+        var divContainer = $('<div class=word-container>');
         var div = $('<div class="word verb draggable">').text(obj.word);
         div = $(div).append('<div class="word-delete">');
-        $('#verbs-container').append(div);
+        divContainer = $(divContainer).append(div);
+        $('#verbs-container').append(divContainer);
         $('.draggable').draggable();
       });
     });
@@ -315,57 +347,67 @@ function ajax(url, verb, data={}, success=r=>console.log(r), dataType='html'){//
     var url = `http://api.wordnik.com:80/v4/words.json/randomWords?hasDictionaryDef=false&includePartOfSpeech=adjective&minCorpusCount=1000&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=1&maxLength=16&limit=5&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5`;
     $.getJSON(url, function(data){
       data.forEach(obj=>{
+        var divContainer = $('<div class=word-container>');
         var div = $('<div class="word adjective draggable">').text(obj.word);
         div = $(div).append('<div class="word-delete">');
-        $('#adjectives-container').append(div);
+        divContainer = $(divContainer).append(div);
+        $('#adjectives-container').append(divContainer);
         $('.draggable').draggable();
       });
     });
   }
 
   function getRandomAdverbs(){
-    var url = `http://api.wordnik.com:80/v4/words.json/randomWords?hasDictionaryDef=false&includePartOfSpeech=adverb&minCorpusCount=1000&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=1&maxLength=16&limit=2&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5`;
+    var url = `http://api.wordnik.com:80/v4/words.json/randomWords?hasDictionaryDef=false&includePartOfSpeech=adverb&minCorpusCount=2000&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=1&maxLength=16&limit=2&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5`;
     $.getJSON(url, function(data){
       data.forEach(obj=>{
+        var divContainer = $('<div class=word-container>');
         var div = $('<div class="word adverb draggable">').text(obj.word);
         div = $(div).append('<div class="word-delete">');
-        $('#adverbs-container').append(div);
+        divContainer = $(divContainer).append(div);
+        $('#adverbs-container').append(divContainer);
         $('.draggable').draggable();
       });
     });
   }
 
   function getRandomPronouns(){
-    var url = `http://api.wordnik.com:80/v4/words.json/randomWords?hasDictionaryDef=false&includePartOfSpeech=pronoun&minCorpusCount=100000&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=1&maxLength=16&limit=4&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5`;
+    var url = `http://api.wordnik.com:80/v4/words.json/randomWords?hasDictionaryDef=false&includePartOfSpeech=pronoun&minCorpusCount=1000000&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=1&maxLength=16&limit=4&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5`;
     $.getJSON(url, function(data){
       data.forEach(obj=>{
+        var divContainer = $('<div class=word-container>');
         var div = $('<div class="word pronoun draggable">').text(obj.word);
         div = $(div).append('<div class="word-delete">');
-        $('#pronouns-container').append(div);
+        divContainer = $(divContainer).append(div);
+        $('#pronouns-container').append(divContainer);
         $('.draggable').draggable();
       });
     });
   }
 
   function getRandomAuxiliaries(){
-    var url = `http://api.wordnik.com:80/v4/words.json/randomWords?hasDictionaryDef=false&includePartOfSpeech=auxiliary-verb&minCorpusCount=1000&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=1&maxLength=16&limit=2&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5`;
+    var url = `http://api.wordnik.com:80/v4/words.json/randomWords?hasDictionaryDef=false&includePartOfSpeech=auxiliary-verb&minCorpusCount=100000&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=1&maxLength=16&limit=2&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5`;
     $.getJSON(url, function(data){
       data.forEach(obj=>{
+        var divContainer = $('<div class=word-container>');
         var div = $('<div class="word auxiliary draggable">').text(obj.word);
         div = $(div).append('<div class="word-delete">');
-        $('#auxiliaries-container').append(div);
+        divContainer = $(divContainer).append(div);
+        $('#auxiliaries-container').append(divContainer);
         $('.draggable').draggable();
       });
     });
   }
 
   function getRandomPrepositions(){
-    var url = `http://api.wordnik.com:80/v4/words.json/randomWords?hasDictionaryDef=false&includePartOfSpeech=preposition&minCorpusCount=1000&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=1&maxLength=16&limit=2&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5`;
+    var url = `http://api.wordnik.com:80/v4/words.json/randomWords?hasDictionaryDef=false&includePartOfSpeech=preposition&minCorpusCount=10000&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=1&maxLength=16&limit=2&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5`;
     $.getJSON(url, function(data){
       data.forEach(obj=>{
+        var divContainer = $('<div class=word-container>');
         var div = $('<div class="word preposition draggable">').text(obj.word);
         div = $(div).append('<div class="word-delete">');
-        $('#prepositions-container').append(div);
+        divContainer = $(divContainer).append(div);
+        $('#prepositions-container').append(divContainer);
         $('.draggable').draggable();
       });
     });
@@ -500,32 +542,6 @@ function ajax(url, verb, data={}, success=r=>console.log(r), dataType='html'){//
     });
   }
 
-  /* Sticky Note Functionality Below */
-
-
-  // function editNoteTitle(){
-  //   $(this).addClass('hidden');
-  //   $(this).next('textarea').removeClass('hidden');
-  //   $(this).next('textarea').val($(this).text()).focus();
-  //   var background = $(this).parent().css('background-color');
-  //   $(this).next('textarea').css('background-color', background);
-  // }
-
-  // function saveNoteTitle(){
-  //   $(this).addClass('hidden');
-  //   $(this).prev().removeClass('hidden');
-  //   $(this).prev().text($(this).val());
-  // }
-  //
-  // function enterSaveNoteTitle(event){
-  //   var keycode = (event.keyCode ? event.keyCode : event.which);
-  //   if(keycode === 13){
-  //     $(this).addClass('hidden');
-  //     $(this).prev().removeClass('hidden');
-  //     $(this).prev().text($(this).val());
-  //   }
-  // }
-
 
   /* Wordnik API Below */
 
@@ -564,6 +580,33 @@ function ajax(url, verb, data={}, success=r=>console.log(r), dataType='html'){//
       console.log(data);
     });
   }
+
+
+  /* Sticky Note Functionality Below */
+
+
+  // function editNoteTitle(){
+  //   $(this).addClass('hidden');
+  //   $(this).next('textarea').removeClass('hidden');
+  //   $(this).next('textarea').val($(this).text()).focus();
+  //   var background = $(this).parent().css('background-color');
+  //   $(this).next('textarea').css('background-color', background);
+  // }
+
+  // function saveNoteTitle(){
+  //   $(this).addClass('hidden');
+  //   $(this).prev().removeClass('hidden');
+  //   $(this).prev().text($(this).val());
+  // }
+  //
+  // function enterSaveNoteTitle(event){
+  //   var keycode = (event.keyCode ? event.keyCode : event.which);
+  //   if(keycode === 13){
+  //     $(this).addClass('hidden');
+  //     $(this).prev().removeClass('hidden');
+  //     $(this).prev().text($(this).val());
+  //   }
+  // }
 
 
 })();

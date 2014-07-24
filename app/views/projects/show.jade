@@ -28,13 +28,13 @@ block content
 
   .container#project-container
     if(collaborators.length === 0)
-      form.privacy-form(action='/projects/#{project._id}/updatePrivacy', method='post')
-        button#collaboration-lock
-          i.privacy.fa.fa-lock.fa-3x
+      //- form.privacy-form(action='/projects/#{project._id}/updatePrivacy', method='post')
+      button#collaboration-lock
+        i.privacy.fa.fa-lock.fa-3x
     else
-      form.privacy-form(action='/projects/#{project._id}/updatePrivacy', method='post')
-        button#collaboration-unlock
-          i.privacy.fa.fa-unlock-alt.fa-3x
+      //- form.privacy-form(action='/projects/#{project._id}/updatePrivacy', method='post')
+      button#collaboration-unlock
+        i.privacy.fa.fa-unlock-alt.fa-3x
 
 
     .page-header.text-center

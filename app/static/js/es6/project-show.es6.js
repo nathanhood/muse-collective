@@ -64,6 +64,7 @@
 
   function saveBoardTitle(){
     var newTitle = $(this).parent().children('.board-list-title-edit').val().trim();
+    console.log(newTitle);
     var boardId = $(this).parent().children('.board-list-title-link').attr('data-boardId');
     $(this).parent().children('.save-board-list-title').addClass('hidden');
     $(this).parent().children('.edit-board-list-title').removeClass('hidden');
