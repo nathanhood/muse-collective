@@ -33,7 +33,7 @@ exports.show = (req, res)=>{
         Board.findAllByProjectId(project._id, boards=>{
           Board.sortByDate(boards, sortedBoards=>{
             project.formatDraftRecordDates(sortedDrafts=>{
-              var lastRecord = sortedDrafts.pop();
+              var lastRecord = sortedDrafts[(sortedDrafts.length - 1)];
               res.render('projects/show', {boards:sortedBoards, project:project, user:req.user, creator:creator,
                 collaborators:collaborators, draftRecord:sortedDrafts, lastRecord:lastRecord, title:`MC: ${project.title}`, inviteConfirm:req.flash('invitationConfirmation')});
             });

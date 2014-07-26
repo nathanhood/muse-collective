@@ -83,7 +83,8 @@ block content
             h3 Working Text Draft
             a.draft-list-link(href='/projects/#{project._id.toString()}/draft')
               i.fa.fa-pencil-square-o edit
-            span.project-last-update Last updated by #{lastRecord.name}
+            if(lastRecord)
+              span.project-last-update Last updated by #{lastRecord.name}
             a#view-all-text-drafts(href='#') View Draft Record
             a#hide-all-text-drafts(href='#') Hide Draft Record
             #draft-history-list
