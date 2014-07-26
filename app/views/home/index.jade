@@ -1,37 +1,112 @@
 extends ../shared/template
+block link
+  link(href='/css/component.css', rel='stylesheet')
 
 block content
-  .home-container
-    h1.logo Muse[collective]
-    if(user)
-      a(href='/logout')
-        .col-md-5
-        .col-md-2
-          .logout-button-container
-            button.action-button#logout-home-button Logout
-        .col-md-5
-
-    if(message)
-      .alert(style='color: red')
-        p= message
-
+  #home-container
     if(!user)
-      .container.login-container
-        .col-md-12
-          .well
-            form(action='/login', method='post')
-              .form-group
-                input(type='email', name='email', placeholder='Email', autofocus=true)
-                br
-                input(type='password', name='password', placeholder='Password')
-                br
-                button#login-button.action-button(type='submit') Login
+      nav.navbar.navbar-default#landing-page-nav.cl-effect-1(role='navigation')
+        .container-fluid
+          // Brand and toggle get grouped for better mobile display
+          .navbar-header
+            button.navbar-toggle(type='button', data-toggle='collapse', data-target='#bs-example-navbar-collapse-1')
+              span.sr-only Toggle navigation
+              span.icon-bar
+              span.icon-bar
+              span.icon-bar
 
-                hr
-                p
-                  | Need an account?
-                  a#register-link(href='/register') Register
-                a#facebook-login(href='/auth/facebook')
-                  img(src='/img/facebook.png')
-                a#twitter-login(href='/auth/twitter')
-                  img(src='/img/twitter.png')
+          #bs-example-navbar-collapse-1.collapse.navbar-collapse
+            ul.nav.navbar-nav.navbar-right
+              li
+                a(href='#', type='submit', data-toggle='modal', data-target='#login') Login
+              li
+                a(href='#description-section') Learn More
+
+      .col-md-12.login-error-container
+        if(message || message2)
+          .alert(style='color: red')
+            p= message
+            p= message2
+      .col-md-6.col-md-offset-3.logo-container
+        h1.logo Muse[collective]
+  #description-section
+    .container
+      .row
+        .col-lg-12.text-center
+          h1.section-heading create[together]
+          h3.section-subheading.text-muted creativity just met its match
+      .row
+        .col-lg-12
+          ul.timeline
+            li
+              .timeline-image
+                img.img-circle.img-responsive(src='img/description/lightbulb.jpg', alt='')
+              .timeline-panel
+                .timeline-heading
+                  h4 Brainstorm
+                  h4.subheading Collect your thoughts in one place
+                .timeline-body
+                  p.text-muted
+                    | Surround yourself with what is currently inspiring you, and collect all your thoughts into one place with a creativity board. Create as many as you want per project with as many ideas as you can cram onto your screen.
+            li.timeline-inverted
+              .timeline-image
+                img.img-circle.img-responsive(src='img/description/pen_and_paper2.jpg', alt='')
+              .timeline-panel
+                .timeline-heading
+                  h4 Draft
+                  h4.subheading Take the plunge
+                .timeline-body
+                  p.text-muted
+                    | Put pen to paper and start drafting. Use the intentionally simple layout (us creative types don't like distractions) to organize your thoughts. Take advantage of the on-screen writing tools to help the creative process along. For those musicians out there, keep track of your latest audio drafts to accompany your lyrics all within the same project.
+            li
+              .timeline-image
+                img.img-circle.img-responsive(src='img/description/shoes.jpg', alt='')
+              .timeline-panel
+                .timeline-heading
+                  h4 Polish
+                  h4 Refine, refine, refine...
+                .timeline-body
+                  p.text-muted
+                    | Make as many modifications as you want. Every new edit to your working draft is saved and catalogued so you don't have to worry about experimenting with new ideas. If you change your mind, just restore a previous version.
+            li.timeline-inverted
+              .timeline-image
+                img.img-circle.img-responsive(src='img/description/hands.png', alt='')
+              .timeline-panel
+                .timeline-heading
+                  h4 Collaborate
+                  h4.subheading Do all of this together
+                .timeline-body
+                  p.text-muted
+                    | The creative process is always better in community. Muse[collective] allows you to include anyone you want on any project you manage. Authorship of each new working draft is saved so you can see who did what.
+            li.timeline-inverted
+              .timeline-image#start-creating
+                h4
+                  br
+                  | Start Creating!
+
+
+
+  .modal.fade#login(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+    .modal-dialog
+      .modal-content#login-container
+        .modal-header
+          button.close(type='button', data-dismiss='modal', aria-hidden='true') &times;
+        .modal-body
+          #login-section
+            .well
+              form(action='/login', method='post')
+                .form-group
+                  input(type='email', name='email', placeholder='Email')
+                  br
+                  input(type='password', name='password', placeholder='Password')
+                  br
+                  button#login-button.action-button(type='submit') Login
+
+                  hr
+                  p
+                    | Need an account?
+                    a#register-link(href='/register') Register
+                  a#facebook-login(href='/auth/facebook')
+                    img(src='/img/facebook.png')
+                  a#twitter-login(href='/auth/twitter')
+                    img(src='/img/twitter.png')

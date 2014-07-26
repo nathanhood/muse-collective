@@ -5,7 +5,16 @@
   $(document).ready(init);
 
   function init(){
-    // $('.selectpicker').selectpicker();
+    $('#login-button').hover(colorFadeIn, colorFadeOut);
+  }
+
+
+  function colorFadeIn(){
+    $(this).animate({backgroundColor: '#1dc16f'}, 250);
+  }
+
+  function colorFadeOut(){
+    $(this).animate({backgroundColor: '#323232'}, 250);
   }
 
 })();

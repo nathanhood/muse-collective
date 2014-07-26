@@ -256,7 +256,7 @@ module.exports = function(passport){
       }
 
       if(!user){
-        return done(null, false, req.flash('loginMessage', 'No user found.')); // setting flash data
+        return done(null, false, req.flash('loginMessage', 'User not found.')); // setting flash data
       }
 
       if(!user.validPassword(password)){
@@ -368,7 +368,7 @@ module.exports = function(passport){
       }
 
       if(!user){
-        return done(null, false, req.flash('loginMessage', 'No user found.')); // setting flash data
+        return done(null, false, req.flash('loginMessage', 'User not found.')); // setting flash data
       }
 
       if(!user.validPassword(password)){
@@ -376,7 +376,7 @@ module.exports = function(passport){
       }
 
       req.session.projId = req.params.projId;
-      
+
       return done(null, user);
     });
   }));
