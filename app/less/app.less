@@ -213,19 +213,6 @@ body {
   border: none;
 }
 
-// .login-container {
-//   padding-top: 30px;
-// }
-//
-// .login-container .well {
-//   background-color: rgba(255, 252, 252, 0.69);
-//   margin-bottom: 0;
-// }
-//
-// .login-container .col-md-12 {
-//   margin-bottom: 0;
-// }
-
 .logo-container {
   padding: 15px 0;
   line-height: 1;
@@ -297,7 +284,7 @@ body {
 #home-container {
   min-height: 100%;
   width: 100%;
-  background-image: url('/img/campfire.png');
+  background-image: url('/img/notepad_campfire.jpg');
   background-repeat: no-repeat;
   background-size: cover;
 }
@@ -690,10 +677,6 @@ button.navbar-toggle {
   color: #1dc16f;
 }
 
-#hide-all-text-drafts {
-  display: none;
-}
-
 .draft-record {
   padding-top: 8px;
   padding-bottom: 8px;
@@ -709,6 +692,10 @@ button.navbar-toggle {
 
 .draft-record > p {
   font-weight: 300;
+}
+
+#hide-all-text-drafts {
+  display: none;
 }
 
 #view-all-text-drafts, #hide-all-text-drafts {
@@ -809,6 +796,31 @@ button.navbar-toggle {
   display: block;
 }
 
+.dashboard-container .collaborations-title {
+  font-size: 2.5em;
+}
+
+.collaboration-list, .managed-collaboration-list {
+  display: none;
+}
+
+.hide-all-managed-collaborations, .hide-all-collaborations {
+  display: none;
+}
+
+.view-all-collaborations, .hide-all-collaborations,
+.view-all-managed-collaborations, .hide-all-managed-collaborations {
+  color: #1dc16f;
+  font-size: 16px;
+  margin-bottom: 15px;
+}
+
+.view-all-collaborations:hover, .hide-all-collaborations:hover,
+.view-all-managed-collaborations:hover, .hide-all-managed-collaborations:hover {
+  color: #27d87a;
+  text-decoration: none;
+}
+
 .create-board-form button {
   font-size: .9em;
   margin-bottom: 15px;
@@ -849,12 +861,12 @@ button.navbar-toggle {
   font-size: 3em;
 }
 
-.current-project .delete-project-link {
+.current-project .delete-project-link, .collaborators .delete-project-link {
   color: #ca2222;
   margin-left: 10px;
 }
 
-.current-project .delete-project-link:hover {
+.current-project .delete-project-link:hover, .collaborators .delete-project-link:hover {
   color: #de3030;
 }
 

@@ -66,47 +66,57 @@ block content
         if(projects.length > 0)
           //- a#view-all-projects.link(href='/projects') View All
           each project in projects
-            if(project.collaborators.length === 0)
-              .current-project
+            .current-project
+              .well
+                a.project-list-title-link(href='/projects/#{project._id.toString()}')
+                  h3.project-list-title(data-projId=project._id.toString())= project.title
+                span= project.dateCreated
+                p=project.type
+                a.link(href='/projects/#{project._id.toString()}')
+                  i.fa.fa-pencil-square-o edit
+                a.delete-project-link(href='#')
+                  i.fa.fa-exclamation-triangle delete
+
+        else
+          p Start Creating...  Click 'Create Project' above.
+    //may want to make this a menu dropdown
+    .col-sm-6.collaborators
+      .well
+        h2.collaborations-title Managed Collaborations
+        if(managedCollaborations.length > 0)
+            a.view-all-managed-collaborations(href='#') View All
+            a.hide-all-managed-collaborations(href='#') Hide All
+
+            .managed-collaboration-list
+              each project in managedCollaborations
+                .collaboration-project
+                  .well
+                    a.project-list-title-link(href='/projects/#{project._id.toString()}')
+                      h3.project-list-title(data-projId=project._id.toString())= project.title
+                    span= project.dateCreated
+                    p= project.type
+                    a.link(href='/projects/#{project._id.toString()}')
+                      i.fa.fa-pencil-square-o edit
+                    a.delete-project-link(href='#')
+                      i.fa.fa-exclamation-triangle delete
+        else
+          p You do not have any collaborations that you manage at this time...
+      .well
+        h2.collaborations-title Collaborations
+        if(collaborations.length > 0)
+          a.view-all-collaborations(href='#') View All
+          a.hide-all-collaborations(href='#') Hide All
+
+          .collaboration-list
+            each project in collaborations
+              .collaboration-project
                 .well
                   a.project-list-title-link(href='/projects/#{project._id.toString()}')
                     h3.project-list-title(data-projId=project._id.toString())= project.title
                   span= project.dateCreated
-                  p=project.type
-                  a.link(href='/projects/#{project._id.toString()}')
-                    i.fa.fa-pencil-square-o edit
-                  a.delete-project-link(href='#')
-                    i.fa.fa-exclamation-triangle delete
-
-        else
-          p Start Creating...
-    //may want to make this a menu dropdown
-    .col-sm-6.collaborators
-      .well
-        h2 Managed Collaborations
-        if(projects.length > 0)
-          each project in projects
-            if(project.collaborators.length > 0)
-              .collaboration-project
-                .well
-                  h3= project.title
-                  span= project.dateCreated
                   p= project.type
                   a.link(href='/projects/#{project._id.toString()}')
                     i.fa.fa-pencil-square-o edit
-        else
-          p You do not have any collaborations that you manage at this time...
-      .well
-        h2 Collaborations
-        if(collaborations.length > 0)
-          each collaboration in collaborations
-            .collaboration-project
-              .well
-                h3= collaboration.title
-                span= collaboration.dateCreated
-                p= collaboration.type
-                a.link(href='/projects/#{collaboration._id.toString()}')
-                  i.fa.fa-pencil-square-o edit
         else
           p You do not have any collaborations that you are helping on at this time...
 

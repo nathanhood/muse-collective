@@ -85,8 +85,10 @@ block content
               i.fa.fa-pencil-square-o edit
             if(lastRecord)
               span.project-last-update Last updated by #{lastRecord.name}
-            a#view-all-text-drafts(href='#') View Draft Record
-            a#hide-all-text-drafts(href='#') Hide Draft Record
+              a#view-all-text-drafts(href='#') View Draft Record
+              a#hide-all-text-drafts(href='#') Hide Draft Record
+            else
+              span.project-last-update Click 'edit' to begin draft.
             #draft-history-list
               each record in draftRecord
                 .well.draft-record

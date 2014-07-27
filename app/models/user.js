@@ -167,7 +167,6 @@ class User {
     }
   }
 
-
   static findByTwitterId(id, fn){
     userCollection.findOne({'twitter.id':id}, (err, user)=>{
       fn(err, user);

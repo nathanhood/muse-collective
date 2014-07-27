@@ -9,6 +9,28 @@
   function init(){
     $('#create-project-link').click(toggleProjectForm);
     $('.current-projects').on('click', '.delete-project-link', destroyProject);
+    $('.view-all-collaborations, .view-all-managed-collaborations').click(showProjectList);
+    $('.hide-all-collaborations, .hide-all-managed-collaborations').click(hideProjectList);
+  }
+
+  function showProjectList(){
+    $(this).hide();
+    $(this).next().show();
+    if ($(this).hasClass('view-all-collaborations')) {
+      $('.collaboration-list').slideToggle();
+    } else if ($(this).hasClass('view-all-managed-collaborations')) {
+      $('.managed-collaboration-list').slideToggle();
+    }
+  }
+
+  function hideProjectList(){
+    $(this).hide();
+    $(this).prev().show();
+    if ($(this).hasClass('hide-all-collaborations')) {
+      $('.collaboration-list').slideToggle();
+    } else if ($(this).hasClass('hide-all-managed-collaborations')) {
+      $('.managed-collaboration-list').slideToggle();
+    }
   }
 
   function destroyProject(event){

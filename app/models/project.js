@@ -47,18 +47,37 @@ class Project {
     });
   }
 
-  static sortProjectsByDate(projects, fn){
-    projects.sort((a, b)=>{
-        if (a.dateCreated > b.dateCreated){
-          return 1;
-        }
-        if (a.dateCreate < b.dateCreated){
-          return -1;
-        }
-        // a must be equal to b
-        return 0;
+  static formatProjectDates(projects, fn){
+    projects = projects.map(proj=>{
+      proj.dateCreated = moment(proj.dateCreated).format('MMMM Do YYYY, h:mm a');
+      return proj;
     });
     fn(projects);
+  }
+
+  static sortProjectsByDate(projects, fn){
+    projects.sort((proj1, proj2)=>{
+      var p1 = proj1.dateCreated.getTime();
+      var p2 = proj2.dateCreated.getTime();
+      if ( p1 < p2 ) {
+        return 1;
+      } else if ( p1 > p2 ) {
+        return -1;
+      } else {
+        return 0;
+      }
+    });
+    fn(projects);
+  }
+
+  static findManagedCollaborations(projects, fn){
+    var managedCollabs = [];
+    projects.forEach(proj=>{
+      if (proj.collaborators.length > 0) {
+        managedCollabs.push(proj);
+      }
+    });
+    fn(managedCollabs);
   }
 
   static takeFiveProjects(projects, fn){
@@ -84,7 +103,6 @@ class Project {
       fn(projects);
     });
   }
-
 
   save(fn){
     projectCollection.save(this, ()=>fn());

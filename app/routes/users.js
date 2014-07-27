@@ -10,21 +10,24 @@ var multiparty = require('multiparty');
 
 exports.dashboard = (req, res)=>{
   var user = req.user;
-  Project.findAllByUserId(user._id, p=>{
+  Project.findAllByUserId(user._id, projects=>{
     // if(projects.length > 0){
-      // Project.sortProjectsByDate(projects, p=>{
-        p = p.map(proj=>{
-          proj.dateCreated = moment(proj.dateCreated).format('MMMM Do YYYY');
-          return proj;
-        });
-        Project.findCollaborationsByUserId(user._id, (collabs)=>{
-          collabs = collabs.map(c=>{
-            c.dateCreated = moment(c.dateCreated).format('MMMM Do YYYY');
-            return c;
+      Project.sortProjectsByDate(projects, sortedProjects=>{
+        Project.formatProjectDates(sortedProjects, finalProjects=>{
+
+          Project.findCollaborationsByUserId(user._id, collabs=>{
+            Project.formatProjectDates(collabs, finalCollabs=>{
+
+              Project.findManagedCollaborations(finalProjects, managedCollabs=>{
+                console.log('======== FINAL PROJECTS =======');
+                console.log(finalProjects);
+                res.render('users/dashboard', {projects:finalProjects, user:user,
+                  collaborations:finalCollabs, managedCollaborations:managedCollabs, title:'MC: Dashboard'});
+              });
+            });
           });
-          res.render('users/dashboard', {projects:p, user:user, collaborations:collabs, title:'MC: Dashboard'});
         });
-      // });
+      });
     // }else{
     //   res.render('users/dashboard', {user:user, title:'MC: Dashboard'});
     // }
