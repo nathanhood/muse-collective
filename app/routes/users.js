@@ -11,26 +11,20 @@ var multiparty = require('multiparty');
 exports.dashboard = (req, res)=>{
   var user = req.user;
   Project.findAllByUserId(user._id, projects=>{
-    // if(projects.length > 0){
-      Project.sortProjectsByDate(projects, sortedProjects=>{
-        Project.formatProjectDates(sortedProjects, finalProjects=>{
+    Project.sortProjectsByDate(projects, sortedProjects=>{
+      Project.formatProjectDates(sortedProjects, finalProjects=>{
 
-          Project.findCollaborationsByUserId(user._id, collabs=>{
-            Project.formatProjectDates(collabs, finalCollabs=>{
+        Project.findCollaborationsByUserId(user._id, collabs=>{
+          Project.formatProjectDates(collabs, finalCollabs=>{
 
-              Project.findManagedCollaborations(finalProjects, managedCollabs=>{
-                console.log('======== FINAL PROJECTS =======');
-                console.log(finalProjects);
-                res.render('users/dashboard', {projects:finalProjects, user:user,
-                  collaborations:finalCollabs, managedCollaborations:managedCollabs, title:'MC: Dashboard'});
-              });
+            Project.findManagedCollaborations(finalProjects, managedCollabs=>{
+              res.render('users/dashboard', {projects:finalProjects, user:user,
+                collaborations:finalCollabs, managedCollaborations:managedCollabs, title:'MC: Dashboard'});
             });
           });
         });
       });
-    // }else{
-    //   res.render('users/dashboard', {user:user, title:'MC: Dashboard'});
-    // }
+    });
   });
 };
 
@@ -88,26 +82,3 @@ exports.updatePhoto = (req, res)=>{
     });
   });
 };
-
-// exports.inviteRegistration = (req, res)=>{
-//   console.log('======== INVITE REGISTRATION ==========');
-//   var projId = req.params.projId;
-//   if(!req.user){
-//     User.findByEmail(req.body.email, (err, user)=>{
-//       if(user){
-//         req.flash('registerMessage', 'That email is already taken');
-//         res.render('users/invite-login', {title:'MC: Confirm Invitation', message:req.flash('registerMessage')});
-//       }else{
-//         var newUser = new User();
-//         newUser.local.email = req.body.email;
-//         newUser.local.password = newUser.generateHash(req.body.password);
-//         newUser.save(()=>{
-//           req.user = newUser;
-//           console.log('================REQ.USER===========');
-//           console.log(req.user);
-//           res.redirect('/projects/${projId}');
-//         });
-//       }
-//     });
-//   }
-// };
