@@ -21,6 +21,11 @@ block content
         br
         button.action-button(type='submit') Register
       hr
+      p Use your Twitter or Facebook account to register  
+      a#facebook-login(href='/auth/facebook')
+        img(src='/img/assets/facebook.png')
+      a#twitter-login(href='/auth/twitter')
+        img(src='/img/assets/twitter.png')
       p
           | Already have an account?&nbsp
           a.link(href='/') Login
