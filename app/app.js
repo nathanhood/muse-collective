@@ -30,14 +30,16 @@ app.use(initRoutes);
 app.use(morgan({format: 'dev'}));
 app.use(express.static(__dirname + '/static'));
 app.use('/less', less(__dirname + '/less'));
-app.use(bodyParser());
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(methodOverride());
 app.use(cookieSession({keys:['SEC123', '321CES']}));
 
 
 /* Passport Configuration */
 app.use(cookieParser());
-app.use(session({ secret: 'natdatpatsat'}));
+app.use(session({ secret: 'natdatpatsat',
+                  saveUninitialized: true,
+                  resave: true}));
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
