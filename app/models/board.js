@@ -84,6 +84,7 @@ class Board {
   }
 
 
+
   save(fn){
     boardCollection.save(this, ()=>fn());
   }
