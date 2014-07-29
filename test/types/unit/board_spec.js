@@ -49,7 +49,7 @@ describe('boards', function(){
             expect(project.boards).to.have.length(1);
             expect(board).to.be.instanceof(Board);
             expect(board._id).to.be.instanceof(Mongo.ObjectID);
-            expect(board.title).to.equal('untitled');
+            expect(board.title).to.equal('Untitled');
             expect(board.dateCreated).to.be.instanceof(Date);
             expect(board.notes).to.have.length(0);
             expect(board.photos).to.have.length(0);
@@ -79,7 +79,7 @@ describe('boards', function(){
     it('should find a board by Object Id', function(done){
       Board.findById('53a0f350140b1f584c054ed9', function(err, board){
         expect(board).to.be.instanceof(Board);
-        expect(board.title).to.equal('untitled');
+        expect(board.title).to.equal('Untitled');
         done();
       });
     });
@@ -88,14 +88,13 @@ describe('boards', function(){
   describe('#addNotes', function(){
     it('should add note objects to notes array', function(done){
       Board.findById('53a0f350140b1f584c054ed9', function(err, board){
-        var body = {'notes':[{'title':'Example Title', 'content':'This is an example note...', 'x':'230px', 'y':'72.1px', 'classes':['draggable', 'sticky-note', 'yellow'], 'zIndex':'3'},
+        var body = {'notes':[{'content':'This is an example note...', 'x':'230px', 'y':'72.1px', 'classes':['draggable', 'sticky-note', 'yellow'], 'zIndex':'3'},
         {'title':'Example Title 2', 'content':'This is another example note...', 'x':'100px', 'y':'210px', 'classes':['draggable', 'sticky-note', 'blue'], 'zIndex':'1'}]};
 
         board.addNotes(body, function(b){
           expect(b.notes).to.have.length(2);
           expect(b.notes[0].x).to.equal('230px');
           expect(b.notes[0].y).to.equal('72.1px');
-          expect(b.notes[0].title).to.equal('Example Title');
           expect(b.notes[0].content).to.equal('This is an example note...');
           expect(b.notes[0].classes[0]).to.deep.equal('draggable');
           expect(b.notes[0].zIndex).to.equal('3');
@@ -150,40 +149,6 @@ describe('boards', function(){
       });
     });
   });
-
-
-  describe('#addWords', function(){
-    it('should add word objects to words array', function(done){
-      Board.findById('53a0f350140b1f584c054ed9', function(err, board){
-        var body = {'words':[{'content':'bird', 'x':'230px', 'y':'72.1px', 'classes':['word', 'noun', 'draggable'], 'zIndex':'3'},
-        {'content':'frightened', 'x':'100px', 'y':'210px', 'classes':['word', 'noun', 'draggable'], 'zIndex':'1'}]};
-
-        board.addWords(body, function(b){
-          expect(b.words).to.have.length(2);
-          expect(b.words[0].x).to.equal('230px');
-          expect(b.words[0].y).to.equal('72.1px');
-          expect(b.words[0].content).to.equal('bird');
-          expect(b.words[0].classes[0]).to.deep.equal('word');
-          expect(b.words[0].zIndex).to.equal('3');
-          expect(b._id).to.be.instanceof(Mongo.ObjectID);
-          done();
-        });
-      });
-    });
-
-    it('should NOT add objects to words array - without errors', function(done){
-      Board.findById('53a0f350140b1f584c054ed9', function(err, board){
-        var body = {'words':[]};
-
-        board.addWords(body, function(b){
-          expect(b.words).to.have.length(0);
-          expect(b._id).to.be.instanceof(Mongo.ObjectID);
-          done();
-        });
-      });
-    });
-  });
-
 
 
   describe('#processPhoto', function(){

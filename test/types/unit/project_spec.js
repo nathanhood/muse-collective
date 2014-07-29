@@ -79,7 +79,7 @@ describe('projects', function(){
   describe('#updateDraftText', function(){
     it('should successfully replace existing draftText content', function(done){
       Project.findById('53a0f350140b1f584c054ed6', function(err, project){
-        var body = {'draftText':'This is a string that represents a short draft of someone\'s work.'};
+        var body = {'draft':'This is a string that represents a short draft of someone\'s work.'};
         project.updateDraftText(body, function(p){
           expect(p.draftText).to.equal('This is a string that represents a short draft of someone\'s work.');
           expect(p).to.be.instanceof(Project);

@@ -60,10 +60,25 @@ class Board {
     });
   }
 
-  static sortByDate(boards, fn){
-    boards = boards.map(board=>{
-      board.dateCreated = moment(board.dateCreated).format('MMMM Do YYYY');
-      return board;
+  static sortBoardsByDate(boards, fn){
+    boards.sort((board1, board2)=>{
+      var b1 = board1.dateCreated.getTime();
+      var b2 = board2.dateCreated.getTime();
+      if ( b1 < b2 ) {
+        return 1;
+      } else if ( b1 > b2 ) {
+        return -1;
+      } else {
+        return 0;
+      }
+    });
+    fn(boards);
+  }
+
+  static formatBoardDates(boards, fn){
+    boards = boards.map(b=>{
+      b.dateCreated = moment(b.dateCreated).format('MMMM Do YYYY, h:mm a');
+      return b;
     });
     fn(boards);
   }

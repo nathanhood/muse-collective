@@ -31,11 +31,13 @@ exports.show = (req, res)=>{
     User.findById(project.userId, (err, creator)=>{
       User.findAllById(project.collaborators, (collaborators)=>{
         Board.findAllByProjectId(project._id, boards=>{
-          Board.sortByDate(boards, sortedBoards=>{
-            project.formatDraftRecordDates(sortedDrafts=>{
-              var lastRecord = sortedDrafts[(sortedDrafts.length - 1)];
-              res.render('projects/show', {boards:sortedBoards, project:project, user:req.user, creator:creator,
-                collaborators:collaborators, draftRecord:sortedDrafts, lastRecord:lastRecord, title:`MC: ${project.title}`, inviteConfirm:req.flash('invitationConfirmation')});
+          Board.sortBoardsByDate(boards, sortedBoards=>{
+            Board.formatBoardDates(sortedBoards, finalBoards=>{
+              project.formatDraftRecordDates(sortedDrafts=>{
+                var lastRecord = sortedDrafts[(sortedDrafts.length - 1)];
+                res.render('projects/show', {boards:finalBoards, project:project, user:req.user, creator:creator,
+                  collaborators:collaborators, draftRecord:sortedDrafts, lastRecord:lastRecord, title:`MC: ${project.title}`, inviteConfirm:req.flash('invitationConfirmation')});
+              });
             });
           });
         });
