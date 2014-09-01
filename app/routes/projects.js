@@ -55,6 +55,8 @@ exports.draft = (req, res)=>{
 exports.pastDraft = (req, res)=>{
   Project.findById(req.params.projId, (err, project)=>{
     var text;
+    console.log('=========== PROJECT ===========');
+    console.log(project);
     project.draftTextRecord.forEach(record=>{
       if (record.id === req.params.recordId) {
         text = record.text;

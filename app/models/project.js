@@ -278,7 +278,7 @@ function sendVerificationEmail(message, fn){
                       <br>
                       <h4>Message from ${message.inviteeName}:</h4>
                       <p>${message.personalMessage}</p>
-                      <a href="http://localhost:3000/confirmInvite/${message.projId}">Click to Join Project</a>`);
+                      <a href="http://musecollective.nathanhood.net/confirmInvite/${message.projId}">Click to Join Project</a>`);
 }
 
 

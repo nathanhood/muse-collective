@@ -104,7 +104,7 @@ block content
                       .modal-body
                         .draft-record-text
                           textarea= record.text
-                          a(href='/projects/#{project._id}/#{record.id}')
+                          a(href='/projects/#{project._id}/draft/#{record.id}')
                             button.action-button Restore Draft
                           button.cancel-button(type='button', data-dismiss='modal', aria-hidden='true') Cancel
                           span Note: this record will become your current working draft
@@ -126,7 +126,10 @@ block content
           img#navbar-image(src=creator.image.filePath)
         else
           img#navbar-image(src='/img/profile_placeholder.png')
-        span(style='font-size: 14px;', data-creatorid=creator._id)= creator.local.email
+        if(creator.twitter.displayName)
+          span(style='font-size: 14px;', data-creatorid=creator._id)= creator.twitter.displayName
+        else
+          span(style='font-size: 14px;', data-creatorid=creator._id)= creator.local.email
         if(collaborators.length > 0)
           h5(style='font-weight: 600;') Collaborators
           each collaborator in collaborators
