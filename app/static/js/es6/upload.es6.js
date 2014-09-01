@@ -35,10 +35,6 @@
 
         $(this).ajaxSubmit({
 
-            // error: function(xhr) {
-		        //   status('Error: ' + xhr.status);
-            // },
-
             success: function(html) {
 		          $('#board').append(html);
               $('#bt-menu').removeClass('bt-menu-open');
@@ -56,16 +52,12 @@
 	    // a page refresh - don't forget this
 	    return false;
     });
-
-    // function status(message) {
-	  //   $('#status').text(message);
-    // }
   }
 
 
 
   function uploadAudio(){
-    // Check to see when a user has selected a file
+
     var timerId;
     timerId = setInterval(function() {
       if($('#choose-upload-audio').val() !== '') {
@@ -91,8 +83,6 @@
             }
         });
 
-      // Have to stop the form from submitting and causing
-      // a page refresh - don't forget this
       return false;
     });
   }
